@@ -102,7 +102,9 @@
     <Content Include="About.aspx" />
     <Content Include="AddGuest.aspx" />
     <Content Include="Booking.aspx" />
+    <Content Include="BookingsList.aspx" />
     <Content Include="CheckIn.aspx" />
+    <Content Include="CheckInsList.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
@@ -215,12 +217,26 @@
     <Compile Include="Booking.aspx.designer.cs">
       <DependentUpon>Booking.aspx</DependentUpon>
     </Compile>
+    <Compile Include="BookingsList.aspx.cs">
+      <DependentUpon>BookingsList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BookingsList.aspx.designer.cs">
+      <DependentUpon>BookingsList.aspx</DependentUpon>
+    </Compile>
     <Compile Include="CheckIn.aspx.cs">
       <DependentUpon>CheckIn.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CheckIn.aspx.designer.cs">
       <DependentUpon>CheckIn.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CheckInsList.aspx.cs">
+      <DependentUpon>CheckInsList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CheckInsList.aspx.designer.cs">
+      <DependentUpon>CheckInsList.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contact.aspx.cs">
       <DependentUpon>Contact.aspx</DependentUpon>

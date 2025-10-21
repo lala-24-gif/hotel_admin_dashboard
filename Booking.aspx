@@ -562,12 +562,12 @@
                     </div>
                 </div>
 
-                <div class="info-box">
-                    <div class="info-box-title">Total Amount</div>
-                    <div class="info-box-value">
-                        $<asp:Label ID="lblTotalAmount" runat="server" Text="0"></asp:Label>
-                    </div>
-                </div>
+             <div class="info-box">
+    <div class="info-box-title">Total Amount</div>
+    <div class="info-box-value">
+        ¥<asp:Label ID="lblTotalAmount" runat="server" Text="0"></asp:Label>
+    </div>
+</div>
 
                 <div class="form-actions">
                     <asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="btn btn-secondary" 

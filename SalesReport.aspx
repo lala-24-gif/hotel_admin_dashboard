@@ -223,7 +223,7 @@
             <div class="summary-cards">
                 <div class="summary-card revenue">
                     <div class="summary-label">Total Revenue</div>
-                    <div class="summary-value">$<asp:Label ID="lblTotalRevenue" runat="server" Text="0"></asp:Label></div>
+                    <div class="summary-value">¥<asp:Label ID="lblTotalRevenue" runat="server" Text="0"></asp:Label></div>
                     <div class="summary-change positive">
                         <i class="fas fa-arrow-up"></i> <asp:Label ID="lblRevenueChange" runat="server" Text="0"></asp:Label>% from last year
                     </div>
@@ -239,7 +239,7 @@
 
                 <div class="summary-card average">
                     <div class="summary-label">Average Transaction</div>
-                    <div class="summary-value">$<asp:Label ID="lblAverageTransaction" runat="server" Text="0"></asp:Label></div>
+                    <div class="summary-value">¥<asp:Label ID="lblAverageTransaction" runat="server" Text="0"></asp:Label></div>
                     <div class="summary-change">Average per booking</div>
                 </div>
 
@@ -269,9 +269,9 @@
                     CssClass="breakdown-table" GridLines="None" ShowHeaderWhenEmpty="True">
                     <Columns>
                         <asp:BoundField DataField="Month" HeaderText="Month" ItemStyle-CssClass="month-name" />
-                        <asp:BoundField DataField="Revenue" HeaderText="Revenue" DataFormatString="${0:N2}" ItemStyle-CssClass="amount" />
+                        <asp:BoundField DataField="Revenue" HeaderText="Revenue" DataFormatString="¥{0:N0}" ItemStyle-CssClass="amount" />
                         <asp:BoundField DataField="Transactions" HeaderText="Transactions" />
-                        <asp:BoundField DataField="AverageTransaction" HeaderText="Avg. Transaction" DataFormatString="${0:N2}" />
+                        <asp:BoundField DataField="AverageTransaction" HeaderText="Avg. Transaction" DataFormatString="¥{0:N0}" />
                         <asp:BoundField DataField="Bookings" HeaderText="Bookings" />
                     </Columns>
                 </asp:GridView>
@@ -283,14 +283,14 @@
         <script type="text/javascript">
             window.onload = function () {
                 var chartData = JSON.parse(document.getElementById('<%= hfChartData.ClientID %>').value);
-                
+
                 var ctx = document.getElementById('revenueChart').getContext('2d');
                 var revenueChart = new Chart(ctx, {
                     type: 'line',
                     data: {
                         labels: chartData.labels,
                         datasets: [{
-                            label: 'Revenue ($)',
+                            label: 'Revenue (¥)',
                             data: chartData.data,
                             backgroundColor: 'rgba(102, 126, 234, 0.1)',
                             borderColor: 'rgba(102, 126, 234, 1)',
@@ -314,8 +314,8 @@
                             },
                             tooltip: {
                                 callbacks: {
-                                    label: function(context) {
-                                        return 'Revenue: $' + context.parsed.y.toLocaleString();
+                                    label: function (context) {
+                                        return 'Revenue: ¥' + context.parsed.y.toLocaleString();
                                     }
                                 }
                             }
@@ -324,8 +324,8 @@
                             y: {
                                 beginAtZero: true,
                                 ticks: {
-                                    callback: function(value) {
-                                        return '$' + value.toLocaleString();
+                                    callback: function (value) {
+                                        return '¥' + value.toLocaleString();
                                     }
                                 }
                             }

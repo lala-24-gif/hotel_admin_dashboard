@@ -402,52 +402,42 @@
                 </a>
             </div>
             
-            <!-- First Row: Guests, Bookings, Check-ins -->
+            <!-- First Row: Check-ins and Bookings -->
             <div class="section-title">
                 <i class="fas fa-chart-line"></i> Overview
             </div>
             <div class="dashboard-row">
-                <!-- Current Guests Card - Now Clickable -->
-                <a href="CurrentGuests.aspx" class="card-link">
-                    <div class="stat-card guests">
+                <!-- Check-ins Card - Clickable -->
+                <a href="CheckInsList.aspx" class="card-link">
+                    <div class="stat-card checkins">
                         <div class="stat-header">
-                            <span class="stat-title">Current Guests</span>
+                            <span class="stat-title">Check-ins</span>
                             <div class="stat-icon">
-                                <i class="fas fa-users"></i>
+                                <i class="fas fa-sign-in-alt"></i>
                             </div>
                         </div>
                         <div class="stat-value">
-                            <asp:Label ID="lblCurrentGuests" runat="server" Text="0"></asp:Label>
+                            <asp:Label ID="lblCheckIns" runat="server" Text="0"></asp:Label>
                         </div>
-                        <div class="stat-label">Guests staying today</div>
+                        <div class="stat-label">Expected today</div>
                     </div>
                 </a>
 
-                <div class="stat-card bookings">
-                    <div class="stat-header">
-                        <span class="stat-title">Bookings</span>
-                        <div class="stat-icon">
-                            <i class="fas fa-calendar-check"></i>
+                <!-- Bookings Card - Clickable -->
+                <a href="BookingsList.aspx" class="card-link">
+                    <div class="stat-card bookings">
+                        <div class="stat-header">
+                            <span class="stat-title">Overall Guest Data</span>
+                            <div class="stat-icon">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
                         </div>
-                    </div>
-                    <div class="stat-value">
-                        <asp:Label ID="lblBookings" runat="server" Text="0"></asp:Label>
-                    </div>
-                    <div class="stat-label">Total bookings today</div>
-                </div>
-
-                <div class="stat-card checkins">
-                    <div class="stat-header">
-                        <span class="stat-title">Check-ins</span>
-                        <div class="stat-icon">
-                            <i class="fas fa-sign-in-alt"></i>
+                        <div class="stat-value">
+                            <asp:Label ID="lblBookings" runat="server" Text="0"></asp:Label>
                         </div>
+                        <div class="stat-label">Total bookings</div>
                     </div>
-                    <div class="stat-value">
-                        <asp:Label ID="lblCheckIns" runat="server" Text="0"></asp:Label>
-                    </div>
-                    <div class="stat-label">Expected today</div>
-                </div>
+                </a>
             </div>
 
             <!-- Second Row: Room Status -->

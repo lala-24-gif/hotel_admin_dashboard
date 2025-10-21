@@ -11,7 +11,7 @@ namespace HotelManagement
 {
 
 
-    public partial class Default
+    public partial class CheckInsList
     {
 
         /// <summary>
@@ -24,93 +24,75 @@ namespace HotelManagement
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// lblUsername コントロール。
+        /// pnlSuccess コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblUsername;
+        protected global::System.Web.UI.WebControls.Panel pnlSuccess;
 
         /// <summary>
-        /// lblCheckIns コントロール。
+        /// lblSuccess コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCheckIns;
+        protected global::System.Web.UI.WebControls.Label lblSuccess;
 
         /// <summary>
-        /// lblBookings コントロール。
+        /// pnlError コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblBookings;
+        protected global::System.Web.UI.WebControls.Panel pnlError;
 
         /// <summary>
-        /// lblAvailableRooms コントロール。
+        /// lblError コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblAvailableRooms;
+        protected global::System.Web.UI.WebControls.Label lblError;
 
         /// <summary>
-        /// lblOccupiedRooms コントロール。
+        /// lblTotalExpected コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblOccupiedRooms;
+        protected global::System.Web.UI.WebControls.Label lblTotalExpected;
 
         /// <summary>
-        /// lblReservedRooms コントロール。
+        /// lblAlreadyCheckedIn コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblReservedRooms;
+        protected global::System.Web.UI.WebControls.Label lblAlreadyCheckedIn;
 
         /// <summary>
-        /// btnViewSales コントロール。
+        /// lblPending コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnViewSales;
+        protected global::System.Web.UI.WebControls.Label lblPending;
 
         /// <summary>
-        /// lblMonthlyRevenue コントロール。
+        /// gvCheckIns コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMonthlyRevenue;
-
-        /// <summary>
-        /// lblTransactionCount コントロール。
-        /// </summary>
-        /// <remarks>
-        /// 自動生成されたフィールド。
-        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblTransactionCount;
-
-        /// <summary>
-        /// gvCurrentGuests コントロール。
-        /// </summary>
-        /// <remarks>
-        /// 自動生成されたフィールド。
-        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvCurrentGuests;
+        protected global::System.Web.UI.WebControls.GridView gvCheckIns;
     }
 }

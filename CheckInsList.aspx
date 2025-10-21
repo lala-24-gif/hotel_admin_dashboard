@@ -260,26 +260,6 @@
             box-shadow: 0 4px 12px rgba(245, 101, 101, 0.4);
         }
 
-        .btn-view {
-            background: #e2e8f0;
-            color: #4a5568;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin-right: 8px;
-        }
-
-        .btn-view:hover {
-            background: #cbd5e0;
-        }
-
         .empty-state {
             text-align: center;
             padding: 60px 20px;

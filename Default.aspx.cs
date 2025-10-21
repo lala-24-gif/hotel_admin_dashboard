@@ -46,25 +46,19 @@ namespace HotelManagement
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
-                            // Current Guests
+                            // Result Set 1: Today's Bookings
                             if (reader.Read())
-                            {
-                                lblCurrentGuests.Text = reader["CurrentGuests"].ToString();
-                            }
-
-                            // Today's Bookings
-                            if (reader.NextResult() && reader.Read())
                             {
                                 lblBookings.Text = reader["TodayBookings"].ToString();
                             }
 
-                            // Today's Check-ins
+                            // Result Set 2: Today's Check-ins
                             if (reader.NextResult() && reader.Read())
                             {
                                 lblCheckIns.Text = reader["TodayCheckIns"].ToString();
                             }
 
-                            // Room Statistics
+                            // Result Set 3: Room Statistics
                             if (reader.NextResult() && reader.Read())
                             {
                                 lblAvailableRooms.Text = reader["AvailableRooms"].ToString();
@@ -72,7 +66,7 @@ namespace HotelManagement
                                 lblReservedRooms.Text = reader["ReservedRooms"].ToString();
                             }
 
-                            // Monthly Sales
+                            // Result Set 4: Monthly Sales
                             if (reader.NextResult() && reader.Read())
                             {
                                 decimal revenue = Convert.ToDecimal(reader["MonthlyRevenue"]);

@@ -25,7 +25,7 @@ namespace HotelManagement
             {
                 con.Open();
 
-                // Get all current guests (Status = 'Confirmed' or 'CheckedIn' and CheckInDate <= Today and CheckOutDate >= Today)
+                // Get all current guests (checked in and staying today)
                 SqlCommand cmd = new SqlCommand(@"
                     SELECT 
                         b.BookingID,
@@ -44,8 +44,8 @@ namespace HotelManagement
                     INNER JOIN Guests g ON b.GuestID = g.GuestID
                     INNER JOIN Rooms r ON b.RoomID = r.RoomID
                     INNER JOIN RoomTypes rt ON r.RoomTypeID = rt.RoomTypeID
-                    WHERE b.CheckInDate <= CAST(GETDATE() AS DATE)
-                        AND b.CheckOutDate >= CAST(GETDATE() AS DATE)
+                    WHERE CAST(b.CheckInDate AS DATE) <= CAST(GETDATE() AS DATE)
+                        AND CAST(b.CheckOutDate AS DATE) >= CAST(GETDATE() AS DATE)
                         AND b.Status IN ('Confirmed', 'CheckedIn')
                     ORDER BY r.RoomNumber", con);
 
