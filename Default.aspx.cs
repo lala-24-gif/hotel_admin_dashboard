@@ -115,5 +115,27 @@ namespace HotelManagement
         {
             Response.Redirect("SalesReport.aspx");
         }
+
+        // NEW: Handler for navigating to Rooms page
+        protected void btnViewRooms_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Rooms.aspx");
+        }
+
+        // NEW: Handlers for navigating to Rooms page with status filter
+        protected void btnViewAvailableRooms_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Rooms.aspx?status=available");
+        }
+
+        protected void btnViewOccupiedRooms_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Rooms.aspx?status=occupied");
+        }
+
+        protected void btnViewReservedRooms_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Rooms.aspx?status=reserved");
+        }
     }
 }

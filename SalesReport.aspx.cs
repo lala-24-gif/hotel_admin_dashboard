@@ -53,11 +53,12 @@ namespace HotelManagement
         {
             string query = @"
                 SELECT 
-                    ISNULL(SUM(Amount), 0) AS TotalRevenue,
+                    ISNULL(SUM(TotalAmount), 0) AS TotalRevenue,
                     COUNT(*) AS TotalTransactions,
-                    ISNULL(AVG(Amount), 0) AS AvgTransaction
-                FROM Sales
-                WHERE YEAR(SaleDate) = @Year";
+                    ISNULL(AVG(TotalAmount), 0) AS AvgTransaction
+                FROM Bookings
+                WHERE YEAR(CheckOutDate) = @Year
+                    AND Status = 'CheckedOut'";
 
             using (SqlCommand cmd = new SqlCommand(query, con))
             {
@@ -88,11 +89,12 @@ namespace HotelManagement
         {
             string query = @"
                 SELECT 
-                    ISNULL(SUM(CASE WHEN YEAR(SaleDate) = @CurrentYear THEN Amount ELSE 0 END), 0) AS CurrentYearRevenue,
-                    ISNULL(SUM(CASE WHEN YEAR(SaleDate) = @LastYear THEN Amount ELSE 0 END), 0) AS LastYearRevenue,
-                    ISNULL(COUNT(CASE WHEN YEAR(SaleDate) = @CurrentYear THEN 1 END), 0) AS CurrentYearTransactions,
-                    ISNULL(COUNT(CASE WHEN YEAR(SaleDate) = @LastYear THEN 1 END), 0) AS LastYearTransactions
-                FROM Sales";
+                    ISNULL(SUM(CASE WHEN YEAR(CheckOutDate) = @CurrentYear THEN TotalAmount ELSE 0 END), 0) AS CurrentYearRevenue,
+                    ISNULL(SUM(CASE WHEN YEAR(CheckOutDate) = @LastYear THEN TotalAmount ELSE 0 END), 0) AS LastYearRevenue,
+                    ISNULL(COUNT(CASE WHEN YEAR(CheckOutDate) = @CurrentYear THEN 1 END), 0) AS CurrentYearTransactions,
+                    ISNULL(COUNT(CASE WHEN YEAR(CheckOutDate) = @LastYear THEN 1 END), 0) AS LastYearTransactions
+                FROM Bookings
+                WHERE Status = 'CheckedOut'";
 
             using (SqlCommand cmd = new SqlCommand(query, con))
             {
@@ -137,11 +139,12 @@ namespace HotelManagement
         {
             string query = @"
                 SELECT TOP 1 
-                    DATENAME(MONTH, SaleDate) AS BestMonth,
-                    SUM(Amount) AS MonthRevenue
-                FROM Sales
-                WHERE YEAR(SaleDate) = @Year
-                GROUP BY MONTH(SaleDate), DATENAME(MONTH, SaleDate)
+                    DATENAME(MONTH, CheckOutDate) AS BestMonth,
+                    SUM(TotalAmount) AS MonthRevenue
+                FROM Bookings
+                WHERE YEAR(CheckOutDate) = @Year
+                    AND Status = 'CheckedOut'
+                GROUP BY MONTH(CheckOutDate), DATENAME(MONTH, CheckOutDate)
                 ORDER BY MonthRevenue DESC";
 
             using (SqlCommand cmd = new SqlCommand(query, con))
@@ -153,6 +156,10 @@ namespace HotelManagement
                     if (reader.Read())
                     {
                         lblBestMonth.Text = reader["BestMonth"].ToString();
+                    }
+                    else
+                    {
+                        lblBestMonth.Text = "N/A";
                     }
                 }
             }
@@ -177,14 +184,14 @@ namespace HotelManagement
                 )
                 SELECT 
                     m.MonthName AS Month,
-                    ISNULL(SUM(s.Amount), 0) AS Revenue,
-                    ISNULL(COUNT(s.SaleID), 0) AS Transactions,
-                    ISNULL(AVG(s.Amount), 0) AS AverageTransaction,
+                    ISNULL(SUM(b.TotalAmount), 0) AS Revenue,
+                    ISNULL(COUNT(b.BookingID), 0) AS Transactions,
+                    ISNULL(AVG(b.TotalAmount), 0) AS AverageTransaction,
                     ISNULL(COUNT(DISTINCT b.BookingID), 0) AS Bookings
                 FROM Months m
-                LEFT JOIN Sales s ON MONTH(s.SaleDate) = m.MonthNum 
-                    AND YEAR(s.SaleDate) = @Year
-                LEFT JOIN Bookings b ON s.BookingID = b.BookingID
+                LEFT JOIN Bookings b ON MONTH(b.CheckOutDate) = m.MonthNum 
+                    AND YEAR(b.CheckOutDate) = @Year
+                    AND b.Status = 'CheckedOut'
                 GROUP BY m.MonthNum, m.MonthName
                 ORDER BY m.MonthNum";
 

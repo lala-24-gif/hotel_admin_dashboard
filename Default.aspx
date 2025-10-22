@@ -441,41 +441,38 @@
             </div>
 
             <!-- Second Row: Room Status -->
-            <div class="section-title">
-                <i class="fas fa-door-open"></i> Rooms
+    <div class="section-title">
+        <i class="fas fa-door-open"></i> Rooms
+    </div>
+    <div class="dashboard-row" style="cursor: pointer;" onclick="window.location.href='Rooms.aspx'">
+        <div class="room-card available">
+            <div class="room-icon">
+                <i class="fas fa-bed"></i>
             </div>
-            <div class="dashboard-row">
-                <div class="room-card available">
-                    <div class="room-icon">
-                        <i class="fas fa-bed"></i>
-                    </div>
-                    <div class="room-value">
-                        <asp:Label ID="lblAvailableRooms" runat="server" Text="0"></asp:Label>
-                    </div>
-                    <div class="room-label">Available</div>
-                </div>
-
-                <div class="room-card occupied">
-                    <div class="room-icon">
-                        <i class="fas fa-user-check"></i>
-                    </div>
-                    <div class="room-value">
-                        <asp:Label ID="lblOccupiedRooms" runat="server" Text="0"></asp:Label>
-                    </div>
-                    <div class="room-label">Occupied</div>
-                </div>
-
-                <div class="room-card reserved">
-                    <div class="room-icon">
-                        <i class="fas fa-bookmark"></i>
-                    </div>
-                    <div class="room-value">
-                        <asp:Label ID="lblReservedRooms" runat="server" Text="0"></asp:Label>
-                    </div>
-                    <div class="room-label">Reserved</div>
-                </div>
+            <div class="room-value">
+                <asp:Label ID="lblAvailableRooms" runat="server" Text="0"></asp:Label>
             </div>
-
+            <div class="room-label">Available</div>
+        </div>
+        <div class="room-card occupied">
+            <div class="room-icon">
+                <i class="fas fa-user-check"></i>
+            </div>
+            <div class="room-value">
+                <asp:Label ID="lblOccupiedRooms" runat="server" Text="0"></asp:Label>
+            </div>
+            <div class="room-label">Occupied</div>
+        </div>
+        <div class="room-card reserved">
+            <div class="room-icon">
+                <i class="fas fa-bookmark"></i>
+            </div>
+            <div class="room-value">
+                <asp:Label ID="lblReservedRooms" runat="server" Text="0"></asp:Label>
+            </div>
+            <div class="room-label">Reserved</div>
+        </div>
+    </div>
             <!-- Third Row: Sales & Revenue -->
             <div class="section-title">
                 <i class="fas fa-chart-bar"></i> Financial Overview

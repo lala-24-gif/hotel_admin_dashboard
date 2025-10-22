@@ -572,7 +572,7 @@
                 <div class="form-actions">
                     <asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="btn btn-secondary" 
                         OnClick="btnCancel_Click" CausesValidation="false" />
-                    <asp:Button ID="btnCreateBooking" runat="server" Text="Complete Check-In" CssClass="btn btn-primary" 
+                    <asp:Button ID="btnCreateBooking" runat="server" Text="Complete Booking" CssClass="btn btn-primary" 
                         OnClick="btnCreateBooking_Click" />
                 </div>
             </asp:Panel>

@@ -53,7 +53,10 @@ namespace HotelManagement
             {
                 using (SqlConnection con = new SqlConnection(connectionString))
                 {
-                    string query = "SELECT GuestID, FirstName + ' ' + LastName AS GuestName FROM Guests ORDER BY FirstName";
+                    string query = @"SELECT GuestID, FirstName + ' ' + LastName AS GuestName 
+                           FROM Guests 
+                           WHERE IsActive = 1 OR IsActive IS NULL
+                           ORDER BY FirstName";
 
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {

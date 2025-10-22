@@ -57,7 +57,11 @@ namespace HotelManagement
             try
             {
                 con.Open();
-                SqlCommand cmd = new SqlCommand("SELECT GuestID, FirstName + ' ' + LastName AS FullName FROM Guests ORDER BY FirstName, LastName", con);
+                SqlCommand cmd = new SqlCommand(@"
+            SELECT GuestID, FirstName + ' ' + LastName AS FullName 
+            FROM Guests 
+            WHERE IsActive = 1 OR IsActive IS NULL
+            ORDER BY FirstName, LastName", con);
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
@@ -257,7 +261,7 @@ namespace HotelManagement
                 cmd.ExecuteNonQuery();
                 con.Close();
 
-                ShowSuccess("Check-in completed successfully! Total amount: $" + totalAmount.ToString("0.00"));
+                ShowSuccess("Booking completed successfully! Total amount: $" + totalAmount.ToString("0.00"));
                 ClearForm();
                 LoadRooms();
                 LoadGuests();
