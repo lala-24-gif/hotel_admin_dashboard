@@ -83,6 +83,75 @@
             color: #667eea;
         }
 
+        /* OVERDUE WARNING BANNER */
+        .overdue-alert {
+            background: linear-gradient(135deg, #fc5c7d 0%, #6a82fb 100%);
+            border-radius: 12px;
+            padding: 20px 30px;
+            color: white;
+            box-shadow: 0 4px 15px rgba(252, 92, 125, 0.3);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .overdue-alert:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(252, 92, 125, 0.4);
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 4px 15px rgba(252, 92, 125, 0.3); }
+            50% { box-shadow: 0 4px 25px rgba(252, 92, 125, 0.5); }
+        }
+
+        .overdue-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .overdue-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+        }
+
+        .overdue-text h3 {
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+
+        .overdue-text p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .overdue-action {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .overdue-badge {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
         /* Row Sections */
         .dashboard-row {
             display: grid;
@@ -237,11 +306,7 @@
         .sales-label {
             font-size: 14px;
             opacity: 0.9;
-        }
-
-        .sales-icon-large {
-            font-size: 80px;
-            opacity: 0.2;
+            margin-bottom: 15px;
         }
 
         .view-details {
@@ -249,18 +314,18 @@
             align-items: center;
             gap: 8px;
             background: rgba(255,255,255,0.2);
-            padding: 10px 20px;
+            padding: 8px 16px;
             border-radius: 8px;
-            margin-top: 15px;
             font-size: 14px;
-            transition: background 0.3s;
+            font-weight: 600;
         }
 
-        .view-details:hover {
-            background: rgba(255,255,255,0.3);
+        .sales-icon-large {
+            font-size: 80px;
+            opacity: 0.3;
         }
 
-        /* Table Styles */
+        /* Data Table */
         .data-table {
             background: white;
             border-radius: 12px;
@@ -275,20 +340,17 @@
         }
 
         .data-table th {
-            background: #f7fafc;
-            padding: 12px;
             text-align: left;
-            font-weight: 600;
-            color: #4a5568;
+            padding: 12px;
             border-bottom: 2px solid #e2e8f0;
+            color: #4a5568;
+            font-weight: 600;
             font-size: 14px;
         }
 
         .data-table td {
             padding: 12px;
             border-bottom: 1px solid #e2e8f0;
-            color: #2d3748;
-            font-size: 14px;
         }
 
         .data-table tr:hover {
@@ -365,6 +427,12 @@
             .quick-actions {
                 flex-direction: column;
             }
+
+            .overdue-alert {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
         }
     </style>
 </head>
@@ -386,6 +454,25 @@
         <!-- Dashboard Container -->
         <div class="dashboard-container">
             
+            <!-- OVERDUE CHECKOUT WARNING (NEW) -->
+            <asp:Panel ID="pnlOverdueWarning" runat="server" CssClass="overdue-alert" Visible="false" onclick="window.location.href='OverdueCheckouts.aspx'">
+                <div class="overdue-content">
+                    <div class="overdue-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="overdue-text">
+                        <h3>⚠️ Overdue Checkouts Detected!</h3>
+                        <p>Some guests have passed the 12:00 PM checkout time</p>
+                    </div>
+                </div>
+                <div class="overdue-action">
+                    <span class="overdue-badge">
+                        <asp:Label ID="lblOverdueCount" runat="server" Text="0"></asp:Label>
+                    </span>
+                    <span>View Details →</span>
+                </div>
+            </asp:Panel>
+
             <!-- Quick Actions -->
             <div class="quick-actions">
                 <a href="Booking.aspx" class="action-btn" style="background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);">
@@ -512,7 +599,7 @@
                         <asp:BoundField DataField="RoomNumber" HeaderText="Room" />
                         <asp:BoundField DataField="RoomType" HeaderText="Room Type" />
                         <asp:BoundField DataField="CheckInDate" HeaderText="Check In" DataFormatString="{0:MMM dd, yyyy}" />
-                        <asp:BoundField DataField="CheckOutDate" HeaderText="Check Out" DataFormatString="{0:MMM dd, yyyy}" />
+                        <asp:BoundField DataField="CheckOutDate" HeaderText="Check Out" DataFormatString="{0:MMM dd, yyyy hh:mm tt}" />
                         <asp:BoundField DataField="NightsStay" HeaderText="Nights" />
                     </Columns>
                 </asp:GridView>

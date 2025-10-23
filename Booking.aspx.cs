@@ -236,8 +236,14 @@ namespace HotelManagement
 
                 // Now create the booking
                 int roomId = int.Parse(ddlRoom.SelectedValue);
+
+                // UPDATED: Parse dates and set checkout time to 12:00 PM
                 DateTime checkIn = DateTime.Parse(txtCheckIn.Text);
                 DateTime checkOut = DateTime.Parse(txtCheckOut.Text);
+
+                // Set checkout time to 12:00 PM (noon)
+                checkOut = checkOut.Date.AddHours(12);
+
                 int numberOfGuests = string.IsNullOrEmpty(txtNumberOfGuests.Text) ? 1 : int.Parse(txtNumberOfGuests.Text);
                 string specialRequests = txtSpecialRequests.Text.Trim();
                 decimal totalAmount = decimal.Parse(lblTotalAmount.Text);
@@ -253,7 +259,7 @@ namespace HotelManagement
                 cmd.Parameters.AddWithValue("@GuestID", guestId);
                 cmd.Parameters.AddWithValue("@RoomID", roomId);
                 cmd.Parameters.AddWithValue("@CheckInDate", checkIn);
-                cmd.Parameters.AddWithValue("@CheckOutDate", checkOut);
+                cmd.Parameters.AddWithValue("@CheckOutDate", checkOut); // Now includes 12:00 PM time
                 cmd.Parameters.AddWithValue("@TotalAmount", totalAmount);
                 cmd.Parameters.AddWithValue("@NumberOfGuests", numberOfGuests);
                 cmd.Parameters.AddWithValue("@SpecialRequests", string.IsNullOrEmpty(specialRequests) ? (object)DBNull.Value : specialRequests);
@@ -261,7 +267,7 @@ namespace HotelManagement
                 cmd.ExecuteNonQuery();
                 con.Close();
 
-                ShowSuccess("Booking completed successfully! Total amount: $" + totalAmount.ToString("0.00"));
+                ShowSuccess("Booking completed successfully! Checkout time: " + checkOut.ToString("yyyy-MM-dd hh:mm tt") + ". Total amount: ¥" + totalAmount.ToString("0.00"));
                 ClearForm();
                 LoadRooms();
                 LoadGuests();

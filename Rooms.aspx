@@ -410,21 +410,7 @@
                 </asp:LinkButton>
             </div>
 
-            <!-- Legend -->
-            <div class="legend">
-                <div class="legend-item">
-                    <div class="legend-dot available"></div>
-                    <span>Available</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-dot occupied"></div>
-                    <span>Occupied</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-dot reserved"></div>
-                    <span>Reserved</span>
-                </div>
-            </div>
+       
 
             <!-- Statistics -->
             <div class="stats-container">
@@ -513,7 +499,7 @@
         }
 
         function viewBooking(roomId) {
-            window.location.href = 'BookingList.aspx?roomId=' + roomId;
+            window.location.href = 'BookingsList.aspx?roomId=' + roomId;
         }
 
         // Highlight status cards based on URL filter

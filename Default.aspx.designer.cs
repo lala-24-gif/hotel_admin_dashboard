@@ -33,6 +33,24 @@ namespace HotelManagement
         protected global::System.Web.UI.WebControls.Label lblUsername;
 
         /// <summary>
+        /// pnlOverdueWarning コントロール。
+        /// </summary>
+        /// <remarks>
+        /// 自動生成されたフィールド。
+        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlOverdueWarning;
+
+        /// <summary>
+        /// lblOverdueCount コントロール。
+        /// </summary>
+        /// <remarks>
+        /// 自動生成されたフィールド。
+        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblOverdueCount;
+
+        /// <summary>
         /// lblCheckIns コントロール。
         /// </summary>
         /// <remarks>

@@ -129,6 +129,7 @@
     <Content Include="Global.asax" />
     <Content Include="GuestList.aspx" />
     <Content Include="Login.aspx" />
+    <Content Include="OverdueCheckouts.aspx" />
     <Content Include="Profile.aspx" />
     <Content Include="Register.aspx" />
     <Content Include="Rooms.aspx" />
@@ -276,6 +277,13 @@
     </Compile>
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="OverdueCheckouts.aspx.cs">
+      <DependentUpon>OverdueCheckouts.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OverdueCheckouts.aspx.designer.cs">
+      <DependentUpon>OverdueCheckouts.aspx</DependentUpon>
     </Compile>
     <Compile Include="Profile.aspx.cs">
       <DependentUpon>Profile.aspx</DependentUpon>

@@ -28,6 +28,7 @@ namespace HotelManagement
                 }
 
                 LoadDashboardData();
+                CheckOverdueCheckouts(); // NEW: Check for overdue checkouts
             }
         }
 
@@ -108,6 +109,50 @@ namespace HotelManagement
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine("Error loading current guests: " + ex.Message);
+            }
+        }
+
+        // NEW: Check for overdue checkouts (past 12:00 PM today)
+        private void CheckOverdueCheckouts()
+        {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    con.Open();
+
+                    // Get count of bookings where:
+                    // 1. Status is 'CheckedIn' (currently occupying room)
+                    // 2. CheckOutDate is today or earlier
+                    // 3. Current time is past the checkout time
+                    string query = @"
+                        SELECT COUNT(*) 
+                        FROM Bookings 
+                        WHERE Status = 'CheckedIn' 
+                        AND CheckOutDate <= GETDATE()";
+
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        int overdueCount = Convert.ToInt32(cmd.ExecuteScalar());
+
+                        if (overdueCount > 0)
+                        {
+                            pnlOverdueWarning.Visible = true;
+                            lblOverdueCount.Text = overdueCount.ToString();
+                        }
+                        else
+                        {
+                            pnlOverdueWarning.Visible = false;
+                        }
+                    }
+
+                    con.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Error checking overdue checkouts: " + ex.Message);
+                pnlOverdueWarning.Visible = false;
             }
         }
 

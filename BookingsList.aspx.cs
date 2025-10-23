@@ -180,7 +180,7 @@ namespace HotelManagement
             {
                 CheckOutGuest(bookingId);
             }
-            else if (e.CommandName == "Cancel")
+            else if (e.CommandName == "CancelBooking")  // Changed from "Cancel" to "CancelBooking"
             {
                 CancelBooking(bookingId);
             }

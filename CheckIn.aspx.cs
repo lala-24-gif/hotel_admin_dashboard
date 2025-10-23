@@ -54,9 +54,9 @@ namespace HotelManagement
                 using (SqlConnection con = new SqlConnection(connectionString))
                 {
                     string query = @"SELECT GuestID, FirstName + ' ' + LastName AS GuestName 
-                           FROM Guests 
-                           WHERE IsActive = 1 OR IsActive IS NULL
-                           ORDER BY FirstName";
+                                   FROM Guests 
+                                   WHERE IsActive = 1 OR IsActive IS NULL
+                                   ORDER BY FirstName";
 
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
@@ -136,9 +136,9 @@ namespace HotelManagement
 
                     lblTotalAmount.Text = totalAmount.ToString("N0");
 
-                    // Calculate checkout date
-                    DateTime checkOut = DateTime.Today.AddDays(nights);
-                    txtCheckOut.Text = checkOut.ToString("yyyy-MM-dd");
+                    // Calculate checkout date with 12:00 PM time
+                    DateTime checkOut = DateTime.Today.AddDays(nights).AddHours(12);
+                    txtCheckOut.Text = checkOut.ToString("yyyy-MM-dd hh:mm tt");
                 }
             }
             catch (Exception ex)
@@ -199,9 +199,12 @@ namespace HotelManagement
 
                     // Create booking and check in
                     int roomID = Convert.ToInt32(ddlRoom.SelectedValue);
-                    DateTime checkIn = DateTime.Today; // Use Today instead of Now for consistency
+                    DateTime checkIn = DateTime.Today;
                     int nights = Convert.ToInt32(txtNights.Text);
-                    DateTime checkOut = checkIn.AddDays(nights);
+
+                    // UPDATED: Set checkout to 12:00 PM
+                    DateTime checkOut = checkIn.AddDays(nights).AddHours(12);
+
                     int numberOfGuests = Convert.ToInt32(txtNumberOfGuests.Text);
                     decimal totalAmount = decimal.Parse(lblTotalAmount.Text);
 
@@ -219,7 +222,7 @@ namespace HotelManagement
                             cmd.Parameters.AddWithValue("@GuestID", guestID);
                             cmd.Parameters.AddWithValue("@RoomID", roomID);
                             cmd.Parameters.AddWithValue("@CheckIn", checkIn);
-                            cmd.Parameters.AddWithValue("@CheckOut", checkOut);
+                            cmd.Parameters.AddWithValue("@CheckOut", checkOut); // Now includes 12:00 PM
                             cmd.Parameters.AddWithValue("@Amount", totalAmount);
                             cmd.Parameters.AddWithValue("@NumGuests", numberOfGuests);
 
@@ -240,7 +243,7 @@ namespace HotelManagement
                             $"{txtFirstName.Text} {txtLastName.Text}" :
                             ddlGuest.SelectedItem.Text;
 
-                        ShowSuccess($"Guest {guestName} has been checked in successfully! Room is now occupied.");
+                        ShowSuccess($"Guest {guestName} has been checked in successfully! Checkout: {checkOut.ToString("yyyy-MM-dd hh:mm tt")}. Room is now occupied.");
                         ClearForm();
                         LoadAvailableRooms();
                     }

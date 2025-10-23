@@ -449,7 +449,7 @@
                                         OnClientClick="return confirm('Check out this guest?');" />
                                     <asp:Button ID="btnCancel" runat="server" 
                                         Text="Cancel" 
-                                        CommandName="Cancel" 
+                                        CommandName="CancelBooking" 
                                         CommandArgument='<%# Eval("BookingID") %>'
                                         CssClass="btn-action btn-cancel"
                                         Visible='<%# Eval("Status").ToString() != "CheckedOut" && Eval("Status").ToString() != "Cancelled" %>'
