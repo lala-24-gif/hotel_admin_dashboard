@@ -6,33 +6,39 @@ using System.Web.UI.WebControls;
 
 namespace HotelManagement
 {
+    //Code-behind for BookingsList.aspx(manages hotel bookings)
     public partial class BookingsList : System.Web.UI.Page
     {
+        // Database connection string
         SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["HotelDB"].ConnectionString);
 
+        //
         protected void Page_Load(object sender, EventArgs e)
         {
+            // Load bookings and statistics on initial page load(not first time loading)
             if (!IsPostBack)
             {
                 LoadBookings();
                 LoadStatistics();
             }
         }
-
+        // Apply filters and reload data
         protected void btnApplyFilter_Click(object sender, EventArgs e)
         {
-            LoadBookings();
-            LoadStatistics();
+            LoadBookings(); // Reload bookings based on selected filters
+            LoadStatistics();// Reload statistics based on selected filters
         }
 
+        // Load bookings into GridView with applied filters
         private void LoadBookings()
         {
             try
             {
+                // Open database connection
                 con.Open();
 
-                string statusFilter = ddlStatusFilter.SelectedValue;
-                string dateFilter = ddlDateFilter.SelectedValue;
+                string statusFilter = ddlStatusFilter.SelectedValue; // Get selected status filter
+                string dateFilter = ddlDateFilter.SelectedValue; // Get selected date filter
 
                 string query = @"
                     SELECT 
@@ -47,12 +53,12 @@ namespace HotelManagement
                     FROM Bookings b
                     INNER JOIN Guests g ON b.GuestID = g.GuestID
                     INNER JOIN Rooms r ON b.RoomID = r.RoomID
-                    WHERE 1=1";
+                    WHERE 1=1"; //doesnt filter but makes it easier to add more conditions dynamically
 
                 // Apply status filter
                 if (statusFilter != "All")
                 {
-                    query += " AND b.Status = @Status";
+                    query += " AND b.Status = @Status"; //@Status is parameter placeholder(prevents SQL injection)
                 }
 
                 // Apply date filter
@@ -62,7 +68,9 @@ namespace HotelManagement
                         query += " AND CAST(b.CheckInDate AS DATE) = CAST(GETDATE() AS DATE)";
                         break;
                     case "Week":
-                        query += " AND b.CheckInDate >= CAST(GETDATE() AS DATE) AND b.CheckInDate < DATEADD(DAY, 7, CAST(GETDATE() AS DATE))";
+                        // Get bookings for the current calendar week (Monday to Sunday)
+                        query += @" AND b.CheckInDate >= DATEADD(DAY, 1 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS DATE))
+                                 AND b.CheckInDate < DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS DATE))";
                         break;
                     case "Month":
                         query += " AND MONTH(b.CheckInDate) = MONTH(GETDATE()) AND YEAR(b.CheckInDate) = YEAR(GETDATE())";
@@ -117,7 +125,7 @@ namespace HotelManagement
                         SUM(CASE WHEN Status = 'CheckedIn' THEN 1 ELSE 0 END) AS CheckedIn,
                         ISNULL(SUM(TotalAmount), 0) AS TotalRevenue
                     FROM Bookings
-                    WHERE 1=1";
+                    WHERE 1=1"; //can add conditions easily
 
                 // Apply same filters as main grid
                 if (statusFilter != "All")
