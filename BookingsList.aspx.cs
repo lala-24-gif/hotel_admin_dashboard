@@ -123,7 +123,8 @@ namespace HotelManagement
                         COUNT(*) AS TotalBookings,
                         SUM(CASE WHEN Status = 'Confirmed' THEN 1 ELSE 0 END) AS Confirmed,
                         SUM(CASE WHEN Status = 'CheckedIn' THEN 1 ELSE 0 END) AS CheckedIn,
-                        ISNULL(SUM(TotalAmount), 0) AS TotalRevenue
+                        SUM(CASE WHEN Status = 'CheckedOut' THEN 1 ELSE 0 END) AS CheckedOut
+                       
                     FROM Bookings
                     WHERE 1=1"; //can add conditions easily
 
@@ -163,8 +164,8 @@ namespace HotelManagement
                     lblConfirmed.Text = reader["Confirmed"].ToString();
                     lblCheckedIn.Text = reader["CheckedIn"].ToString();
 
-                    decimal revenue = Convert.ToDecimal(reader["TotalRevenue"]);
-                    lblTotalRevenue.Text = revenue.ToString("N0");
+                    //decimal revenue = Convert.ToDecimal(reader["TotalRevenue"]);
+                    //lblTotalRevenue.Text = revenue.ToString("N0");
                 }
                 reader.Close();
                 con.Close();

@@ -367,7 +367,8 @@
                     <asp:DropDownList ID="ddlStatusFilter" runat="server" CssClass="filter-select">
                         <asp:ListItem Value="All" Selected="True">All Guests</asp:ListItem>
                         <asp:ListItem Value="Confirmed">Confirmed</asp:ListItem>
-                        <asp:ListItem Value="CheckedIn">Checked In</asp:ListItem>
+                          <asp:ListItem Value="CheckedIn">Checked In</asp:ListItem>
+                        <asp:ListItem Value="CheckedOut">Checked Out</asp:ListItem>
                         <asp:ListItem Value="Cancelled">Cancelled</asp:ListItem>
                     </asp:DropDownList>
                 </div>
@@ -405,12 +406,7 @@
                         <asp:Label ID="lblCheckedIn" runat="server" Text="0"></asp:Label>
                     </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-label">Total Revenue</div>
-                    <div class="stat-value">
-                        ¥<asp:Label ID="lblTotalRevenue" runat="server" Text="0"></asp:Label>
-                    </div>
-                </div>
+         
             </div>
 
             <div class="bookings-grid">

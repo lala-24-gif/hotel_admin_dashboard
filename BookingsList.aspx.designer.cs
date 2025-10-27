@@ -114,15 +114,6 @@ namespace HotelManagement
         protected global::System.Web.UI.WebControls.Label lblCheckedIn;
 
         /// <summary>
-        /// lblTotalRevenue コントロール。
-        /// </summary>
-        /// <remarks>
-        /// 自動生成されたフィールド。
-        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblTotalRevenue;
-
-        /// <summary>
         /// gvBookings コントロール。
         /// </summary>
         /// <remarks>
