@@ -12,7 +12,7 @@ namespace HotelManagement
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Check if user is logged in
+            // ユーザーがログインしているかチェック
             if (Session["AdminID"] == null)
             {
                 Response.Redirect("Login.aspx");
@@ -25,6 +25,7 @@ namespace HotelManagement
             }
         }
 
+        // ユーザープロフィールを読み込む
         private void LoadUserProfile()
         {
             try
@@ -50,19 +51,22 @@ namespace HotelManagement
                                 lblFullName.Text = reader["FullName"].ToString();
                                 lblUsername.Text = reader["Username"].ToString();
                                 lblEmail.Text = reader["Email"].ToString();
-                                lblRole.Text = reader["Role"].ToString();
+
+                                // ロールを日本語に変換
+                                string role = reader["Role"].ToString();
+                                lblRole.Text = ConvertRoleToJapanese(role);
 
                                 DateTime createdDate = Convert.ToDateTime(reader["CreatedDate"]);
-                                lblCreatedDate.Text = createdDate.ToString("MMMM dd, yyyy");
+                                lblCreatedDate.Text = createdDate.ToString("yyyy年MM月dd日");
 
                                 if (reader["LastLogin"] != DBNull.Value)
                                 {
                                     DateTime lastLogin = Convert.ToDateTime(reader["LastLogin"]);
-                                    lblLastLogin.Text = lastLogin.ToString("MMMM dd, yyyy hh:mm tt");
+                                    lblLastLogin.Text = lastLogin.ToString("yyyy年MM月dd日 HH:mm");
                                 }
                                 else
                                 {
-                                    lblLastLogin.Text = "Never";
+                                    lblLastLogin.Text = "なし";
                                 }
                             }
                         }
@@ -71,21 +75,23 @@ namespace HotelManagement
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine("Error loading profile: " + ex.Message);
-                ShowError("Failed to load profile information.");
+                System.Diagnostics.Debug.WriteLine("プロフィールの読み込みエラー: " + ex.Message);
+                ShowError("プロフィール情報の読み込みに失敗しました。");
             }
         }
 
+        // ログアウトボタンクリック
         protected void btnLogout_Click(object sender, EventArgs e)
         {
-            // Clear all session data
+            // すべてのセッションデータをクリア
             Session.Clear();
             Session.Abandon();
 
-            // Redirect to login page
+            // ログインページにリダイレクト
             Response.Redirect("Login.aspx");
         }
 
+        // アカウント削除ボタンクリック
         protected void btnDeleteAccount_Click(object sender, EventArgs e)
         {
             try
@@ -96,12 +102,12 @@ namespace HotelManagement
                 {
                     con.Open();
 
-                    // Start transaction to ensure all deletions happen together
+                    // すべての削除が一緒に行われるようにトランザクションを開始
                     using (SqlTransaction transaction = con.BeginTransaction())
                     {
                         try
                         {
-                            // Delete user's sales records (if any)
+                            // ユーザーの売上記録を削除（ある場合）
                             string deleteSalesQuery = "DELETE FROM Sales WHERE CreatedBy = @AdminID";
                             using (SqlCommand cmd = new SqlCommand(deleteSalesQuery, con, transaction))
                             {
@@ -109,7 +115,7 @@ namespace HotelManagement
                                 cmd.ExecuteNonQuery();
                             }
 
-                            // Delete user's booking records (if any)
+                            // ユーザーの予約記録を削除（ある場合）
                             string deleteBookingsQuery = "DELETE FROM Bookings WHERE CreatedBy = @AdminID";
                             using (SqlCommand cmd = new SqlCommand(deleteBookingsQuery, con, transaction))
                             {
@@ -117,7 +123,7 @@ namespace HotelManagement
                                 cmd.ExecuteNonQuery();
                             }
 
-                            // Delete the user account
+                            // ユーザーアカウントを削除
                             string deleteUserQuery = "DELETE FROM AdminUser WHERE AdminID = @AdminID";
                             using (SqlCommand cmd = new SqlCommand(deleteUserQuery, con, transaction))
                             {
@@ -126,20 +132,20 @@ namespace HotelManagement
 
                                 if (rowsAffected > 0)
                                 {
-                                    // Commit the transaction
+                                    // トランザクションをコミット
                                     transaction.Commit();
 
-                                    // Clear session
+                                    // セッションをクリア
                                     Session.Clear();
                                     Session.Abandon();
 
-                                    // Redirect to login with success message
+                                    // 成功メッセージと共にログインにリダイレクト
                                     Response.Redirect("Login.aspx?deleted=1");
                                 }
                                 else
                                 {
                                     transaction.Rollback();
-                                    ShowError("Failed to delete account. Please try again.");
+                                    ShowError("アカウントの削除に失敗しました。もう一度お試しください。");
                                 }
                             }
                         }
@@ -153,11 +159,31 @@ namespace HotelManagement
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine("Error deleting account: " + ex.Message);
-                ShowError("An error occurred while deleting your account. Please try again.");
+                System.Diagnostics.Debug.WriteLine("アカウント削除エラー: " + ex.Message);
+                ShowError("アカウントの削除中にエラーが発生しました。もう一度お試しください。");
             }
         }
 
+        // ロールを日本語に変換するヘルパーメソッド
+        private string ConvertRoleToJapanese(string role)
+        {
+            switch (role?.ToLower())
+            {
+                case "administrator":
+                case "admin":
+                    return "管理者";
+                case "manager":
+                    return "マネージャー";
+                case "receptionist":
+                    return "受付係";
+                case "staff":
+                    return "スタッフ";
+                default:
+                    return role;
+            }
+        }
+
+        // エラーメッセージを表示
         private void ShowError(string message)
         {
             pnlError.Visible = true;
@@ -165,6 +191,7 @@ namespace HotelManagement
             lblError.Text = message;
         }
 
+        // 成功メッセージを表示
         private void ShowSuccess(string message)
         {
             pnlSuccess.Visible = true;

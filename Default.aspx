@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Hotel Management Dashboard</title>
+    <title>ホテル管理ダッシュボード</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <style>
         * {
@@ -235,54 +235,70 @@
             transform: translateY(-5px);
         }
 
-        .room-card.available { border-top: 4px solid #48bb78; }
-        .room-card.occupied { border-top: 4px solid #f56565; }
-        .room-card.reserved { border-top: 4px solid #ed8936; }
+        .room-card.available {
+            border-top: 4px solid #48bb78;
+        }
+
+        .room-card.occupied {
+            border-top: 4px solid #f56565;
+        }
+
+        .room-card.reserved {
+            border-top: 4px solid #ed8936;
+        }
 
         .room-icon {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
+            width: 60px;
+            height: 60px;
             margin: 0 auto 15px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 32px;
+            font-size: 28px;
             color: white;
         }
 
-        .room-card.available .room-icon { background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); }
-        .room-card.occupied .room-icon { background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%); }
-        .room-card.reserved .room-icon { background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%); }
+        .room-card.available .room-icon {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+        }
+
+        .room-card.occupied .room-icon {
+            background: linear-gradient(135deg, #f56565 0%, #c53030 100%);
+        }
+
+        .room-card.reserved .room-icon {
+            background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+        }
 
         .room-value {
-            font-size: 42px;
+            font-size: 36px;
             font-weight: 700;
             color: #2d3748;
             margin-bottom: 5px;
         }
 
         .room-label {
-            font-size: 16px;
+            font-size: 14px;
             color: #718096;
-            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         /* Sales Card */
         .sales-card {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 12px;
-            padding: 35px;
-            color: white;
-            box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3);
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
             cursor: pointer;
-            transition: transform 0.3s;
-            grid-column: 1 / -1;
+            color: white;
         }
 
         .sales-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(245, 87, 108, 0.4);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
         }
 
         .sales-content {
@@ -293,36 +309,33 @@
 
         .sales-info h3 {
             font-size: 18px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             opacity: 0.95;
         }
 
         .sales-amount {
-            font-size: 48px;
+            font-size: 42px;
             font-weight: 700;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
         }
 
         .sales-label {
             font-size: 14px;
             opacity: 0.9;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .view-details {
-            display: inline-flex;
+            display: flex;
             align-items: center;
-            gap: 8px;
-            background: rgba(255,255,255,0.2);
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 14px;
+            gap: 10px;
+            font-size: 16px;
             font-weight: 600;
         }
 
         .sales-icon-large {
-            font-size: 80px;
-            opacity: 0.3;
+            font-size: 120px;
+            opacity: 0.15;
         }
 
         /* Data Table */
@@ -334,44 +347,37 @@
             overflow-x: auto;
         }
 
-        .data-table table {
+        .table {
             width: 100%;
             border-collapse: collapse;
         }
 
-        .data-table th {
-            text-align: left;
-            padding: 12px;
-            border-bottom: 2px solid #e2e8f0;
-            color: #4a5568;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .data-table td {
-            padding: 12px;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .data-table tr:hover {
+        .table thead {
             background: #f7fafc;
         }
 
-        .status-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 500;
+        .table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #4a5568;
+            border-bottom: 2px solid #e2e8f0;
         }
 
-        .status-badge.active { background: #c6f6d5; color: #22543d; }
-        .status-badge.confirmed { background: #bee3f8; color: #2c5282; }
-        .status-badge.checkedin { background: #fbd38d; color: #744210; }
+        .table td {
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #2d3748;
+        }
+
+        .table tr:hover {
+            background: #f7fafc;
+        }
 
         /* Quick Actions */
         .quick-actions {
             display: flex;
+            flex-wrap: wrap;
             gap: 15px;
             margin-bottom: 30px;
         }
@@ -441,10 +447,10 @@
         <!-- Header -->
         <div class="header">
             <div class="header-content">
-                <h1><i class="fas fa-hotel"></i> Hotel Management Dashboard</h1>
+                <h1><i class="fas fa-hotel"></i> ホテル管理ダッシュボード</h1>
                 <div class="user-info">
                     <a href="Profile.aspx">
-                        <span><asp:Label ID="lblUsername" runat="server" Text="Admin User"></asp:Label></span>
+                        <span><asp:Label ID="lblUsername" runat="server" Text="管理者"></asp:Label></span>
                         <i class="fas fa-user-circle"></i>
                     </a>
                 </div>
@@ -454,22 +460,22 @@
         <!-- Dashboard Container -->
         <div class="dashboard-container">
             
-            <!-- OVERDUE CHECKOUT WARNING (NEW) -->
+            <!-- OVERDUE CHECKOUT WARNING -->
             <asp:Panel ID="pnlOverdueWarning" runat="server" CssClass="overdue-alert" Visible="false" onclick="window.location.href='OverdueCheckouts.aspx'">
                 <div class="overdue-content">
                     <div class="overdue-icon">
                         <i class="fas fa-exclamation-triangle"></i>
                     </div>
                     <div class="overdue-text">
-                        <h3>⚠️ Overdue Checkouts Detected!</h3>
-                        <p>Some guests have passed the 12:00 PM checkout time</p>
+                        <h3>⚠️ 遅延チェックアウト検出！</h3>
+                        <p>一部のゲストが12時のチェックアウト時間を過ぎています</p>
                     </div>
                 </div>
                 <div class="overdue-action">
                     <span class="overdue-badge">
                         <asp:Label ID="lblOverdueCount" runat="server" Text="0"></asp:Label>
                     </span>
-                    <span>View Details →</span>
+                    <span>詳細を表示 →</span>
                 </div>
             </asp:Panel>
 
@@ -477,28 +483,28 @@
             <div class="quick-actions">
                 <a href="Booking.aspx" class="action-btn" style="background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);">
                     <i class="fas fa-walking"></i>
-                    <span>Walk-in Check-In</span>
+                    <span>ウォークインチェックイン</span>
                 </a>
                 <a href="Booking.aspx" class="action-btn">
                     <i class="fas fa-calendar-check"></i>
-                    <span>Create Booking</span>
+                    <span>予約作成</span>
                 </a>
                 <a href="GuestList.aspx" class="action-btn" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
                     <i class="fas fa-address-book"></i>
-                    <span>View All Guests</span>
+                    <span>全ゲストを表示</span>
                 </a>
             </div>
             
             <!-- First Row: Check-ins and Bookings -->
             <div class="section-title">
-                <i class="fas fa-chart-line"></i> Overview
+                <i class="fas fa-chart-line"></i> 概要
             </div>
             <div class="dashboard-row">
                 <!-- Check-ins Card - Clickable -->
                 <a href="CheckInsList.aspx" class="card-link">
                     <div class="stat-card checkins">
                         <div class="stat-header">
-                            <span class="stat-title">Check-ins</span>
+                            <span class="stat-title">チェックイン</span>
                             <div class="stat-icon">
                                 <i class="fas fa-sign-in-alt"></i>
                             </div>
@@ -506,7 +512,7 @@
                         <div class="stat-value">
                             <asp:Label ID="lblCheckIns" runat="server" Text="0"></asp:Label>
                         </div>
-                        <div class="stat-label">Expected today</div>
+                        <div class="stat-label">本日予定</div>
                     </div>
                 </a>
 
@@ -514,7 +520,7 @@
                 <a href="BookingsList.aspx" class="card-link">
                     <div class="stat-card bookings">
                         <div class="stat-header">
-                            <span class="stat-title">Overall Guest Data</span>
+                            <span class="stat-title">全体のゲストデータ</span>
                             <div class="stat-icon">
                                 <i class="fas fa-calendar-check"></i>
                             </div>
@@ -522,14 +528,14 @@
                         <div class="stat-value">
                             <asp:Label ID="lblBookings" runat="server" Text="0"></asp:Label>
                         </div>
-                        <div class="stat-label">Total bookings</div>
+                        <div class="stat-label">総予約数</div>
                     </div>
                 </a>
             </div>
 
             <!-- Second Row: Room Status -->
     <div class="section-title">
-        <i class="fas fa-door-open"></i> Rooms
+        <i class="fas fa-door-open"></i> 客室
     </div>
     <div class="dashboard-row" style="cursor: pointer;" onclick="window.location.href='Rooms.aspx'">
         <div class="room-card available">
@@ -539,7 +545,7 @@
             <div class="room-value">
                 <asp:Label ID="lblAvailableRooms" runat="server" Text="0"></asp:Label>
             </div>
-            <div class="room-label">Available</div>
+            <div class="room-label">空室</div>
         </div>
         <div class="room-card occupied">
             <div class="room-icon">
@@ -548,7 +554,7 @@
             <div class="room-value">
                 <asp:Label ID="lblOccupiedRooms" runat="server" Text="0"></asp:Label>
             </div>
-            <div class="room-label">Occupied</div>
+            <div class="room-label">使用中</div>
         </div>
         <div class="room-card reserved">
             <div class="room-icon">
@@ -557,26 +563,26 @@
             <div class="room-value">
                 <asp:Label ID="lblReservedRooms" runat="server" Text="0"></asp:Label>
             </div>
-            <div class="room-label">Reserved</div>
+            <div class="room-label">予約済み</div>
         </div>
     </div>
             <!-- Third Row: Sales & Revenue -->
             <div class="section-title">
-                <i class="fas fa-chart-bar"></i> Financial Overview
+                <i class="fas fa-chart-bar"></i> 財務概要
             </div>
             <div class="dashboard-row">
                 <asp:LinkButton ID="btnViewSales" runat="server" OnClick="btnViewSales_Click" CssClass="sales-card" style="text-decoration: none; color: white;">
                     <div class="sales-content">
                         <div class="sales-info">
-                            <h3>Monthly Revenue</h3>
+                            <h3>月間収益</h3>
                             <div class="sales-amount">
                                 ¥<asp:Label ID="lblMonthlyRevenue" runat="server" Text="0"></asp:Label>
                             </div>
                             <div class="sales-label">
-                                <asp:Label ID="lblTransactionCount" runat="server" Text="0"></asp:Label> transactions this month
+                                今月の取引数: <asp:Label ID="lblTransactionCount" runat="server" Text="0"></asp:Label>件
                             </div>
                             <div class="view-details">
-                                <span>View Full Report</span>
+                                <span>詳細レポートを表示</span>
                                 <i class="fas fa-arrow-right"></i>
                             </div>
                         </div>
@@ -589,18 +595,18 @@
 
             <!-- Recent Guests Table -->
             <div class="section-title">
-                <i class="fas fa-list"></i> Current Guests
+                <i class="fas fa-list"></i> 現在のゲスト
             </div>
             <div class="data-table">
                 <asp:GridView ID="gvCurrentGuests" runat="server" AutoGenerateColumns="False" 
-                    GridLines="None" CssClass="table" ShowHeaderWhenEmpty="True" EmptyDataText="No current guests">
+                    GridLines="None" CssClass="table" ShowHeaderWhenEmpty="True" EmptyDataText="現在のゲストはいません">
                     <Columns>
-                        <asp:BoundField DataField="GuestName" HeaderText="Guest Name" />
-                        <asp:BoundField DataField="RoomNumber" HeaderText="Room" />
-                        <asp:BoundField DataField="RoomType" HeaderText="Room Type" />
-                        <asp:BoundField DataField="CheckInDate" HeaderText="Check In" DataFormatString="{0:MMM dd, yyyy}" />
-                        <asp:BoundField DataField="CheckOutDate" HeaderText="Check Out" DataFormatString="{0:MMM dd, yyyy hh:mm tt}" />
-                        <asp:BoundField DataField="NightsStay" HeaderText="Nights" />
+                        <asp:BoundField DataField="GuestName" HeaderText="ゲスト名" />
+                        <asp:BoundField DataField="RoomNumber" HeaderText="客室番号" />
+                        <asp:BoundField DataField="RoomType" HeaderText="客室タイプ" />
+                        <asp:BoundField DataField="CheckInDate" HeaderText="チェックイン" DataFormatString="{0:yyyy年MM月dd日}" />
+                        <asp:BoundField DataField="CheckOutDate" HeaderText="チェックアウト" DataFormatString="{0:yyyy年MM月dd日 HH:mm}" />
+                        <asp:BoundField DataField="NightsStay" HeaderText="宿泊数" />
                     </Columns>
                 </asp:GridView>
             </div>

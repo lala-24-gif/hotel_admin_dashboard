@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Room Management - Hotel System</title>
+    <title>客室管理 - ホテルシステム</title>
     <style>
         * {
             margin: 0;
@@ -403,10 +403,10 @@
             <div class="header">
                 <h1>
                     <span class="header-icon">🏨</span>
-                    Room Management
+                    客室管理
                 </h1>
                 <asp:LinkButton ID="btnBack" runat="server" CssClass="back-btn" OnClick="btnBack_Click">
-                    ← Back to Dashboard
+                    ← ダッシュボードに戻る
                 </asp:LinkButton>
             </div>
 
@@ -415,15 +415,15 @@
             <!-- Statistics -->
             <div class="stats-container">
                 <div class="stat-card available">
-                    <h3>Available</h3>
+                    <h3>利用可能</h3>
                     <div class="number"><asp:Label ID="lblAvailable" runat="server">0</asp:Label></div>
                 </div>
                 <div class="stat-card occupied">
-                    <h3>Occupied</h3>
+                    <h3>使用中</h3>
                     <div class="number"><asp:Label ID="lblOccupied" runat="server">0</asp:Label></div>
                 </div>
                 <div class="stat-card reserved">
-                    <h3>Reserved</h3>
+                    <h3>予約済み</h3>
                     <div class="number"><asp:Label ID="lblReserved" runat="server">0</asp:Label></div>
                 </div>
             </div>
@@ -436,37 +436,37 @@
         <div id="roomModal" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 id="modalTitle">Room Details</h2>
+                    <h2 id="modalTitle">客室詳細</h2>
                     <span class="close" onclick="closeModal()">&times;</span>
                 </div>
                 <div class="modal-body">
                     <div class="detail-row">
-                        <span class="detail-label">Room Number:</span>
+                        <span class="detail-label">客室番号：</span>
                         <span class="detail-value" id="modalRoomNumber"></span>
                     </div>
                     <div class="detail-row">
-                        <span class="detail-label">Floor:</span>
+                        <span class="detail-label">フロア：</span>
                         <span class="detail-value" id="modalFloor"></span>
                     </div>
                     <div class="detail-row">
-                        <span class="detail-label">Room Type:</span>
+                        <span class="detail-label">客室タイプ：</span>
                         <span class="detail-value" id="modalRoomType"></span>
                     </div>
                     <div class="detail-row">
-                        <span class="detail-label">Capacity:</span>
+                        <span class="detail-label">収容人数：</span>
                         <span class="detail-value" id="modalCapacity"></span>
                     </div>
                     <div class="detail-row">
-                        <span class="detail-label">Price per Night:</span>
+                        <span class="detail-label">1泊料金：</span>
                         <span class="detail-value" id="modalPrice"></span>
                     </div>
                     <div class="detail-row">
-                        <span class="detail-label">Status:</span>
+                        <span class="detail-label">ステータス：</span>
                         <span class="detail-value" id="modalStatus"></span>
                     </div>
                     <div class="action-buttons">
-                        <button type="button" class="btn btn-primary" id="btnViewBooking" onclick="viewBooking()">View Overall Guest Data</button>
-                        <button type="button" class="btn btn-secondary" onclick="closeModal()">Close</button>
+                        <button type="button" class="btn btn-primary" id="btnViewBooking" onclick="viewBooking()">全体のゲストデータを表示</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeModal()">閉じる</button>
                     </div>
                 </div>
             </div>
@@ -476,13 +476,20 @@
     <script>
         function showRoomDetails(roomId, roomNumber, floor, roomType, capacity, price, status) {
             document.getElementById('modalRoomNumber').innerText = roomNumber;
-            document.getElementById('modalFloor').innerText = floor ? 'Floor ' + floor : 'N/A';
+            document.getElementById('modalFloor').innerText = floor ? floor + '階' : 'N/A';
             document.getElementById('modalRoomType').innerText = roomType;
-            document.getElementById('modalCapacity').innerText = capacity + ' guest(s)';
+            document.getElementById('modalCapacity').innerText = capacity + '名';
             document.getElementById('modalPrice').innerText = '¥' + parseFloat(price).toLocaleString();
-            document.getElementById('modalStatus').innerText = status;
 
-            // Show/hide view booking button based on status
+            // ステータスを日本語に変換
+            let statusText = status;
+            if (status === 'Available') statusText = '利用可能';
+            else if (status === 'Occupied') statusText = '使用中';
+            else if (status === 'Reserved') statusText = '予約済み';
+
+            document.getElementById('modalStatus').innerText = statusText;
+
+            // ステータスに基づいて予約表示ボタンを表示/非表示
             const viewBookingBtn = document.getElementById('btnViewBooking');
             if (status === 'Available') {
                 viewBookingBtn.style.display = 'none';
@@ -502,7 +509,7 @@
             window.location.href = 'BookingsList.aspx?roomId=' + roomId;
         }
 
-        // Highlight status cards based on URL filter
+        // URLフィルターに基づいてステータスカードをハイライト
         function highlightStatus(status) {
             const statCards = document.querySelectorAll('.stat-card');
             statCards.forEach(card => {
@@ -512,7 +519,7 @@
                 }
             });
 
-            // Scroll to first room of that status
+            // そのステータスの最初の客室にスクロール
             const firstRoomCard = document.querySelector('.room-card.' + status.toLowerCase());
             if (firstRoomCard) {
                 firstRoomCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -520,7 +527,7 @@
             }
         }
 
-        // Close modal when clicking outside
+        // モーダルの外側をクリックしたら閉じる
         window.onclick = function (event) {
             const modal = document.getElementById('roomModal');
             if (event.target == modal) {

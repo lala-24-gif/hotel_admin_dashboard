@@ -5,11 +5,12 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <style>
         * {
+            
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -198,8 +199,8 @@
         <div class="login-container">
             <div class="login-header">
                 <i class="fas fa-hotel"></i>
-                <h1>Hotel Management</h1>
-                <p>Sign in to access your dashboard</p>
+                <h1>ホテル管理</h1>
+                <p>ダッシュボードにアクセスするにはサインインしてください</p>
             </div>
 
             <div class="login-body">
@@ -214,41 +215,41 @@
                 </asp:Panel>
 
                 <div class="form-group">
-                    <label class="form-label">Username</label>
+                    <label class="form-label">ユーザー名</label>
                     <div class="input-wrapper">
                         <i class="fas fa-user input-icon"></i>
                         <asp:TextBox ID="txtUsername" runat="server" CssClass="form-input" 
-                            placeholder="Enter your username" required></asp:TextBox>
+                            placeholder="ユーザー名を入力してください" required></asp:TextBox>
                     </div>
                     <asp:RequiredFieldValidator ID="rfvUsername" runat="server" 
                         ControlToValidate="txtUsername" Display="Dynamic" 
-                        ErrorMessage="Username is required" ForeColor="#f56565" 
+                        ErrorMessage="ユーザー名は必須です" ForeColor="#f56565" 
                         Font-Size="12px" ValidationGroup="LoginGroup"></asp:RequiredFieldValidator>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Password</label>
+                    <label class="form-label">パスワード</label>
                     <div class="input-wrapper">
                         <i class="fas fa-lock input-icon"></i>
                         <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" 
-                            CssClass="form-input" placeholder="Enter your password" required></asp:TextBox>
+                            CssClass="form-input" placeholder="パスワードを入力してください"　required></asp:TextBox>
                     </div>
                     <asp:RequiredFieldValidator ID="rfvPassword" runat="server" 
                         ControlToValidate="txtPassword" Display="Dynamic" 
-                        ErrorMessage="Password is required" ForeColor="#f56565" 
+                        ErrorMessage="パスワードは必須です" ForeColor="#f56565" 
                         Font-Size="12px" ValidationGroup="LoginGroup"></asp:RequiredFieldValidator>
                 </div>
 
                 <div class="remember-me">
                     <asp:CheckBox ID="chkRememberMe" runat="server" />
-                    <label for="<%= chkRememberMe.ClientID %>">Remember me</label>
+                    <label for="<%= chkRememberMe.ClientID %>">ログイン状態を保持する</label>
                 </div>
 
-                <asp:Button ID="btnLogin" runat="server" Text="Sign In" 
+                <asp:Button ID="btnLogin" runat="server" Text="サインイン" 
                     CssClass="btn-login" OnClick="btnLogin_Click" ValidationGroup="LoginGroup" />
 
                 <div class="register-link">
-                    Don't have an account? <a href="Register.aspx">Create one</a>
+                    アカウントをお持ちでないですか？<a href="Register.aspx">新規登録</a>
                 </div>
             </div>
         </div>

@@ -22,31 +22,25 @@ namespace HotelManagement
             }
         }
 
-        protected void btnSelectNewGuest_Click(object sender, EventArgs e)
+        // FIXED: Changed method name to match ASPX button event
+        protected void btnNewGuest_Click(object sender, EventArgs e)
         {
             // Show new guest form and booking details
             pnlNewGuestForm.CssClass = "form-card";
             pnlExistingGuestForm.CssClass = "form-card hidden";
             pnlBookingDetails.CssClass = "form-card";
 
-            // Set active state
-            pnlNewGuestCard.CssClass = "option-card active";
-            pnlExistingGuestCard.CssClass = "option-card";
-
             // Set the validation group for the create booking button
             btnCreateBooking.ValidationGroup = "NewGuestGroup";
         }
 
-        protected void btnSelectExistingGuest_Click(object sender, EventArgs e)
+        // FIXED: Changed method name to match ASPX button event
+        protected void btnExistingGuest_Click(object sender, EventArgs e)
         {
             // Show existing guest form and booking details
             pnlNewGuestForm.CssClass = "form-card hidden";
             pnlExistingGuestForm.CssClass = "form-card";
             pnlBookingDetails.CssClass = "form-card";
-
-            // Set active state
-            pnlNewGuestCard.CssClass = "option-card";
-            pnlExistingGuestCard.CssClass = "option-card active";
 
             // Set the validation group for the create booking button
             btnCreateBooking.ValidationGroup = "ExistingGuestGroup";
@@ -58,10 +52,10 @@ namespace HotelManagement
             {
                 con.Open();
                 SqlCommand cmd = new SqlCommand(@"
-            SELECT GuestID, FirstName + ' ' + LastName AS FullName 
-            FROM Guests 
-            WHERE IsActive = 1 OR IsActive IS NULL
-            ORDER BY FirstName, LastName", con);
+                    SELECT GuestID, FirstName + ' ' + LastName AS FullName 
+                    FROM Guests 
+                    WHERE IsActive = 1 OR IsActive IS NULL
+                    ORDER BY FirstName, LastName", con);
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
@@ -71,11 +65,11 @@ namespace HotelManagement
                 ddlGuest.DataValueField = "GuestID";
                 ddlGuest.DataBind();
 
-                ddlGuest.Items.Insert(0, new ListItem("-- Select Guest --", "0"));
+                ddlGuest.Items.Insert(0, new ListItem("-- ゲストを選択 --", "0"));
             }
             catch (Exception ex)
             {
-                ShowError("Error loading guests: " + ex.Message);
+                ShowError("ゲストの読み込みエラー: " + ex.Message);
             }
             finally
             {
@@ -114,10 +108,10 @@ namespace HotelManagement
                     decimal price = Convert.ToDecimal(row["BasePrice"]);
                     int capacity = Convert.ToInt32(row["Capacity"]);
 
-                    // Format: F2 - 201 - Double (¥8,000/night, 2 guests)
+                    // Format: F2 - 201 - Double (¥8,000/泊, 2名)
                     row["RoomNumber"] = floor + roomNum + " - " + roomType +
-                                       " (¥" + price.ToString("N0") + "/night, " +
-                                       capacity + " guest" + (capacity > 1 ? "s" : "") + ")";
+                                       " (¥" + price.ToString("N0") + "/泊, " +
+                                       capacity + "名)";
                 }
 
                 ddlRoom.DataSource = dt;
@@ -125,17 +119,17 @@ namespace HotelManagement
                 ddlRoom.DataValueField = "RoomID";
                 ddlRoom.DataBind();
 
-                ddlRoom.Items.Insert(0, new ListItem("-- Select Room --", "0"));
+                ddlRoom.Items.Insert(0, new ListItem("-- 客室を選択 --", "0"));
 
                 // Show message if no rooms available
                 if (dt.Rows.Count == 0)
                 {
-                    ShowError("No available rooms at the moment. All rooms are occupied or reserved.");
+                    ShowError("現在利用可能な客室がありません。すべての客室が予約済みまたは使用中です。");
                 }
             }
             catch (Exception ex)
             {
-                ShowError("Error loading rooms: " + ex.Message);
+                ShowError("客室の読み込みエラー: " + ex.Message);
             }
             finally
             {
@@ -160,7 +154,7 @@ namespace HotelManagement
 
                 if (checkOut <= checkIn)
                 {
-                    ShowError("Check-out date must be after check-in date.");
+                    ShowError("チェックアウト日はチェックイン日より後でなければなりません。");
                     lblTotalAmount.Text = "0";
                     return;
                 }
@@ -190,7 +184,7 @@ namespace HotelManagement
             }
             catch (Exception ex)
             {
-                ShowError("Error calculating total: " + ex.Message);
+                ShowError("合計金額の計算エラー: " + ex.Message);
             }
             finally
             {
@@ -216,7 +210,7 @@ namespace HotelManagement
                     guestId = CreateNewGuest();
                     if (guestId == 0)
                     {
-                        ShowError("Failed to create guest. Please try again.");
+                        ShowError("ゲストの作成に失敗しました。もう一度お試しください。");
                         return;
                     }
                 }
@@ -230,14 +224,14 @@ namespace HotelManagement
                 }
                 else
                 {
-                    ShowError("Please select New Guest or Existing Guest option first.");
+                    ShowError("新規ゲストまたは既存ゲストを選択してください。");
                     return;
                 }
 
                 // Now create the booking
                 int roomId = int.Parse(ddlRoom.SelectedValue);
 
-                // UPDATED: Parse dates and set checkout time to 12:00 PM
+                // Parse dates and set checkout time to 12:00 PM
                 DateTime checkIn = DateTime.Parse(txtCheckIn.Text);
                 DateTime checkOut = DateTime.Parse(txtCheckOut.Text);
 
@@ -259,7 +253,7 @@ namespace HotelManagement
                 cmd.Parameters.AddWithValue("@GuestID", guestId);
                 cmd.Parameters.AddWithValue("@RoomID", roomId);
                 cmd.Parameters.AddWithValue("@CheckInDate", checkIn);
-                cmd.Parameters.AddWithValue("@CheckOutDate", checkOut); // Now includes 12:00 PM time
+                cmd.Parameters.AddWithValue("@CheckOutDate", checkOut);
                 cmd.Parameters.AddWithValue("@TotalAmount", totalAmount);
                 cmd.Parameters.AddWithValue("@NumberOfGuests", numberOfGuests);
                 cmd.Parameters.AddWithValue("@SpecialRequests", string.IsNullOrEmpty(specialRequests) ? (object)DBNull.Value : specialRequests);
@@ -267,14 +261,14 @@ namespace HotelManagement
                 cmd.ExecuteNonQuery();
                 con.Close();
 
-                ShowSuccess("Booking completed successfully! Checkout time: " + checkOut.ToString("yyyy-MM-dd hh:mm tt") + ". Total amount: ¥" + totalAmount.ToString("0.00"));
+                ShowSuccess("予約が正常に完了しました！チェックアウト時間: " + checkOut.ToString("yyyy-MM-dd HH:mm") + "。合計金額: ¥" + totalAmount.ToString("0.00"));
                 ClearForm();
                 LoadRooms();
                 LoadGuests();
             }
             catch (Exception ex)
             {
-                ShowError("Error creating booking: " + ex.Message);
+                ShowError("予約作成エラー: " + ex.Message);
             }
             finally
             {
@@ -313,7 +307,7 @@ namespace HotelManagement
             }
             catch (Exception ex)
             {
-                ShowError("Error creating guest: " + ex.Message);
+                ShowError("ゲスト作成エラー: " + ex.Message);
                 return 0;
             }
             finally
@@ -354,10 +348,6 @@ namespace HotelManagement
             pnlNewGuestForm.CssClass = "form-card hidden";
             pnlExistingGuestForm.CssClass = "form-card hidden";
             pnlBookingDetails.CssClass = "form-card hidden";
-
-            // Reset option cards
-            pnlNewGuestCard.CssClass = "option-card";
-            pnlExistingGuestCard.CssClass = "option-card";
         }
 
         private void ShowError(string message)

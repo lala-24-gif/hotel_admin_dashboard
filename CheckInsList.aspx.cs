@@ -19,13 +19,14 @@ namespace HotelManagement
             }
         }
 
+        // 本日のチェックインを読み込む
         private void LoadCheckIns()
         {
             try
             {
                 con.Open();
 
-                // Get all bookings scheduled for today's check-in (exclude CheckedOut and Cancelled)
+                // 本日のチェックイン予定の予約をすべて取得（CheckedOutとCancelledを除く）
                 SqlCommand cmd = new SqlCommand(@"
                     SELECT 
                         b.BookingID,
@@ -58,7 +59,7 @@ namespace HotelManagement
             }
             catch (Exception ex)
             {
-                ShowError("Error loading check-ins: " + ex.Message);
+                ShowError("チェックインの読み込みエラー: " + ex.Message);
             }
             finally
             {
@@ -67,6 +68,7 @@ namespace HotelManagement
             }
         }
 
+        // 統計情報を読み込む
         private void LoadStatistics()
         {
             try
@@ -94,7 +96,7 @@ namespace HotelManagement
             }
             catch (Exception ex)
             {
-                ShowError("Error loading statistics: " + ex.Message);
+                ShowError("統計の読み込みエラー: " + ex.Message);
             }
             finally
             {
@@ -103,6 +105,7 @@ namespace HotelManagement
             }
         }
 
+        // GridViewの行コマンドを処理
         protected void gvCheckIns_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             int bookingId = Convert.ToInt32(e.CommandArgument);
@@ -121,18 +124,19 @@ namespace HotelManagement
             }
         }
 
+        // ゲストをチェックイン
         private void CheckInGuest(int bookingId)
         {
             try
             {
                 con.Open();
 
-                // Get room ID first
+                // まず客室IDを取得
                 SqlCommand getRoomCmd = new SqlCommand("SELECT RoomID FROM Bookings WHERE BookingID = @BookingID", con);
                 getRoomCmd.Parameters.AddWithValue("@BookingID", bookingId);
                 int roomId = Convert.ToInt32(getRoomCmd.ExecuteScalar());
 
-                // Update booking status to CheckedIn AND update room to Occupied
+                // 予約ステータスをCheckedInに更新し、客室をOccupiedに更新
                 SqlCommand cmd = new SqlCommand(@"
                     UPDATE Bookings 
                     SET Status = 'CheckedIn'
@@ -148,13 +152,13 @@ namespace HotelManagement
                 cmd.ExecuteNonQuery();
                 con.Close();
 
-                ShowSuccess("Guest checked in successfully! Room is now occupied.");
+                ShowSuccess("ゲストのチェックインが完了しました！客室は現在使用中です。");
                 LoadCheckIns();
                 LoadStatistics();
             }
             catch (Exception ex)
             {
-                ShowError("Error checking in guest: " + ex.Message);
+                ShowError("チェックインエラー: " + ex.Message);
             }
             finally
             {
@@ -163,18 +167,19 @@ namespace HotelManagement
             }
         }
 
+        // ゲストをチェックアウト
         private void CheckOutGuest(int bookingId)
         {
             try
             {
                 con.Open();
 
-                // Get room ID first
+                // まず客室IDを取得
                 SqlCommand getRoomCmd = new SqlCommand("SELECT RoomID FROM Bookings WHERE BookingID = @BookingID", con);
                 getRoomCmd.Parameters.AddWithValue("@BookingID", bookingId);
                 int roomId = Convert.ToInt32(getRoomCmd.ExecuteScalar());
 
-                // Update booking status to CheckedOut and room status to Available
+                // 予約ステータスをCheckedOutに更新し、客室ステータスをAvailableに更新
                 SqlCommand cmd = new SqlCommand(@"
                     UPDATE Bookings 
                     SET Status = 'CheckedOut'
@@ -190,13 +195,13 @@ namespace HotelManagement
                 cmd.ExecuteNonQuery();
                 con.Close();
 
-                ShowSuccess("Guest checked out successfully!");
+                ShowSuccess("ゲストのチェックアウトが完了しました！");
                 LoadCheckIns();
                 LoadStatistics();
             }
             catch (Exception ex)
             {
-                ShowError("Error checking out guest: " + ex.Message);
+                ShowError("チェックアウトエラー: " + ex.Message);
             }
             finally
             {
@@ -205,18 +210,19 @@ namespace HotelManagement
             }
         }
 
+        // 予約をキャンセル
         private void CancelBooking(int bookingId)
         {
             try
             {
                 con.Open();
 
-                // Get room ID first
+                // まず客室IDを取得
                 SqlCommand getRoomCmd = new SqlCommand("SELECT RoomID FROM Bookings WHERE BookingID = @BookingID", con);
                 getRoomCmd.Parameters.AddWithValue("@BookingID", bookingId);
                 int roomId = Convert.ToInt32(getRoomCmd.ExecuteScalar());
 
-                // Update booking status to Cancelled and room status to Available
+                // 予約ステータスをCancelledに更新し、客室ステータスをAvailableに更新
                 SqlCommand cmd = new SqlCommand(@"
                     UPDATE Bookings 
                     SET Status = 'Cancelled'
@@ -232,13 +238,13 @@ namespace HotelManagement
                 cmd.ExecuteNonQuery();
                 con.Close();
 
-                ShowSuccess("Booking cancelled successfully!");
+                ShowSuccess("予約がキャンセルされました！");
                 LoadCheckIns();
                 LoadStatistics();
             }
             catch (Exception ex)
             {
-                ShowError("Error cancelling booking: " + ex.Message);
+                ShowError("予約キャンセルエラー: " + ex.Message);
             }
             finally
             {
@@ -247,6 +253,27 @@ namespace HotelManagement
             }
         }
 
+        // ステータスを日本語に変換するヘルパーメソッド
+        protected string GetStatusText(string status)
+        {
+            switch (status)
+            {
+                case "Confirmed":
+                    return "確認済み";
+                case "CheckedIn":
+                    return "チェックイン済み";
+                case "CheckedOut":
+                    return "チェックアウト済み";
+                case "Cancelled":
+                    return "キャンセル済み";
+                case "Pending":
+                    return "保留中";
+                default:
+                    return status;
+            }
+        }
+
+        // エラーメッセージを表示
         private void ShowError(string message)
         {
             pnlError.Visible = true;
@@ -254,6 +281,7 @@ namespace HotelManagement
             lblError.Text = message;
         }
 
+        // 成功メッセージを表示
         private void ShowSuccess(string message)
         {
             pnlSuccess.Visible = true;

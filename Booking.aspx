@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Create Booking</title>
+    <title>予約作成</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <style>
         * {
@@ -194,9 +194,10 @@
             transform: translateY(-50%);
             color: #a0aec0;
             font-size: 16px;
+            z-index: 1;
         }
 
-        .form-input, .form-select, .form-textarea {
+        .form-input {
             width: 100%;
             padding: 12px 15px;
             border: 2px solid #e2e8f0;
@@ -206,61 +207,50 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        .form-input.with-icon, .form-select {
+        .form-input.with-icon {
             padding-left: 45px;
         }
 
-        .form-textarea {
-            min-height: 80px;
-            resize: vertical;
-        }
-
-        .form-input:focus, .form-select:focus, .form-textarea:focus {
+        .form-input:focus {
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
-        .info-box {
-            background: #edf2f7;
-            border-left: 4px solid #667eea;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 15px;
-        }
-
-        .info-box-title {
-            font-weight: 600;
-            color: #2d3748;
-            margin-bottom: 5px;
-        }
-
-        .info-box-value {
-            font-size: 24px;
-            font-weight: 700;
-            color: #667eea;
-        }
-
-        .alert {
+        .form-select {
+            width: 100%;
             padding: 12px 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
+            padding-left: 45px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
             font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            transition: all 0.3s;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            cursor: pointer;
         }
 
-        .alert-success {
-            background: #c6f6d5;
-            color: #22543d;
-            border-left: 4px solid #48bb78;
+        .form-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
-        .alert-danger {
-            background: #fed7d7;
-            color: #742a2a;
-            border-left: 4px solid #f56565;
+        .form-textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            resize: vertical;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
         .validator {
@@ -270,27 +260,41 @@
             display: block;
         }
 
+        .info-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .info-box-title {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .info-box-value {
+            font-size: 32px;
+            font-weight: 700;
+        }
+
         .form-actions {
             display: flex;
+            justify-content: flex-end;
             gap: 15px;
             margin-top: 30px;
-            padding-top: 30px;
-            border-top: 1px solid #e2e8f0;
         }
 
         .btn {
-            flex: 1;
-            padding: 14px;
+            padding: 12px 30px;
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
         }
 
         .btn-primary {
@@ -300,7 +304,7 @@
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 8px 15px rgba(102, 126, 234, 0.3);
         }
 
         .btn-secondary {
@@ -316,6 +320,28 @@
             display: none;
         }
 
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-danger {
+            background: #fed7d7;
+            color: #742a2a;
+            border-left: 4px solid #f56565;
+        }
+
+        .alert-success {
+            background: #c6f6d5;
+            color: #22543d;
+            border-left: 4px solid #48bb78;
+        }
+
         @media (max-width: 768px) {
             .option-cards {
                 grid-template-columns: 1fr;
@@ -324,14 +350,6 @@
             .form-row {
                 grid-template-columns: 1fr;
             }
-
-            .form-card {
-                padding: 30px 20px;
-            }
-
-            .form-actions {
-                flex-direction: column;
-            }
         }
     </style>
 </head>
@@ -339,87 +357,87 @@
     <form id="form1" runat="server">
         <div class="header">
             <div class="header-content">
-                <h1><i class="fas fa-calendar-check"></i> Create New Booking</h1>
+                <h1>予約作成</h1>
                 <a href="Default.aspx" class="back-btn">
-                    <i class="fas fa-arrow-left"></i>
-                    <span>Back to Dashboard</span>
+                    <i class="fas fa-arrow-left"></i> ダッシュボードに戻る
                 </a>
             </div>
         </div>
 
         <div class="container">
             <div class="page-intro">
-                <h2>Check in guests who arrive without prior booking</h2>
+                <h2>新規予約作成</h2>
+                <p>予約の作成方法を選択してください</p>
             </div>
-
-            <asp:Panel ID="pnlSuccess" runat="server" CssClass="alert alert-success" Visible="false">
-                <i class="fas fa-check-circle"></i>
-                <asp:Label ID="lblSuccess" runat="server"></asp:Label>
-            </asp:Panel>
 
             <asp:Panel ID="pnlError" runat="server" CssClass="alert alert-danger" Visible="false">
                 <i class="fas fa-exclamation-circle"></i>
                 <asp:Label ID="lblError" runat="server"></asp:Label>
             </asp:Panel>
 
-            <!-- Guest Type Selection Cards -->
-            <div class="option-cards">
-                <asp:Panel ID="pnlNewGuestCard" runat="server" CssClass="option-card">
-                    <asp:LinkButton ID="btnSelectNewGuest" runat="server" OnClick="btnSelectNewGuest_Click" CausesValidation="false" style="text-decoration: none; color: inherit; display: block;">
-                        <div class="option-icon">
-                            <i class="fas fa-user-plus"></i>
-                        </div>
-                        <div class="option-title">New Guest</div>
-                        <div class="option-desc">Register and check in a new guest</div>
-                    </asp:LinkButton>
-                </asp:Panel>
+            <asp:Panel ID="pnlSuccess" runat="server" CssClass="alert alert-success" Visible="false">
+                <i class="fas fa-check-circle"></i>
+                <asp:Label ID="lblSuccess" runat="server"></asp:Label>
+            </asp:Panel>
 
-                <asp:Panel ID="pnlExistingGuestCard" runat="server" CssClass="option-card">
-                    <asp:LinkButton ID="btnSelectExistingGuest" runat="server" OnClick="btnSelectExistingGuest_Click" CausesValidation="false" style="text-decoration: none; color: inherit; display: block;">
-                        <div class="option-icon">
-                            <i class="fas fa-address-book"></i>
-                        </div>
-                        <div class="option-title">Existing Guest</div>
-                        <div class="option-desc">Check in a previously registered guest</div>
-                    </asp:LinkButton>
-                </asp:Panel>
+            <!-- Option Cards for Guest Type Selection -->
+            <div class="option-cards">
+                <div class="option-card" id="cardNewGuest" onclick="selectNewGuest();">
+                    <div class="option-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="option-title">新規ゲスト</div>
+                    <div class="option-desc">初めてのゲストの予約を作成</div>
+                    <asp:Button ID="btnNewGuest" runat="server" Text="新規ゲスト" 
+                        OnClick="btnNewGuest_Click" CausesValidation="false" style="display:none;" />
+                </div>
+
+                <div class="option-card" id="cardExistingGuest" onclick="selectExistingGuest();">
+                    <div class="option-icon">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <div class="option-title">既存ゲスト</div>
+                    <div class="option-desc">既存ゲストの客室を予約</div>
+                    <asp:Button ID="btnExistingGuest" runat="server" Text="既存ゲスト" 
+                        OnClick="btnExistingGuest_Click" CausesValidation="false" style="display:none;" />
+                </div>
             </div>
 
-            <!-- New Guest Registration Form -->
+            <!-- New Guest Form -->
             <asp:Panel ID="pnlNewGuestForm" runat="server" CssClass="form-card hidden">
                 <div class="section-title">
-                    <i class="fas fa-user-plus"></i> New Guest Registration
+                    <i class="fas fa-user"></i> ゲスト情報
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label">First Name <span class="required">*</span></label>
+                        <label class="form-label">名 <span class="required">*</span></label>
                         <div class="input-wrapper">
                             <i class="fas fa-user input-icon"></i>
-                            <asp:TextBox ID="txtFirstName" runat="server" CssClass="form-input with-icon" placeholder="Enter first name"></asp:TextBox>
+                            <asp:TextBox ID="txtFirstName" runat="server" CssClass="form-input with-icon" placeholder="名を入力してください"></asp:TextBox>
                         </div>
                         <asp:RequiredFieldValidator ID="rfvFirstName" runat="server" 
                             ControlToValidate="txtFirstName" Display="Dynamic"
-                            ErrorMessage="First name is required" CssClass="validator" 
+                            ErrorMessage="名は必須です" CssClass="validator" 
                             ValidationGroup="NewGuestGroup"></asp:RequiredFieldValidator>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Last Name <span class="required">*</span></label>
+                        <label class="form-label">姓 <span class="required">*</span></label>
                         <div class="input-wrapper">
                             <i class="fas fa-user input-icon"></i>
-                            <asp:TextBox ID="txtLastName" runat="server" CssClass="form-input with-icon" placeholder="Enter last name"></asp:TextBox>
+                            <asp:TextBox ID="txtLastName" runat="server" CssClass="form-input with-icon" placeholder="姓を入力してください"></asp:TextBox>
                         </div>
                         <asp:RequiredFieldValidator ID="rfvLastName" runat="server" 
                             ControlToValidate="txtLastName" Display="Dynamic"
-                            ErrorMessage="Last name is required" CssClass="validator" 
+                            ErrorMessage="姓は必須です" CssClass="validator" 
                             ValidationGroup="NewGuestGroup"></asp:RequiredFieldValidator>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label">Email</label>
+                        <label class="form-label">メールアドレス</label>
                         <div class="input-wrapper">
                             <i class="fas fa-envelope input-icon"></i>
                             <asp:TextBox ID="txtEmail" runat="server" TextMode="Email" CssClass="form-input with-icon" placeholder="guest@example.com"></asp:TextBox>
@@ -427,25 +445,25 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Phone</label>
+                        <label class="form-label">電話番号</label>
                         <div class="input-wrapper">
                             <i class="fas fa-phone input-icon"></i>
-                            <asp:TextBox ID="txtPhone" runat="server" CssClass="form-input with-icon" placeholder="+1 234 567 8900"></asp:TextBox>
+                            <asp:TextBox ID="txtPhone" runat="server" CssClass="form-input with-icon" placeholder="+81 90 1234 5678"></asp:TextBox>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label">ID Number</label>
+                        <label class="form-label">ID番号</label>
                         <div class="input-wrapper">
                             <i class="fas fa-id-card input-icon"></i>
-                            <asp:TextBox ID="txtIDNumber" runat="server" CssClass="form-input with-icon" placeholder="Passport or ID number"></asp:TextBox>
+                            <asp:TextBox ID="txtIDNumber" runat="server" CssClass="form-input with-icon" placeholder="パスポートまたはID番号"></asp:TextBox>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Date of Birth</label>
+                        <label class="form-label">生年月日</label>
                         <div class="input-wrapper">
                             <i class="fas fa-calendar input-icon"></i>
                             <asp:TextBox ID="txtDateOfBirth" runat="server" TextMode="Date" CssClass="form-input with-icon"></asp:TextBox>
@@ -455,8 +473,8 @@
 
                 <div class="form-row full">
                     <div class="form-group">
-                        <label class="form-label">Address</label>
-                        <asp:TextBox ID="txtAddress" runat="server" TextMode="MultiLine" CssClass="form-textarea" Rows="2" placeholder="Full address"></asp:TextBox>
+                        <label class="form-label">住所</label>
+                        <asp:TextBox ID="txtAddress" runat="server" TextMode="MultiLine" CssClass="form-textarea" Rows="2" placeholder="住所を入力してください"></asp:TextBox>
                     </div>
                 </div>
             </asp:Panel>
@@ -464,12 +482,12 @@
             <!-- Existing Guest Selection Form -->
             <asp:Panel ID="pnlExistingGuestForm" runat="server" CssClass="form-card hidden">
                 <div class="section-title">
-                    <i class="fas fa-user"></i> Select Guest
+                    <i class="fas fa-user"></i> ゲストを選択
                 </div>
 
                 <div class="form-row full">
                     <div class="form-group">
-                        <label class="form-label">Select Guest <span class="required">*</span></label>
+                        <label class="form-label">ゲストを選択 <span class="required">*</span></label>
                         <div class="input-wrapper">
                             <i class="fas fa-user-friends input-icon"></i>
                             <asp:DropDownList ID="ddlGuest" runat="server" CssClass="form-select">
@@ -477,7 +495,7 @@
                         </div>
                         <asp:RequiredFieldValidator ID="rfvGuest" runat="server" 
                             ControlToValidate="ddlGuest" Display="Dynamic" InitialValue="0"
-                            ErrorMessage="Please select a guest" CssClass="validator" 
+                            ErrorMessage="ゲストを選択してください" CssClass="validator" 
                             ValidationGroup="ExistingGuestGroup"></asp:RequiredFieldValidator>
                     </div>
                 </div>
@@ -486,12 +504,12 @@
             <!-- Booking Details Form (Common for both) -->
             <asp:Panel ID="pnlBookingDetails" runat="server" CssClass="form-card hidden">
                 <div class="section-title">
-                    <i class="fas fa-bed"></i> Room & Dates
+                    <i class="fas fa-bed"></i> 客室と日程
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label">Room <span class="required">*</span></label>
+                        <label class="form-label">客室 <span class="required">*</span></label>
                         <div class="input-wrapper">
                             <i class="fas fa-door-open input-icon"></i>
                             <asp:DropDownList ID="ddlRoom" runat="server" CssClass="form-select" AutoPostBack="True" OnSelectedIndexChanged="ddlRoom_SelectedIndexChanged">
@@ -499,16 +517,16 @@
                         </div>
                         <asp:RequiredFieldValidator ID="rfvRoom" runat="server" 
                             ControlToValidate="ddlRoom" Display="Dynamic" InitialValue="0"
-                            ErrorMessage="Please select a room" CssClass="validator" 
+                            ErrorMessage="客室を選択してください" CssClass="validator" 
                             ValidationGroup="NewGuestGroup"></asp:RequiredFieldValidator>
                         <asp:RequiredFieldValidator ID="rfvRoom2" runat="server" 
                             ControlToValidate="ddlRoom" Display="Dynamic" InitialValue="0"
-                            ErrorMessage="Please select a room" CssClass="validator" 
+                            ErrorMessage="客室を選択してください" CssClass="validator" 
                             ValidationGroup="ExistingGuestGroup"></asp:RequiredFieldValidator>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Number of Guests</label>
+                        <label class="form-label">ゲスト数</label>
                         <div class="input-wrapper">
                             <i class="fas fa-users input-icon"></i>
                             <asp:TextBox ID="txtNumberOfGuests" runat="server" TextMode="Number" 
@@ -519,7 +537,7 @@
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label">Check-In Date <span class="required">*</span></label>
+                        <label class="form-label">チェックイン日 <span class="required">*</span></label>
                         <div class="input-wrapper">
                             <i class="fas fa-calendar-alt input-icon"></i>
                             <asp:TextBox ID="txtCheckIn" runat="server" TextMode="Date" 
@@ -527,16 +545,16 @@
                         </div>
                         <asp:RequiredFieldValidator ID="rfvCheckIn" runat="server" 
                             ControlToValidate="txtCheckIn" Display="Dynamic"
-                            ErrorMessage="Check-in date is required" CssClass="validator" 
+                            ErrorMessage="チェックイン日は必須です" CssClass="validator" 
                             ValidationGroup="NewGuestGroup"></asp:RequiredFieldValidator>
                         <asp:RequiredFieldValidator ID="rfvCheckIn2" runat="server" 
                             ControlToValidate="txtCheckIn" Display="Dynamic"
-                            ErrorMessage="Check-in date is required" CssClass="validator" 
+                            ErrorMessage="チェックイン日は必須です" CssClass="validator" 
                             ValidationGroup="ExistingGuestGroup"></asp:RequiredFieldValidator>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Check-Out Date <span class="required">*</span></label>
+                        <label class="form-label">チェックアウト日 <span class="required">*</span></label>
                         <div class="input-wrapper">
                             <i class="fas fa-calendar-check input-icon"></i>
                             <asp:TextBox ID="txtCheckOut" runat="server" TextMode="Date" 
@@ -544,35 +562,35 @@
                         </div>
                         <asp:RequiredFieldValidator ID="rfvCheckOut" runat="server" 
                             ControlToValidate="txtCheckOut" Display="Dynamic"
-                            ErrorMessage="Check-out date is required" CssClass="validator" 
+                            ErrorMessage="チェックアウト日は必須です" CssClass="validator" 
                             ValidationGroup="NewGuestGroup"></asp:RequiredFieldValidator>
                         <asp:RequiredFieldValidator ID="rfvCheckOut2" runat="server" 
                             ControlToValidate="txtCheckOut" Display="Dynamic"
-                            ErrorMessage="Check-out date is required" CssClass="validator" 
+                            ErrorMessage="チェックアウト日は必須です" CssClass="validator" 
                             ValidationGroup="ExistingGuestGroup"></asp:RequiredFieldValidator>
                     </div>
                 </div>
 
                 <div class="form-row full">
                     <div class="form-group">
-                        <label class="form-label">Special Requests</label>
+                        <label class="form-label">特別なリクエスト</label>
                         <asp:TextBox ID="txtSpecialRequests" runat="server" TextMode="MultiLine" 
                             CssClass="form-textarea" Rows="3"
-                            placeholder="Any special requirements or notes"></asp:TextBox>
+                            placeholder="特別な要望やメモ"></asp:TextBox>
                     </div>
                 </div>
 
              <div class="info-box">
-    <div class="info-box-title">Total Amount</div>
+    <div class="info-box-title">合計金額</div>
     <div class="info-box-value">
         ¥<asp:Label ID="lblTotalAmount" runat="server" Text="0"></asp:Label>
     </div>
 </div>
 
                 <div class="form-actions">
-                    <asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="btn btn-secondary" 
+                    <asp:Button ID="btnCancel" runat="server" Text="キャンセル" CssClass="btn btn-secondary" 
                         OnClick="btnCancel_Click" CausesValidation="false" />
-                    <asp:Button ID="btnCreateBooking" runat="server" Text="Complete Booking" CssClass="btn btn-primary" 
+                    <asp:Button ID="btnCreateBooking" runat="server" Text="予約を完了" CssClass="btn btn-primary" 
                         OnClick="btnCreateBooking_Click" />
                 </div>
             </asp:Panel>
@@ -585,6 +603,16 @@
                     card.classList.remove('active');
                 });
                 document.getElementById(cardId).classList.add('active');
+            }
+
+            function selectNewGuest() {
+                setActiveCard('cardNewGuest');
+                document.getElementById('<%= btnNewGuest.ClientID %>').click();
+            }
+
+            function selectExistingGuest() {
+                setActiveCard('cardExistingGuest');
+                document.getElementById('<%= btnExistingGuest.ClientID %>').click();
             }
         </script>
     </form>

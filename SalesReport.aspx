@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Sales & Revenue Report</title>
+    <title>売上・収益レポート</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
@@ -206,54 +206,54 @@
         <!-- Header -->
         <div class="header">
             <div class="header-content">
-                <h1><i class="fas fa-chart-line"></i> Sales & Revenue Report</h1>
+                <h1><i class="fas fa-chart-line"></i> 売上・収益レポート</h1>
                 <a href="Default.aspx" class="back-btn">
                     <i class="fas fa-arrow-left"></i>
-                    <span>Back to Dashboard</span>
+                    <span>ダッシュボードに戻る</span>
                 </a>
             </div>
         </div>
 
         <!-- Main Container -->
         <div class="container">
-            <div class="page-title">Annual Revenue Report</div>
-            <div class="page-subtitle">Complete financial overview for <asp:Label ID="lblCurrentYear" runat="server"></asp:Label></div>
+            <div class="page-title">年間収益レポート</div>
+            <div class="page-subtitle"><asp:Label ID="lblCurrentYear" runat="server"></asp:Label>年の財務概要</div>
 
             <!-- Summary Cards -->
             <div class="summary-cards">
                 <div class="summary-card revenue">
-                    <div class="summary-label">Total Revenue</div>
+                    <div class="summary-label">総収益</div>
                     <div class="summary-value">¥<asp:Label ID="lblTotalRevenue" runat="server" Text="0"></asp:Label></div>
                     <div class="summary-change positive">
-                        <i class="fas fa-arrow-up"></i> <asp:Label ID="lblRevenueChange" runat="server" Text="0"></asp:Label>% from last year
+                        <i class="fas fa-arrow-up"></i> 前年比 <asp:Label ID="lblRevenueChange" runat="server" Text="0"></asp:Label>%
                     </div>
                 </div>
 
                 <div class="summary-card transactions">
-                    <div class="summary-label">Total Transactions</div>
+                    <div class="summary-label">総取引数</div>
                     <div class="summary-value"><asp:Label ID="lblTotalTransactions" runat="server" Text="0"></asp:Label></div>
                     <div class="summary-change positive">
-                        <i class="fas fa-arrow-up"></i> <asp:Label ID="lblTransactionChange" runat="server" Text="0"></asp:Label>% from last year
+                        <i class="fas fa-arrow-up"></i> 前年比 <asp:Label ID="lblTransactionChange" runat="server" Text="0"></asp:Label>%
                     </div>
                 </div>
 
                 <div class="summary-card average">
-                    <div class="summary-label">Average Transaction</div>
+                    <div class="summary-label">平均取引額</div>
                     <div class="summary-value">¥<asp:Label ID="lblAverageTransaction" runat="server" Text="0"></asp:Label></div>
-                    <div class="summary-change">Average per booking</div>
+                    <div class="summary-change">予約あたりの平均</div>
                 </div>
 
                 <div class="summary-card growth">
-                    <div class="summary-label">Best Month</div>
+                    <div class="summary-label">最高月</div>
                     <div class="summary-value"><asp:Label ID="lblBestMonth" runat="server" Text="-"></asp:Label></div>
-                    <div class="summary-change">Highest revenue month</div>
+                    <div class="summary-change">最高収益月</div>
                 </div>
             </div>
 
             <!-- Revenue Chart -->
             <div class="chart-container">
                 <div class="chart-title">
-                    <i class="fas fa-chart-bar"></i> Monthly Revenue Trend
+                    <i class="fas fa-chart-bar"></i> 月次収益推移
                 </div>
                 <div class="chart-wrapper">
                     <canvas id="revenueChart"></canvas>
@@ -263,16 +263,16 @@
             <!-- Monthly Breakdown Table -->
             <div class="monthly-breakdown">
                 <div class="chart-title">
-                    <i class="fas fa-table"></i> Monthly Breakdown
+                    <i class="fas fa-table"></i> 月次内訳
                 </div>
                 <asp:GridView ID="gvMonthlyBreakdown" runat="server" AutoGenerateColumns="False" 
                     CssClass="breakdown-table" GridLines="None" ShowHeaderWhenEmpty="True">
                     <Columns>
-                        <asp:BoundField DataField="Month" HeaderText="Month" ItemStyle-CssClass="month-name" />
-                        <asp:BoundField DataField="Revenue" HeaderText="Revenue" DataFormatString="¥{0:N0}" ItemStyle-CssClass="amount" />
-                        <asp:BoundField DataField="Transactions" HeaderText="Transactions" />
-                        <asp:BoundField DataField="AverageTransaction" HeaderText="Avg. Transaction" DataFormatString="¥{0:N0}" />
-                        <asp:BoundField DataField="Bookings" HeaderText="Bookings" />
+                        <asp:BoundField DataField="Month" HeaderText="月" ItemStyle-CssClass="month-name" />
+                        <asp:BoundField DataField="Revenue" HeaderText="収益" DataFormatString="¥{0:N0}" ItemStyle-CssClass="amount" />
+                        <asp:BoundField DataField="Transactions" HeaderText="取引数" />
+                        <asp:BoundField DataField="AverageTransaction" HeaderText="平均取引額" DataFormatString="¥{0:N0}" />
+                        <asp:BoundField DataField="Bookings" HeaderText="予約数" />
                     </Columns>
                 </asp:GridView>
             </div>
@@ -290,7 +290,7 @@
                     data: {
                         labels: chartData.labels,
                         datasets: [{
-                            label: 'Revenue (¥)',
+                            label: '収益 (¥)',
                             data: chartData.data,
                             backgroundColor: 'rgba(102, 126, 234, 0.1)',
                             borderColor: 'rgba(102, 126, 234, 1)',
@@ -315,7 +315,7 @@
                             tooltip: {
                                 callbacks: {
                                     label: function (context) {
-                                        return 'Revenue: ¥' + context.parsed.y.toLocaleString();
+                                        return '収益: ¥' + context.parsed.y.toLocaleString();
                                     }
                                 }
                             }

@@ -18,24 +18,25 @@ namespace HotelManagement
                 LoadRoomStatistics();
                 LoadRoomsByFloor();
 
-                // Check if there's a status filter in the URL
+                // URLにステータスフィルターがあるかチェック
                 string statusFilter = Request.QueryString["status"];
                 if (!string.IsNullOrEmpty(statusFilter))
                 {
-                    // Add a visual indicator for the active filter
+                    // アクティブなフィルターの視覚的インジケーターを追加
                     System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "HighlightStatus",
                         $"setTimeout(function(){{ highlightStatus('{statusFilter}'); }}, 100);", true);
                 }
             }
         }
 
+        // 客室統計を読み込む
         private void LoadRoomStatistics()
         {
             try
             {
                 con.Open();
 
-                // Get room counts by status
+                // ステータス別の客室数を取得
                 string query = @"
                     SELECT 
                         Status,
@@ -79,11 +80,12 @@ namespace HotelManagement
             }
             catch (Exception ex)
             {
-                // Handle error
+                // エラー処理
                 con.Close();
             }
         }
 
+        // フロア別に客室を読み込む
         private void LoadRoomsByFloor()
         {
             try
@@ -111,7 +113,7 @@ namespace HotelManagement
 
                 con.Close();
 
-                // Group rooms by floor
+                // フロア別に客室をグループ化
                 StringBuilder html = new StringBuilder();
 
                 for (int floor = 1; floor <= 5; floor++)
@@ -120,20 +122,20 @@ namespace HotelManagement
 
                     html.Append("<div class='floor-section'>");
                     html.Append($"<div class='floor-header'>");
-                    html.Append($"<div class='floor-title'>Floor {floor}</div>");
+                    html.Append($"<div class='floor-title'>{floor}階</div>");
 
-                    // Calculate floor statistics (excluding maintenance)
+                    // フロア統計を計算（メンテナンスを除く）
                     int floorAvailable = floorRooms.Count(r => (r["Status"]?.ToString() ?? "Available").Equals("Available", StringComparison.OrdinalIgnoreCase));
                     int floorOccupied = floorRooms.Count(r => (r["Status"]?.ToString() ?? "").Equals("Occupied", StringComparison.OrdinalIgnoreCase));
                     int floorReserved = floorRooms.Count(r => (r["Status"]?.ToString() ?? "").Equals("Reserved", StringComparison.OrdinalIgnoreCase));
 
                     html.Append("<div class='floor-stats'>");
                     if (floorAvailable > 0)
-                        html.Append($"<div class='floor-stat'><div class='dot available'></div><span>{floorAvailable} Available</span></div>");
+                        html.Append($"<div class='floor-stat'><div class='dot available'></div><span>{floorAvailable} 利用可能</span></div>");
                     if (floorOccupied > 0)
-                        html.Append($"<div class='floor-stat'><div class='dot occupied'></div><span>{floorOccupied} Occupied</span></div>");
+                        html.Append($"<div class='floor-stat'><div class='dot occupied'></div><span>{floorOccupied} 使用中</span></div>");
                     if (floorReserved > 0)
-                        html.Append($"<div class='floor-stat'><div class='dot reserved'></div><span>{floorReserved} Reserved</span></div>");
+                        html.Append($"<div class='floor-stat'><div class='dot reserved'></div><span>{floorReserved} 予約済み</span></div>");
                     html.Append("</div>");
                     html.Append("</div>");
 
@@ -150,14 +152,23 @@ namespace HotelManagement
                             string price = Convert.ToDecimal(room["BasePrice"]).ToString("N0");
                             string capacity = room["Capacity"].ToString();
 
+                            // ステータスを日本語に変換
+                            string statusJp = status;
+                            if (status.Equals("Available", StringComparison.OrdinalIgnoreCase))
+                                statusJp = "利用可能";
+                            else if (status.Equals("Occupied", StringComparison.OrdinalIgnoreCase))
+                                statusJp = "使用中";
+                            else if (status.Equals("Reserved", StringComparison.OrdinalIgnoreCase))
+                                statusJp = "予約済み";
+
                             string statusClass = status.ToLower();
 
                             html.Append($@"
                                 <div class='room-card {statusClass}' onclick=""showRoomDetails({roomId}, '{roomNumber}', {floor}, '{roomType}', {capacity}, {room["BasePrice"]}, '{status}')"">
                                     <div class='room-number'>{roomNumber}</div>
                                     <div class='room-type'>{roomType}</div>
-                                    <div class='room-price'>¥{price}/night</div>
-                                    <span class='room-status {statusClass}'>{status}</span>
+                                    <div class='room-price'>¥{price}/泊</div>
+                                    <span class='room-status {statusClass}'>{statusJp}</span>
                                 </div>
                             ");
                         }
@@ -166,7 +177,7 @@ namespace HotelManagement
                     }
                     else
                     {
-                        html.Append("<div class='empty-floor'>No rooms on this floor</div>");
+                        html.Append("<div class='empty-floor'>このフロアには客室がありません</div>");
                     }
 
                     html.Append("</div>");
@@ -176,14 +187,13 @@ namespace HotelManagement
             }
             catch (Exception ex)
             {
-                litFloors.Text = $"<div class='floor-section'><p style='color:red;'>Error loading rooms: {ex.Message}</p></div>";
+                litFloors.Text = $"<div class='floor-section'><p style='color:red;'>客室の読み込みエラー: {ex.Message}</p></div>";
                 if (con.State == ConnectionState.Open)
                     con.Close();
             }
         }
 
-
-
+        // ダッシュボードに戻る
         protected void btnBack_Click(object sender, EventArgs e)
         {
             Response.Redirect("Default.aspx");

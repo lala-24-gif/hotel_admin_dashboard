@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Guest Directory</title>
+    <title>ゲストディレクトリ</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <style>
         * {
@@ -252,7 +252,7 @@
         .alert-error {
             background: #fed7d7;
             color: #742a2a;
-            border-left: 4px solid #e53e3e;
+            border-left: 4px solid #f56565;
         }
 
         /* Modal Styles */
@@ -265,40 +265,26 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0,0,0,0.5);
-            overflow-y: auto;
+            overflow: auto;
         }
 
         .modal-content {
             background-color: white;
-            margin: 50px auto;
-            padding: 0;
-            border-radius: 12px;
+            margin: 5% auto;
             width: 90%;
             max-width: 600px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            animation: slideDown 0.3s ease;
-            position: relative;
-            max-height: calc(100vh - 100px);
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
             display: flex;
             flex-direction: column;
-        }
-
-        @keyframes slideDown {
-            from {
-                transform: translateY(-50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+            max-height: 90vh;
         }
 
         .modal-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 20px 30px;
-            border-radius: 12px 12px 0 0;
+            padding: 25px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -307,21 +293,31 @@
 
         .modal-header h2 {
             margin: 0;
-            font-size: 22px;
+            font-size: 24px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .close {
             color: white;
-            font-size: 28px;
+            font-size: 32px;
             font-weight: bold;
             cursor: pointer;
-            border: none;
             background: none;
-            line-height: 1;
+            border: none;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s;
         }
 
         .close:hover {
-            opacity: 0.8;
+            opacity: 0.7;
         }
 
         .modal-body {
@@ -426,10 +422,10 @@
     <form id="form1" runat="server">
         <div class="header">
             <div class="header-content">
-                <h1><i class="fas fa-address-book"></i> Guest Directory</h1>
+                <h1><i class="fas fa-address-book"></i> ゲストディレクトリ</h1>
                 <a href="Default.aspx" class="back-btn">
                     <i class="fas fa-arrow-left"></i>
-                    <span>Back to Dashboard</span>
+                    <span>ダッシュボードに戻る</span>
                 </a>
             </div>
         </div>
@@ -448,18 +444,18 @@
 
             <div class="page-header">
                 <div>
-                    <div class="page-title">All Guests</div>
-                    <div class="page-subtitle">Complete list of registered guests</div>
+                    <div class="page-title">全ゲスト</div>
+                    <div class="page-subtitle">登録済みゲストの完全リスト</div>
                 </div>
                 <a href="AddGuest.aspx" class="action-btn">
                     <i class="fas fa-user-plus"></i>
-                    <span>Add New Guest</span>
+                    <span>新規ゲスト追加</span>
                 </a>
             </div>
 
             <div class="stats-row">
                 <div class="stat-card">
-                    <div class="stat-label">Total Guests</div>
+                    <div class="stat-label">総ゲスト数</div>
                     <div class="stat-value">
                         <asp:Label ID="lblTotalGuests" runat="server" Text="0"></asp:Label>
                     </div>
@@ -470,39 +466,39 @@
                 <div class="search-wrapper">
                     <i class="fas fa-search search-icon"></i>
                     <asp:TextBox ID="txtSearch" runat="server" CssClass="search-input" 
-                        placeholder="Search by name, email, or phone..." AutoPostBack="True" 
+                        placeholder="名前、メール、または電話番号で検索..." AutoPostBack="True" 
                         OnTextChanged="txtSearch_TextChanged"></asp:TextBox>
                 </div>
             </div>
 
             <div class="guest-table">
                 <asp:GridView ID="gvGuests" runat="server" AutoGenerateColumns="False" 
-                    GridLines="None" ShowHeaderWhenEmpty="True" EmptyDataText="No guests found"
+                    GridLines="None" ShowHeaderWhenEmpty="True" EmptyDataText="ゲストが見つかりません"
                     OnRowCommand="gvGuests_RowCommand">
                     <Columns>
-                        <asp:BoundField DataField="GuestName" HeaderText="Guest Name" />
-                        <asp:BoundField DataField="Email" HeaderText="Email" />
-                        <asp:BoundField DataField="Phone" HeaderText="Phone" />
-                        <asp:BoundField DataField="IDNumber" HeaderText="ID Number" />
-                        <asp:BoundField DataField="CreatedDate" HeaderText="Registered On" DataFormatString="{0:MMM dd, yyyy}" />
-                        <asp:BoundField DataField="TotalBookings" HeaderText="Total Bookings" />
+                        <asp:BoundField DataField="GuestName" HeaderText="ゲスト名" />
+                        <asp:BoundField DataField="Email" HeaderText="メールアドレス" />
+                        <asp:BoundField DataField="Phone" HeaderText="電話番号" />
+                        <asp:BoundField DataField="IDNumber" HeaderText="ID番号" />
+                        <asp:BoundField DataField="CreatedDate" HeaderText="登録日" DataFormatString="{0:yyyy年MM月dd日}" />
+                        <asp:BoundField DataField="TotalBookings" HeaderText="予約総数" />
                         
-                        <asp:TemplateField HeaderText="Actions">
+                        <asp:TemplateField HeaderText="操作">
                             <ItemTemplate>
                                 <div class="action-buttons">
                                     <asp:LinkButton ID="btnEdit" runat="server" 
                                         CommandName="EditGuest" 
                                         CommandArgument='<%# Eval("GuestID") %>'
                                         CssClass="btn btn-edit">
-                                        <i class="fas fa-edit"></i> Edit
+                                        <i class="fas fa-edit"></i> 編集
                                     </asp:LinkButton>
                                     
                                     <asp:LinkButton ID="btnDelete" runat="server" 
                                         CommandName="DeleteGuest" 
                                         CommandArgument='<%# Eval("GuestID") %>'
                                         CssClass="btn btn-delete"
-                                        OnClientClick="return confirm('Are you sure you want to delete this guest? This action cannot be undone.');">
-                                        <i class="fas fa-trash"></i> Delete
+                                        OnClientClick="return confirm('このゲストを削除してもよろしいですか？この操作は元に戻せません。');">
+                                        <i class="fas fa-trash"></i> 削除
                                     </asp:LinkButton>
                                 </div>
                             </ItemTemplate>
@@ -516,40 +512,40 @@
         <div id="editModal" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2><i class="fas fa-user-edit"></i> Edit Guest Information</h2>
+                    <h2><i class="fas fa-user-edit"></i> ゲスト情報編集</h2>
                     <button type="button" class="close" onclick="hideEditModal()">&times;</button>
                 </div>
                 <div class="modal-body">
                     <asp:HiddenField ID="hfEditGuestID" runat="server" />
                     
                     <div class="form-group">
-                        <label>First Name</label>
-                        <asp:TextBox ID="txtEditFirstName" runat="server" placeholder="Enter first name" />
+                        <label>名</label>
+                        <asp:TextBox ID="txtEditFirstName" runat="server" placeholder="名を入力してください" />
                     </div>
 
                     <div class="form-group">
-                        <label>Last Name</label>
-                        <asp:TextBox ID="txtEditLastName" runat="server" placeholder="Enter last name" />
+                        <label>姓</label>
+                        <asp:TextBox ID="txtEditLastName" runat="server" placeholder="姓を入力してください" />
                     </div>
 
                     <div class="form-group">
-                        <label>Email</label>
-                        <asp:TextBox ID="txtEditEmail" runat="server" placeholder="Enter email address" TextMode="Email" />
+                        <label>メールアドレス</label>
+                        <asp:TextBox ID="txtEditEmail" runat="server" placeholder="メールアドレスを入力してください" TextMode="Email" />
                     </div>
 
                     <div class="form-group">
-                        <label>Phone</label>
-                        <asp:TextBox ID="txtEditPhone" runat="server" placeholder="Enter phone number" />
+                        <label>電話番号</label>
+                        <asp:TextBox ID="txtEditPhone" runat="server" placeholder="電話番号を入力してください" />
                     </div>
 
                     <div class="form-group">
-                        <label>ID Number</label>
-                        <asp:TextBox ID="txtEditIDNumber" runat="server" placeholder="Enter ID number" />
+                        <label>ID番号</label>
+                        <asp:TextBox ID="txtEditIDNumber" runat="server" placeholder="ID番号を入力してください" />
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn-cancel" onclick="hideEditModal()">Cancel</button>
-                    <asp:Button ID="btnSaveEdit" runat="server" Text="Save Changes" 
+                    <button type="button" class="btn-cancel" onclick="hideEditModal()">キャンセル</button>
+                    <asp:Button ID="btnSaveEdit" runat="server" Text="変更を保存" 
                         CssClass="btn-save" OnClick="btnSaveEdit_Click" />
                 </div>
             </div>
@@ -564,7 +560,7 @@
                 document.getElementById('editModal').style.display = 'none';
             }
 
-            // Close modal when clicking outside
+            // モーダルの外側をクリックしたら閉じる
             window.onclick = function (event) {
                 var modal = document.getElementById('editModal');
                 if (event.target == modal) {

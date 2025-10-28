@@ -24,24 +24,6 @@ namespace HotelManagement
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// pnlSuccess コントロール。
-        /// </summary>
-        /// <remarks>
-        /// 自動生成されたフィールド。
-        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlSuccess;
-
-        /// <summary>
-        /// lblSuccess コントロール。
-        /// </summary>
-        /// <remarks>
-        /// 自動生成されたフィールド。
-        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblSuccess;
-
-        /// <summary>
         /// pnlError コントロール。
         /// </summary>
         /// <remarks>
@@ -60,40 +42,40 @@ namespace HotelManagement
         protected global::System.Web.UI.WebControls.Label lblError;
 
         /// <summary>
-        /// pnlNewGuestCard コントロール。
+        /// pnlSuccess コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlNewGuestCard;
+        protected global::System.Web.UI.WebControls.Panel pnlSuccess;
 
         /// <summary>
-        /// btnSelectNewGuest コントロール。
+        /// lblSuccess コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnSelectNewGuest;
+        protected global::System.Web.UI.WebControls.Label lblSuccess;
 
         /// <summary>
-        /// pnlExistingGuestCard コントロール。
+        /// btnNewGuest コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlExistingGuestCard;
+        protected global::System.Web.UI.WebControls.Button btnNewGuest;
 
         /// <summary>
-        /// btnSelectExistingGuest コントロール。
+        /// btnExistingGuest コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnSelectExistingGuest;
+        protected global::System.Web.UI.WebControls.Button btnExistingGuest;
 
         /// <summary>
         /// pnlNewGuestForm コントロール。

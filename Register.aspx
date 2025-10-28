@@ -188,8 +188,8 @@
         <div class="register-container">
             <div class="register-header">
                 <i class="fas fa-user-plus"></i>
-                <h1>Create Account</h1>
-                <p>Register to manage your hotel</p>
+                <h1>アカウント作成</h1>
+                <p>ホテル管理のために登録してください</p>
             </div>
 
             <div class="register-body">
@@ -204,84 +204,84 @@
                 </asp:Panel>
 
                 <div class="form-group">
-                    <label class="form-label">Full Name</label>
+                    <label class="form-label">氏名</label>
                     <div class="input-wrapper">
                         <i class="fas fa-user input-icon"></i>
                         <asp:TextBox ID="txtFullName" runat="server" CssClass="form-input" 
-                            placeholder="Enter your full name" required></asp:TextBox>
+                            placeholder="氏名を入力してください" required></asp:TextBox>
                     </div>
                     <asp:RequiredFieldValidator ID="rfvFullName" runat="server" 
                         ControlToValidate="txtFullName" Display="Dynamic" 
-                        ErrorMessage="Full name is required" CssClass="validator" 
+                        ErrorMessage="氏名は必須です" CssClass="validator" 
                         ValidationGroup="RegisterGroup"></asp:RequiredFieldValidator>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Username</label>
+                    <label class="form-label">ユーザー名</label>
                     <div class="input-wrapper">
                         <i class="fas fa-at input-icon"></i>
                         <asp:TextBox ID="txtUsername" runat="server" CssClass="form-input" 
-                            placeholder="Choose a username" required></asp:TextBox>
+                            placeholder="ユーザー名を選択してください" required></asp:TextBox>
                     </div>
                     <asp:RequiredFieldValidator ID="rfvUsername" runat="server" 
                         ControlToValidate="txtUsername" Display="Dynamic" 
-                        ErrorMessage="Username is required" CssClass="validator" 
+                        ErrorMessage="ユーザー名は必須です" CssClass="validator" 
                         ValidationGroup="RegisterGroup"></asp:RequiredFieldValidator>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Email</label>
+                    <label class="form-label">メールアドレス</label>
                     <div class="input-wrapper">
                         <i class="fas fa-envelope input-icon"></i>
                         <asp:TextBox ID="txtEmail" runat="server" CssClass="form-input" 
-                            TextMode="Email" placeholder="Enter your email" required></asp:TextBox>
+                            TextMode="Email" placeholder="メールアドレスを入力してください" required></asp:TextBox>
                     </div>
                     <asp:RequiredFieldValidator ID="rfvEmail" runat="server" 
                         ControlToValidate="txtEmail" Display="Dynamic" 
-                        ErrorMessage="Email is required" CssClass="validator" 
+                        ErrorMessage="メールアドレスは必須です" CssClass="validator" 
                         ValidationGroup="RegisterGroup"></asp:RequiredFieldValidator>
                     <asp:RegularExpressionValidator ID="revEmail" runat="server" 
                         ControlToValidate="txtEmail" Display="Dynamic" 
-                        ErrorMessage="Invalid email format" CssClass="validator"
+                        ErrorMessage="無効なメールアドレス形式です" CssClass="validator"
                         ValidationExpression="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"
                         ValidationGroup="RegisterGroup"></asp:RegularExpressionValidator>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Password</label>
+                    <label class="form-label">パスワード</label>
                     <div class="input-wrapper">
                         <i class="fas fa-lock input-icon"></i>
                         <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" 
-                            CssClass="form-input" placeholder="Create a password" required></asp:TextBox>
+                            CssClass="form-input" placeholder="パスワードを作成してください" required></asp:TextBox>
                     </div>
                     <asp:RequiredFieldValidator ID="rfvPassword" runat="server" 
                         ControlToValidate="txtPassword" Display="Dynamic" 
-                        ErrorMessage="Password is required" CssClass="validator" 
+                        ErrorMessage="パスワードは必須です" CssClass="validator" 
                         ValidationGroup="RegisterGroup"></asp:RequiredFieldValidator>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Confirm Password</label>
+                    <label class="form-label">パスワード確認</label>
                     <div class="input-wrapper">
                         <i class="fas fa-lock input-icon"></i>
                         <asp:TextBox ID="txtConfirmPassword" runat="server" TextMode="Password" 
-                            CssClass="form-input" placeholder="Confirm your password" required></asp:TextBox>
+                            CssClass="form-input" placeholder="パスワードを再入力してください" required></asp:TextBox>
                     </div>
                     <asp:RequiredFieldValidator ID="rfvConfirmPassword" runat="server" 
                         ControlToValidate="txtConfirmPassword" Display="Dynamic" 
-                        ErrorMessage="Please confirm your password" CssClass="validator" 
+                        ErrorMessage="パスワードを確認してください" CssClass="validator" 
                         ValidationGroup="RegisterGroup"></asp:RequiredFieldValidator>
                     <asp:CompareValidator ID="cvPassword" runat="server" 
                         ControlToValidate="txtConfirmPassword" ControlToCompare="txtPassword"
-                        Display="Dynamic" ErrorMessage="Passwords do not match" CssClass="validator"
+                        Display="Dynamic" ErrorMessage="パスワードが一致しません" CssClass="validator"
                         ValidationGroup="RegisterGroup"></asp:CompareValidator>
                 </div>
 
-                <asp:Button ID="btnRegister" runat="server" Text="Create Account" 
+                <asp:Button ID="btnRegister" runat="server" Text="アカウント作成" 
                     CssClass="btn-register" OnClick="btnRegister_Click" ValidationGroup="RegisterGroup" />
 
                 <div class="login-link">
-                    Already have an account? <a href="Login.aspx">Sign in</a>
+                    すでにアカウントをお持ちですか？ <a href="Login.aspx">サインイン</a>
                 </div>
             </div>
         </div>

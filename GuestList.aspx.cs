@@ -25,6 +25,7 @@ namespace HotelManagement
             }
         }
 
+        // ゲストを読み込む
         private void LoadGuests()
         {
             try
@@ -45,7 +46,7 @@ namespace HotelManagement
                 COUNT(b.BookingID) AS TotalBookings
             FROM Guests g
             LEFT JOIN Bookings b ON g.GuestID = b.GuestID
-            WHERE g.IsActive = 1"; // Only show active guests
+            WHERE g.IsActive = 1"; // アクティブなゲストのみを表示
 
                 if (!string.IsNullOrEmpty(searchTerm))
                 {
@@ -76,7 +77,7 @@ namespace HotelManagement
             }
             catch (Exception ex)
             {
-                ShowError("Error loading guests: " + ex.Message);
+                ShowError("ゲストの読み込みエラー: " + ex.Message);
             }
             finally
             {
@@ -85,6 +86,7 @@ namespace HotelManagement
             }
         }
 
+        // ゲスト総数を読み込む
         private void LoadTotalGuests()
         {
             try
@@ -99,7 +101,7 @@ namespace HotelManagement
             }
             catch (Exception ex)
             {
-                ShowError("Error loading guest count: " + ex.Message);
+                ShowError("ゲスト数の読み込みエラー: " + ex.Message);
             }
             finally
             {
@@ -107,11 +109,14 @@ namespace HotelManagement
                     con.Close();
             }
         }
+
+        // 検索テキストが変更されたときの処理
         protected void txtSearch_TextChanged(object sender, EventArgs e)
         {
             LoadGuests();
         }
 
+        // GridViewの行コマンドを処理
         protected void gvGuests_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             int guestId = Convert.ToInt32(e.CommandArgument);
@@ -126,6 +131,7 @@ namespace HotelManagement
             }
         }
 
+        // 編集用にゲスト情報を読み込む
         private void LoadGuestForEdit(int guestId)
         {
             try
@@ -148,7 +154,7 @@ namespace HotelManagement
                     txtEditPhone.Text = reader["Phone"].ToString();
                     txtEditIDNumber.Text = reader["IDNumber"].ToString();
 
-                    // Show the edit modal
+                    // 編集モーダルを表示
                     System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "ShowEditModal",
                         "showEditModal();", true);
                 }
@@ -157,7 +163,7 @@ namespace HotelManagement
             }
             catch (Exception ex)
             {
-                ShowError("Error loading guest details: " + ex.Message);
+                ShowError("ゲスト詳細の読み込みエラー: " + ex.Message);
             }
             finally
             {
@@ -166,6 +172,7 @@ namespace HotelManagement
             }
         }
 
+        // 編集を保存
         protected void btnSaveEdit_Click(object sender, EventArgs e)
         {
             try
@@ -193,16 +200,16 @@ namespace HotelManagement
                 cmd.ExecuteNonQuery();
                 con.Close();
 
-                ShowSuccess("Guest information updated successfully!");
+                ShowSuccess("ゲスト情報が正常に更新されました！");
                 LoadGuests();
 
-                // Hide the modal
+                // モーダルを非表示
                 System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "HideEditModal",
                     "hideEditModal();", true);
             }
             catch (Exception ex)
             {
-                ShowError("Error updating guest: " + ex.Message);
+                ShowError("ゲスト更新エラー: " + ex.Message);
             }
             finally
             {
@@ -211,13 +218,14 @@ namespace HotelManagement
             }
         }
 
+        // ゲストを削除
         private void DeleteGuest(int guestId)
         {
             try
             {
                 con.Open();
 
-                // Check if guest has any ACTIVE bookings (not checked out or cancelled)
+                // アクティブな予約（チェックアウトまたはキャンセルされていない）があるかチェック
                 SqlCommand checkCmd = new SqlCommand(@"
             SELECT COUNT(*) 
             FROM Bookings 
@@ -229,12 +237,12 @@ namespace HotelManagement
 
                 if (activeBookings > 0)
                 {
-                    ShowError("Cannot delete guest with active or confirmed bookings. Please check out or cancel the active bookings first.");
+                    ShowError("アクティブまたは確認済みの予約があるゲストは削除できません。まずアクティブな予約をチェックアウトまたはキャンセルしてください。");
                     con.Close();
                     return;
                 }
 
-                // Get booking count for confirmation message
+                // 確認メッセージ用に予約数を取得
                 SqlCommand countCmd = new SqlCommand(@"
             SELECT COUNT(*) 
             FROM Bookings 
@@ -242,7 +250,7 @@ namespace HotelManagement
                 countCmd.Parameters.AddWithValue("@GuestID", guestId);
                 int totalBookings = Convert.ToInt32(countCmd.ExecuteScalar());
 
-                // Option 1: Soft delete by anonymizing the guest data (RECOMMENDED)
+                // オプション1: ゲストデータを匿名化してソフト削除（推奨）
                 SqlCommand anonymizeCmd = new SqlCommand(@"
             UPDATE Guests 
             SET FirstName = 'Deleted',
@@ -259,11 +267,11 @@ namespace HotelManagement
 
                 if (totalBookings > 0)
                 {
-                    ShowSuccess($"Guest information has been anonymized. Their {totalBookings} past booking record(s) are preserved for accounting purposes.");
+                    ShowSuccess($"ゲスト情報は匿名化されました。会計目的のために{totalBookings}件の過去の予約記録は保存されています。");
                 }
                 else
                 {
-                    ShowSuccess("Guest deleted successfully!");
+                    ShowSuccess("ゲストが正常に削除されました！");
                 }
 
                 LoadGuests();
@@ -271,7 +279,7 @@ namespace HotelManagement
             }
             catch (Exception ex)
             {
-                ShowError("Error deleting guest: " + ex.Message);
+                ShowError("ゲスト削除エラー: " + ex.Message);
             }
             finally
             {
@@ -280,6 +288,7 @@ namespace HotelManagement
             }
         }
 
+        // エラーメッセージを表示
         private void ShowError(string message)
         {
             pnlError.Visible = true;
@@ -287,6 +296,7 @@ namespace HotelManagement
             lblError.Text = message;
         }
 
+        // 成功メッセージを表示
         private void ShowSuccess(string message)
         {
             pnlSuccess.Visible = true;

@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>User Profile</title>
+    <title>ユーザープロフィール</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <style>
         * {
@@ -220,10 +220,10 @@
         <!-- Header -->
         <div class="header">
             <div class="header-content">
-                <h1><i class="fas fa-user-circle"></i> User Profile</h1>
+                <h1><i class="fas fa-user-circle"></i> ユーザープロフィール</h1>
                 <a href="Default.aspx" class="back-btn">
                     <i class="fas fa-arrow-left"></i>
-                    <span>Back to Dashboard</span>
+                    <span>ダッシュボードに戻る</span>
                 </a>
             </div>
         </div>
@@ -254,28 +254,28 @@
                 </div>
 
                 <div class="info-group">
-                    <span class="info-label">Username</span>
+                    <span class="info-label">ユーザー名</span>
                     <div class="info-value">
                         <asp:Label ID="lblUsername" runat="server"></asp:Label>
                     </div>
                 </div>
 
                 <div class="info-group">
-                    <span class="info-label">Email</span>
+                    <span class="info-label">メールアドレス</span>
                     <div class="info-value">
                         <asp:Label ID="lblEmail" runat="server"></asp:Label>
                     </div>
                 </div>
 
                 <div class="info-group">
-                    <span class="info-label">Account Created</span>
+                    <span class="info-label">アカウント作成日</span>
                     <div class="info-value">
                         <asp:Label ID="lblCreatedDate" runat="server"></asp:Label>
                     </div>
                 </div>
 
                 <div class="info-group">
-                    <span class="info-label">Last Login</span>
+                    <span class="info-label">最終ログイン</span>
                     <div class="info-value">
                         <asp:Label ID="lblLastLogin" runat="server"></asp:Label>
                     </div>
@@ -284,19 +284,19 @@
 
             <!-- Actions Section -->
             <div class="actions-section">
-                <div class="section-title">Account Actions</div>
+                <div class="section-title">アカウント操作</div>
 
-                <asp:Button ID="btnLogout" runat="server" Text="Logout" CssClass="btn btn-logout" OnClick="btnLogout_Click" />
+                <asp:Button ID="btnLogout" runat="server" Text="ログアウト" CssClass="btn btn-logout" OnClick="btnLogout_Click" />
 
                 <div class="delete-warning">
                     <div class="delete-warning-text">
                         <i class="fas fa-exclamation-triangle"></i>
-                        <strong>Warning:</strong> Deleting your account is permanent and cannot be undone. All your data will be removed.
+                        <strong>警告：</strong> アカウントの削除は永久的であり、元に戻すことはできません。すべてのデータが削除されます。
                     </div>
                 </div>
 
-                <asp:Button ID="btnDeleteAccount" runat="server" Text="Delete Account" CssClass="btn btn-delete" 
-                    OnClick="btnDeleteAccount_Click" OnClientClick="return confirm('Are you sure you want to delete your account? This action cannot be undone!');" />
+                <asp:Button ID="btnDeleteAccount" runat="server" Text="アカウント削除" CssClass="btn btn-delete" 
+                    OnClick="btnDeleteAccount_Click" OnClientClick="return confirm('アカウントを削除してもよろしいですか？この操作は元に戻せません！');" />
             </div>
         </div>
     </form>

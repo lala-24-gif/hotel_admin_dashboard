@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Overall Guest Data</title>
+    <title>全体のゲストデータ</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <style>
         * {
@@ -337,18 +337,18 @@
     <form id="form1" runat="server">
         <div class="header">
             <div class="header-content">
-                <h1><i class="fas fa-users-cog"></i> Overall Guest Data</h1>
+                <h1><i class="fas fa-users-cog"></i> 全体のゲストデータ</h1>
                 <a href="Default.aspx" class="back-btn">
                     <i class="fas fa-arrow-left"></i>
-                    <span>Back to Dashboard</span>
+                    <span>ダッシュボードに戻る</span>
                 </a>
             </div>
         </div>
 
         <div class="container">
             <div class="page-intro">
-                <h2>Manage Guest Data</h2>
-                <p>View and manage all guest bookings and stays</p>
+                <h2>ゲストデータ管理</h2>
+                <p>すべてのゲストの予約と滞在を表示・管理</p>
             </div>
 
             <asp:Panel ID="pnlSuccess" runat="server" CssClass="alert alert-success" Visible="false">
@@ -363,93 +363,92 @@
 
             <div class="filter-section">
                 <div class="filter-group">
-                    <label class="filter-label">Filter by Status</label>
+                    <label class="filter-label">ステータスでフィルター</label>
                     <asp:DropDownList ID="ddlStatusFilter" runat="server" CssClass="filter-select">
-                        <asp:ListItem Value="All" Selected="True">All Guests</asp:ListItem>
-                        <asp:ListItem Value="Confirmed">Confirmed</asp:ListItem>
-                          <asp:ListItem Value="CheckedIn">Checked In</asp:ListItem>
-                        <asp:ListItem Value="CheckedOut">Checked Out</asp:ListItem>
-                        <asp:ListItem Value="Cancelled">Cancelled</asp:ListItem>
+                        <asp:ListItem Value="All" Selected="True">全ゲスト</asp:ListItem>
+                        <asp:ListItem Value="Confirmed">確認済み</asp:ListItem>
+                        <asp:ListItem Value="CheckedIn">チェックイン済み</asp:ListItem>
+                        <asp:ListItem Value="CheckedOut">チェックアウト済み</asp:ListItem>
+                        <asp:ListItem Value="Cancelled">キャンセル済み</asp:ListItem>
                     </asp:DropDownList>
                 </div>
                 <div class="filter-group">
-                    <label class="filter-label">Date Range</label>
+                    <label class="filter-label">日付範囲</label>
                     <asp:DropDownList ID="ddlDateFilter" runat="server" CssClass="filter-select">
-                        <asp:ListItem Value="All" Selected="True">All Dates</asp:ListItem>
-                        <asp:ListItem Value="Today">Today</asp:ListItem>
-                        <asp:ListItem Value="Week">This Week</asp:ListItem>
-                        <asp:ListItem Value="Month">This Month</asp:ListItem>
-                        <asp:ListItem Value="Future">Future Guests</asp:ListItem>
+                        <asp:ListItem Value="All" Selected="True">すべての日付</asp:ListItem>
+                        <asp:ListItem Value="Today">本日</asp:ListItem>
+                        <asp:ListItem Value="Week">今週</asp:ListItem>
+                        <asp:ListItem Value="Month">今月</asp:ListItem>
+                        <asp:ListItem Value="Future">今後のゲスト</asp:ListItem>
                     </asp:DropDownList>
                 </div>
                 <div>
-                    <asp:Button ID="btnApplyFilter" runat="server" Text="Apply Filter" CssClass="btn-filter" OnClick="btnApplyFilter_Click" />
+                    <asp:Button ID="btnApplyFilter" runat="server" Text="フィルター適用" CssClass="btn-filter" OnClick="btnApplyFilter_Click" />
                 </div>
             </div>
 
             <div class="stats-cards">
                 <div class="stat-card">
-                    <div class="stat-label">Total Records</div>
+                    <div class="stat-label">総レコード数</div>
                     <div class="stat-value">
                         <asp:Label ID="lblTotalBookings" runat="server" Text="0"></asp:Label>
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">Confirmed</div>
+                    <div class="stat-label">確認済み</div>
                     <div class="stat-value">
                         <asp:Label ID="lblConfirmed" runat="server" Text="0"></asp:Label>
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">Checked In</div>
+                    <div class="stat-label">チェックイン済み</div>
                     <div class="stat-value">
                         <asp:Label ID="lblCheckedIn" runat="server" Text="0"></asp:Label>
                     </div>
                 </div>
-         
             </div>
 
             <div class="bookings-grid">
                 <div class="grid-header">
-                    <h3><i class="fas fa-database"></i> Guest Data List</h3>
+                    <h3><i class="fas fa-database"></i> ゲストデータリスト</h3>
                 </div>
                 <div class="gridview-wrapper">
                     <asp:GridView ID="gvBookings" runat="server" 
                         CssClass="gridview" 
                         AutoGenerateColumns="False"
                         OnRowCommand="gvBookings_RowCommand"
-                        EmptyDataText="No bookings found">
+                        EmptyDataText="予約が見つかりません">
                         <Columns>
                             <asp:BoundField DataField="BookingID" HeaderText="ID" />
-                            <asp:BoundField DataField="GuestName" HeaderText="Guest Name" />
-                            <asp:BoundField DataField="RoomNumber" HeaderText="Room" />
-                            <asp:BoundField DataField="CheckInDate" HeaderText="Check-In" DataFormatString="{0:yyyy-MM-dd}" />
-                            <asp:BoundField DataField="CheckOutDate" HeaderText="Check-Out" DataFormatString="{0:yyyy-MM-dd}" />
-                            <asp:BoundField DataField="NumberOfGuests" HeaderText="Guests" />
-                            <asp:BoundField DataField="TotalAmount" HeaderText="Amount" DataFormatString="¥{0:N0}" />
-                            <asp:TemplateField HeaderText="Status">
+                            <asp:BoundField DataField="GuestName" HeaderText="ゲスト名" />
+                            <asp:BoundField DataField="RoomNumber" HeaderText="客室番号" />
+                            <asp:BoundField DataField="CheckInDate" HeaderText="チェックイン" DataFormatString="{0:yyyy-MM-dd}" />
+                            <asp:BoundField DataField="CheckOutDate" HeaderText="チェックアウト" DataFormatString="{0:yyyy-MM-dd}" />
+                            <asp:BoundField DataField="NumberOfGuests" HeaderText="人数" />
+                            <asp:BoundField DataField="TotalAmount" HeaderText="金額" DataFormatString="¥{0:N0}" />
+                            <asp:TemplateField HeaderText="ステータス">
                                 <ItemTemplate>
                                     <span class='status-badge status-<%# Eval("Status").ToString().ToLower() %>'>
-                                        <%# Eval("Status") %>
+                                        <%# GetStatusText(Eval("Status").ToString()) %>
                                     </span>
                                 </ItemTemplate>
                             </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Actions">
+                            <asp:TemplateField HeaderText="操作">
                                 <ItemTemplate>
                                     <asp:Button ID="btnCheckOut" runat="server" 
-                                        Text="Check Out" 
+                                        Text="チェックアウト" 
                                         CommandName="CheckOut" 
                                         CommandArgument='<%# Eval("BookingID") %>'
                                         CssClass="btn-action btn-checkout"
                                         Visible='<%# Eval("Status").ToString() == "CheckedIn" %>'
-                                        OnClientClick="return confirm('Check out this guest?');" />
+                                        OnClientClick="return confirm('このゲストをチェックアウトしますか？');" />
                                     <asp:Button ID="btnCancel" runat="server" 
-                                        Text="Cancel" 
+                                        Text="キャンセル" 
                                         CommandName="CancelBooking" 
                                         CommandArgument='<%# Eval("BookingID") %>'
                                         CssClass="btn-action btn-cancel"
                                         Visible='<%# Eval("Status").ToString() != "CheckedOut" && Eval("Status").ToString() != "Cancelled" %>'
-                                        OnClientClick="return confirm('Cancel this booking?');" />
+                                        OnClientClick="return confirm('この予約をキャンセルしますか？');" />
                                 </ItemTemplate>
                             </asp:TemplateField>
                         </Columns>
@@ -458,8 +457,8 @@
                                 <div class="empty-icon">
                                     <i class="fas fa-calendar-times"></i>
                                 </div>
-                                <div class="empty-title">No Guest Data Found</div>
-                                <div class="empty-desc">Try adjusting your filters or create a new booking</div>
+                                <div class="empty-title">ゲストデータが見つかりません</div>
+                                <div class="empty-desc">フィルターを調整するか、新しい予約を作成してください</div>
                             </div>
                         </EmptyDataTemplate>
                     </asp:GridView>

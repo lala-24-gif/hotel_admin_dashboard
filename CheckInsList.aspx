@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Today's Check-Ins</title>
+    <title>本日のチェックイン</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <style>
         * {
@@ -303,18 +303,18 @@
     <form id="form1" runat="server">
         <div class="header">
             <div class="header-content">
-                <h1><i class="fas fa-sign-in-alt"></i> Today's Check-Ins</h1>
+                <h1><i class="fas fa-sign-in-alt"></i> 本日のチェックイン</h1>
                 <a href="Default.aspx" class="back-btn">
                     <i class="fas fa-arrow-left"></i>
-                    <span>Back to Dashboard</span>
+                    <span>ダッシュボードに戻る</span>
                 </a>
             </div>
         </div>
 
         <div class="container">
             <div class="page-intro">
-                <h2>Expected Check-Ins</h2>
-                <p>Guests scheduled to check in today</p>
+                <h2>予定されているチェックイン</h2>
+                <p>本日チェックイン予定のゲスト</p>
             </div>
 
             <asp:Panel ID="pnlSuccess" runat="server" CssClass="alert alert-success" Visible="false">
@@ -329,19 +329,19 @@
 
             <div class="stats-cards">
                 <div class="stat-card">
-                    <div class="stat-label">Total Expected</div>
+                    <div class="stat-label">予定総数</div>
                     <div class="stat-value">
                         <asp:Label ID="lblTotalExpected" runat="server" Text="0"></asp:Label>
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">Already Checked In</div>
+                    <div class="stat-label">チェックイン済み</div>
                     <div class="stat-value">
                         <asp:Label ID="lblAlreadyCheckedIn" runat="server" Text="0"></asp:Label>
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">Pending Check-In</div>
+                    <div class="stat-label">チェックイン待ち</div>
                     <div class="stat-value">
                         <asp:Label ID="lblPending" runat="server" Text="0"></asp:Label>
                     </div>
@@ -350,50 +350,50 @@
 
             <div class="checkins-grid">
                 <div class="grid-header">
-                    <h3><i class="fas fa-calendar-check"></i> Check-In List</h3>
+                    <h3><i class="fas fa-calendar-check"></i> チェックインリスト</h3>
                 </div>
                 <div class="gridview-wrapper">
                     <asp:GridView ID="gvCheckIns" runat="server" 
                         CssClass="gridview" 
                         AutoGenerateColumns="False"
                         OnRowCommand="gvCheckIns_RowCommand"
-                        EmptyDataText="No check-ins scheduled for today">
+                        EmptyDataText="本日のチェックインはありません">
                         <Columns>
-                            <asp:BoundField DataField="RoomNumber" HeaderText="Room" />
-                            <asp:BoundField DataField="GuestName" HeaderText="Guest Name" />
-                            <asp:BoundField DataField="Phone" HeaderText="Phone" />
-                            <asp:BoundField DataField="ExpectedTime" HeaderText="Expected Time" />
-                            <asp:BoundField DataField="CheckOutDate" HeaderText="Check-Out" DataFormatString="{0:yyyy-MM-dd}" />
-                            <asp:BoundField DataField="NumberOfGuests" HeaderText="Guests" />
-                            <asp:BoundField DataField="TotalAmount" HeaderText="Amount" DataFormatString="¥{0:N0}" />
-                            <asp:TemplateField HeaderText="Status">
+                            <asp:BoundField DataField="RoomNumber" HeaderText="客室番号" />
+                            <asp:BoundField DataField="GuestName" HeaderText="ゲスト名" />
+                            <asp:BoundField DataField="Phone" HeaderText="電話番号" />
+                            <asp:BoundField DataField="ExpectedTime" HeaderText="予定時刻" />
+                            <asp:BoundField DataField="CheckOutDate" HeaderText="チェックアウト" DataFormatString="{0:yyyy-MM-dd}" />
+                            <asp:BoundField DataField="NumberOfGuests" HeaderText="人数" />
+                            <asp:BoundField DataField="TotalAmount" HeaderText="金額" DataFormatString="¥{0:N0}" />
+                            <asp:TemplateField HeaderText="ステータス">
                                 <ItemTemplate>
                                     <span class='status-badge status-<%# Eval("Status").ToString().ToLower() %>'>
-                                        <%# Eval("Status") %>
+                                        <%# GetStatusText(Eval("Status").ToString()) %>
                                     </span>
                                 </ItemTemplate>
                             </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Actions">
+                            <asp:TemplateField HeaderText="操作">
                                 <ItemTemplate>
                                     <asp:Button ID="btnCheckIn" runat="server" 
-                                        Text="Check In" 
+                                        Text="チェックイン" 
                                         CommandName="CheckInGuest" 
                                         CommandArgument='<%# Eval("BookingID") %>'
                                         CssClass="btn-checkin"
                                         Visible='<%# Eval("Status").ToString() != "CheckedIn" %>' />
                                     <asp:Button ID="btnCheckOut" runat="server" 
-                                        Text="Check Out" 
+                                        Text="チェックアウト" 
                                         CommandName="CheckOutGuest" 
                                         CommandArgument='<%# Eval("BookingID") %>'
                                         CssClass="btn-checkout"
                                         Visible='<%# Eval("Status").ToString() == "CheckedIn" %>'
-                                        OnClientClick="return confirm('Check out this guest?');" />
+                                        OnClientClick="return confirm('このゲストをチェックアウトしますか？');" />
                                     <asp:Button ID="btnCancel" runat="server" 
-                                        Text="Cancel" 
+                                        Text="キャンセル" 
                                         CommandName="CancelBooking" 
                                         CommandArgument='<%# Eval("BookingID") %>'
                                         CssClass="btn-cancel"
-                                        OnClientClick="return confirm('Cancel this booking?');" />
+                                        OnClientClick="return confirm('この予約をキャンセルしますか？');" />
                                 </ItemTemplate>
                             </asp:TemplateField>
                         </Columns>
@@ -402,8 +402,8 @@
                                 <div class="empty-icon">
                                     <i class="fas fa-calendar-times"></i>
                                 </div>
-                                <div class="empty-title">No Check-Ins Today</div>
-                                <div class="empty-desc">There are no guests scheduled to check in today</div>
+                                <div class="empty-title">本日のチェックインなし</div>
+                                <div class="empty-desc">本日チェックイン予定のゲストはいません</div>
                             </div>
                         </EmptyDataTemplate>
                     </asp:GridView>
