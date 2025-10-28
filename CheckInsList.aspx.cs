@@ -34,7 +34,7 @@ namespace HotelManagement
                         g.Phone,
                         r.RoomNumber,
                         rt.TypeName AS RoomType,
-                        b.CheckInDate,
+                        '12:00' AS ExpectedTime,
                         b.CheckOutDate,
                         b.NumberOfGuests,
                         b.TotalAmount,

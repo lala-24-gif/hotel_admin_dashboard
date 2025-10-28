@@ -362,7 +362,7 @@
                             <asp:BoundField DataField="RoomNumber" HeaderText="Room" />
                             <asp:BoundField DataField="GuestName" HeaderText="Guest Name" />
                             <asp:BoundField DataField="Phone" HeaderText="Phone" />
-                            <asp:BoundField DataField="CheckInDate" HeaderText="Expected Time" DataFormatString="{0:HH:mm}" />
+                            <asp:BoundField DataField="ExpectedTime" HeaderText="Expected Time" />
                             <asp:BoundField DataField="CheckOutDate" HeaderText="Check-Out" DataFormatString="{0:yyyy-MM-dd}" />
                             <asp:BoundField DataField="NumberOfGuests" HeaderText="Guests" />
                             <asp:BoundField DataField="TotalAmount" HeaderText="Amount" DataFormatString="¥{0:N0}" />

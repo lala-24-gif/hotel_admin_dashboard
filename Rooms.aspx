@@ -465,7 +465,7 @@
                         <span class="detail-value" id="modalStatus"></span>
                     </div>
                     <div class="action-buttons">
-                        <button type="button" class="btn btn-primary" id="btnViewBooking" onclick="viewBooking()">View Booking</button>
+                        <button type="button" class="btn btn-primary" id="btnViewBooking" onclick="viewBooking()">View Overall Guest Data</button>
                         <button type="button" class="btn btn-secondary" onclick="closeModal()">Close</button>
                     </div>
                 </div>

@@ -18,13 +18,58 @@ namespace HotelManagement
             // Load bookings and statistics on initial page load(not first time loading)
             if (!IsPostBack)
             {
+                AutoCheckInGuests();  // ✨ NEW: Automatically check in guests
                 LoadBookings();
                 LoadStatistics();
             }
         }
+
+        // ✨ NEW METHOD: Automatically check in guests whose check-in date has arrived
+        // ✨ UPDATED METHOD: Automatically check in guests at 12:00 PM on their check-in date
+        private void AutoCheckInGuests()
+        {
+            try
+            {
+                con.Open();
+
+                // Update status from 'Confirmed' to 'CheckedIn' for guests whose:
+                // 1. Check-in date is before today (past dates - check in immediately)
+                // 2. Check-in date is today AND current time is >= 12:00 PM
+                SqlCommand cmd = new SqlCommand(@"
+            UPDATE Bookings 
+            SET Status = 'CheckedIn'
+            WHERE Status = 'Confirmed'
+            AND (
+                CAST(CheckInDate AS DATE) < CAST(GETDATE() AS DATE)
+                OR 
+                (CAST(CheckInDate AS DATE) = CAST(GETDATE() AS DATE) AND DATEPART(HOUR, GETDATE()) >= 12)
+            );", con);
+
+                int rowsAffected = cmd.ExecuteNonQuery();
+
+                con.Close();
+
+                // Optional: Show a message if guests were auto-checked in
+                if (rowsAffected > 0)
+                {
+                    ShowSuccess($"{rowsAffected} guest(s) automatically checked in!");
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowError("Error in auto check-in: " + ex.Message);
+            }
+            finally
+            {
+                if (con.State == ConnectionState.Open)
+                    con.Close();
+            }
+        }
+
         // Apply filters and reload data
         protected void btnApplyFilter_Click(object sender, EventArgs e)
         {
+            AutoCheckInGuests();  // ✨ NEW: Run auto check-in when filters are applied too
             LoadBookings(); // Reload bookings based on selected filters
             LoadStatistics();// Reload statistics based on selected filters
         }
