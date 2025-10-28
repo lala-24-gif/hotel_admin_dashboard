@@ -132,7 +132,7 @@ namespace HotelManagement
                 getRoomCmd.Parameters.AddWithValue("@BookingID", bookingId);
                 int roomId = Convert.ToInt32(getRoomCmd.ExecuteScalar());
 
-                // Update booking status to CheckedIn
+                // Update booking status to CheckedIn AND update room to Occupied
                 SqlCommand cmd = new SqlCommand(@"
                     UPDATE Bookings 
                     SET Status = 'CheckedIn'
@@ -148,7 +148,7 @@ namespace HotelManagement
                 cmd.ExecuteNonQuery();
                 con.Close();
 
-                ShowSuccess("Guest checked in successfully!");
+                ShowSuccess("Guest checked in successfully! Room is now occupied.");
                 LoadCheckIns();
                 LoadStatistics();
             }
