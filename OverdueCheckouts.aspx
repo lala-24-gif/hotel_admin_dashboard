@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Overdue Checkouts - Hotel Management</title>
+    <title>チェックアウト遅延 - ホテル管理システム</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <style>
         * {
@@ -13,7 +13,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'メイリオ', Meiryo, 'ヒラギノ角ゴ Pro', 'Hiragino Kaku Gothic Pro', sans-serif;
             background: #f5f7fa;
             color: #333;
         }
@@ -245,11 +245,11 @@
             <div class="header-content">
                 <h1>
                     <i class="fas fa-exclamation-triangle"></i>
-                    Overdue Checkouts
+                    チェックアウト遅延
                 </h1>
                 <a href="Default.aspx" class="back-btn">
                     <i class="fas fa-arrow-left"></i>
-                    Back to Dashboard
+                    ダッシュボードに戻る
                 </a>
             </div>
         </div>
@@ -267,15 +267,15 @@
 
             <div class="info-banner">
                 <div class="info-content">
-                    <h2>⚠️ Late Checkout Management</h2>
-                    <p>Guests listed below have passed the 12:00 PM checkout time. Please process their checkout or contact them.</p>
+                    <h2>⚠️ チェックアウト遅延管理</h2>
+                    <p>以下のゲストは12:00 PMのチェックアウト時刻を過ぎています。チェックアウト手続きを行うか、ご連絡ください。</p>
                     <p style="margin-top: 10px; font-weight: 600; color: #fc5c7d;">
-                        <i class="fas fa-clock"></i> Current Time: <asp:Label ID="lblCurrentTime" runat="server"></asp:Label>
+                        <i class="fas fa-clock"></i> 現在時刻: <asp:Label ID="lblCurrentTime" runat="server"></asp:Label>
                     </p>
                 </div>
                 <div class="info-stats">
                     <div class="count"><asp:Label ID="lblOverdueCount" runat="server">0</asp:Label></div>
-                    <div class="label">Overdue Checkouts</div>
+                    <div class="label">チェックアウト遅延</div>
                 </div>
             </div>
 
@@ -284,14 +284,14 @@
                     CssClass="gridview" 
                     AutoGenerateColumns="False"
                     OnRowCommand="gvOverdueCheckouts_RowCommand"
-                    EmptyDataText="No overdue checkouts">
+                    EmptyDataText="チェックアウト遅延はありません">
                     <Columns>
-                        <asp:BoundField DataField="BookingID" HeaderText="Booking ID" />
-                        <asp:BoundField DataField="GuestName" HeaderText="Guest Name" />
-                        <asp:BoundField DataField="RoomNumber" HeaderText="Room" />
-                        <asp:BoundField DataField="CheckInDate" HeaderText="Check-In" DataFormatString="{0:MMM dd, yyyy}" />
-                        <asp:BoundField DataField="CheckOutDate" HeaderText="Scheduled Checkout" DataFormatString="{0:MMM dd, yyyy hh:mm tt}" />
-                        <asp:TemplateField HeaderText="Hours Overdue">
+                        <asp:BoundField DataField="BookingID" HeaderText="予約ID" />
+                        <asp:BoundField DataField="GuestName" HeaderText="ゲスト名" />
+                        <asp:BoundField DataField="RoomNumber" HeaderText="部屋番号" />
+                        <asp:BoundField DataField="CheckInDate" HeaderText="チェックイン" DataFormatString="{0:yyyy年MM月dd日}" />
+                        <asp:BoundField DataField="CheckOutDate" HeaderText="予定チェックアウト" DataFormatString="{0:yyyy年MM月dd日 HH:mm}" />
+                        <asp:TemplateField HeaderText="遅延時間">
                             <ItemTemplate>
                                 <div class="time-info">
                                     <i class="fas fa-clock"></i>
@@ -299,22 +299,22 @@
                                 </div>
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:BoundField DataField="TotalAmount" HeaderText="Amount" DataFormatString="¥{0:N0}" />
-                        <asp:TemplateField HeaderText="Status">
+                        <asp:BoundField DataField="TotalAmount" HeaderText="金額" DataFormatString="¥{0:N0}" />
+                        <asp:TemplateField HeaderText="ステータス">
                             <ItemTemplate>
                                 <span class="status-badge status-overdue">
-                                    OVERDUE
+                                    遅延中
                                 </span>
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Action">
+                        <asp:TemplateField HeaderText="操作">
                             <ItemTemplate>
                                 <asp:Button ID="btnCheckOut" runat="server" 
-                                    Text="Check Out Now" 
+                                    Text="今すぐチェックアウト" 
                                     CommandName="CheckOutNow" 
                                     CommandArgument='<%# Eval("BookingID") %>'
                                     CssClass="btn-action btn-checkout"
-                                    OnClientClick="return confirm('Check out this guest now?');" />
+                                    OnClientClick="return confirm('このゲストをチェックアウトしますか？');" />
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>
@@ -323,8 +323,8 @@
                             <div class="empty-icon">
                                 <i class="fas fa-check-circle"></i>
                             </div>
-                            <div class="empty-title">All Clear! 🎉</div>
-                            <div class="empty-desc">No overdue checkouts at this time. All guests are on schedule.</div>
+                            <div class="empty-title">問題なし！ 🎉</div>
+                            <div class="empty-desc">現在、チェックアウト遅延はありません。すべてのゲストが予定通りです。</div>
                         </div>
                     </EmptyDataTemplate>
                 </asp:GridView>

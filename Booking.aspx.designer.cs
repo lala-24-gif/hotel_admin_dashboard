@@ -204,42 +204,6 @@ namespace HotelManagement
         protected global::System.Web.UI.WebControls.Panel pnlBookingDetails;
 
         /// <summary>
-        /// ddlRoom コントロール。
-        /// </summary>
-        /// <remarks>
-        /// 自動生成されたフィールド。
-        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlRoom;
-
-        /// <summary>
-        /// rfvRoom コントロール。
-        /// </summary>
-        /// <remarks>
-        /// 自動生成されたフィールド。
-        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvRoom;
-
-        /// <summary>
-        /// rfvRoom2 コントロール。
-        /// </summary>
-        /// <remarks>
-        /// 自動生成されたフィールド。
-        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvRoom2;
-
-        /// <summary>
-        /// txtNumberOfGuests コントロール。
-        /// </summary>
-        /// <remarks>
-        /// 自動生成されたフィールド。
-        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNumberOfGuests;
-
-        /// <summary>
         /// txtCheckIn コントロール。
         /// </summary>
         /// <remarks>
@@ -292,6 +256,42 @@ namespace HotelManagement
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCheckOut2;
+
+        /// <summary>
+        /// ddlRoom コントロール。
+        /// </summary>
+        /// <remarks>
+        /// 自動生成されたフィールド。
+        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlRoom;
+
+        /// <summary>
+        /// rfvRoom コントロール。
+        /// </summary>
+        /// <remarks>
+        /// 自動生成されたフィールド。
+        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvRoom;
+
+        /// <summary>
+        /// rfvRoom2 コントロール。
+        /// </summary>
+        /// <remarks>
+        /// 自動生成されたフィールド。
+        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvRoom2;
+
+        /// <summary>
+        /// txtNumberOfGuests コントロール。
+        /// </summary>
+        /// <remarks>
+        /// 自動生成されたフィールド。
+        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtNumberOfGuests;
 
         /// <summary>
         /// txtSpecialRequests コントロール。

@@ -15,11 +15,24 @@ namespace HotelManagement
             if (!IsPostBack)
             {
                 LoadGuests();
-                LoadRooms();
                 // Set today's date as default check-in
                 txtCheckIn.Text = DateTime.Today.ToString("yyyy-MM-dd");
                 txtCheckOut.Text = DateTime.Today.AddDays(1).ToString("yyyy-MM-dd");
+                LoadRooms(); // Load rooms AFTER setting dates
             }
+        }
+
+        // Event handlers for date changes - reload rooms when dates change
+        protected void txtCheckIn_TextChanged(object sender, EventArgs e)
+        {
+            LoadRooms();
+            CalculateTotal(sender, e); // Recalculate total when dates change
+        }
+
+        protected void txtCheckOut_TextChanged(object sender, EventArgs e)
+        {
+            LoadRooms();
+            CalculateTotal(sender, e); // Recalculate total when dates change
         }
 
         // FIXED: Changed method name to match ASPX button event
@@ -81,8 +94,27 @@ namespace HotelManagement
         {
             try
             {
+                // Validate dates exist before querying
+                if (string.IsNullOrEmpty(txtCheckIn.Text) || string.IsNullOrEmpty(txtCheckOut.Text))
+                {
+                    return;
+                }
+
                 con.Open();
-                // Load available rooms with floor information
+
+                // Get the selected check-in and check-out dates
+                DateTime checkIn = DateTime.Parse(txtCheckIn.Text);
+                DateTime checkOut = DateTime.Parse(txtCheckOut.Text);
+
+                // Validate checkout is after checkin
+                if (checkOut <= checkIn)
+                {
+                    ShowError("チェックアウト日はチェックイン日より後でなければなりません。");
+                    con.Close();
+                    return;
+                }
+
+                // Load rooms that are NOT booked during the selected date range
                 SqlCommand cmd = new SqlCommand(@"
                     SELECT 
                         r.RoomID, 
@@ -94,8 +126,21 @@ namespace HotelManagement
                         r.Status
                     FROM Rooms r
                     INNER JOIN RoomTypes rt ON r.RoomTypeID = rt.RoomTypeID
-                    WHERE r.Status = 'Available' OR r.Status IS NULL
+                    WHERE r.RoomID NOT IN (
+                        -- Exclude rooms with overlapping bookings
+                        SELECT b.RoomID 
+                        FROM Bookings b
+                        WHERE b.Status IN ('Confirmed', 'CheckedIn')
+                        AND (
+                            -- Check for date overlap: booking overlaps if it starts before our checkout AND ends after our checkin
+                            b.CheckInDate < @CheckOutDate AND b.CheckOutDate > @CheckInDate
+                        )
+                    )
                     ORDER BY r.Floor, r.RoomNumber", con);
+
+                cmd.Parameters.AddWithValue("@CheckInDate", checkIn);
+                cmd.Parameters.AddWithValue("@CheckOutDate", checkOut);
+
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
@@ -124,7 +169,11 @@ namespace HotelManagement
                 // Show message if no rooms available
                 if (dt.Rows.Count == 0)
                 {
-                    ShowError("現在利用可能な客室がありません。すべての客室が予約済みまたは使用中です。");
+                    ShowError("選択された日付に利用可能な客室がありません。");
+                }
+                else
+                {
+                    pnlError.Visible = false; // Clear error if rooms are available
                 }
             }
             catch (Exception ex)
@@ -133,7 +182,8 @@ namespace HotelManagement
             }
             finally
             {
-                con.Close();
+                if (con.State == ConnectionState.Open)
+                    con.Close();
             }
         }
 
@@ -244,11 +294,10 @@ namespace HotelManagement
 
                 con.Open();
 
+                // REMOVED: Don't update Rooms.Status to 'Reserved' - we now check bookings directly
                 SqlCommand cmd = new SqlCommand(@"
                     INSERT INTO Bookings (GuestID, RoomID, CheckInDate, CheckOutDate, BookingDate, Status, TotalAmount, AmountPaid, NumberOfGuests, SpecialRequests)
-                    VALUES (@GuestID, @RoomID, @CheckInDate, @CheckOutDate, GETDATE(), 'Confirmed', @TotalAmount, 0, @NumberOfGuests, @SpecialRequests);
-                    
-                    UPDATE Rooms SET Status = 'Reserved' WHERE RoomID = @RoomID;", con);
+                    VALUES (@GuestID, @RoomID, @CheckInDate, @CheckOutDate, GETDATE(), 'Confirmed', @TotalAmount, 0, @NumberOfGuests, @SpecialRequests);", con);
 
                 cmd.Parameters.AddWithValue("@GuestID", guestId);
                 cmd.Parameters.AddWithValue("@RoomID", roomId);

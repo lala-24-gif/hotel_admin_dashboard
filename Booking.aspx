@@ -509,10 +509,49 @@
 
                 <div class="form-row">
                     <div class="form-group">
+                        <label class="form-label">チェックイン日 <span class="required">*</span></label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-calendar-alt input-icon"></i>
+                            <asp:TextBox ID="txtCheckIn" runat="server" TextMode="Date" 
+                                CssClass="form-input with-icon" AutoPostBack="True" 
+                                OnTextChanged="txtCheckIn_TextChanged"></asp:TextBox>
+                        </div>
+                        <asp:RequiredFieldValidator ID="rfvCheckIn" runat="server" 
+                            ControlToValidate="txtCheckIn" Display="Dynamic"
+                            ErrorMessage="チェックイン日は必須です" CssClass="validator" 
+                            ValidationGroup="NewGuestGroup"></asp:RequiredFieldValidator>
+                        <asp:RequiredFieldValidator ID="rfvCheckIn2" runat="server" 
+                            ControlToValidate="txtCheckIn" Display="Dynamic"
+                            ErrorMessage="チェックイン日は必須です" CssClass="validator" 
+                            ValidationGroup="ExistingGuestGroup"></asp:RequiredFieldValidator>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">チェックアウト日 <span class="required">*</span></label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-calendar-check input-icon"></i>
+                            <asp:TextBox ID="txtCheckOut" runat="server" TextMode="Date" 
+                                CssClass="form-input with-icon" AutoPostBack="True" 
+                                OnTextChanged="txtCheckOut_TextChanged"></asp:TextBox>
+                        </div>
+                        <asp:RequiredFieldValidator ID="rfvCheckOut" runat="server" 
+                            ControlToValidate="txtCheckOut" Display="Dynamic"
+                            ErrorMessage="チェックアウト日は必須です" CssClass="validator" 
+                            ValidationGroup="NewGuestGroup"></asp:RequiredFieldValidator>
+                        <asp:RequiredFieldValidator ID="rfvCheckOut2" runat="server" 
+                            ControlToValidate="txtCheckOut" Display="Dynamic"
+                            ErrorMessage="チェックアウト日は必須です" CssClass="validator" 
+                            ValidationGroup="ExistingGuestGroup"></asp:RequiredFieldValidator>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
                         <label class="form-label">客室 <span class="required">*</span></label>
                         <div class="input-wrapper">
                             <i class="fas fa-door-open input-icon"></i>
-                            <asp:DropDownList ID="ddlRoom" runat="server" CssClass="form-select" AutoPostBack="True" OnSelectedIndexChanged="ddlRoom_SelectedIndexChanged">
+                            <asp:DropDownList ID="ddlRoom" runat="server" CssClass="form-select" 
+                                AutoPostBack="True" OnSelectedIndexChanged="ddlRoom_SelectedIndexChanged">
                             </asp:DropDownList>
                         </div>
                         <asp:RequiredFieldValidator ID="rfvRoom" runat="server" 
@@ -535,42 +574,6 @@
                     </div>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">チェックイン日 <span class="required">*</span></label>
-                        <div class="input-wrapper">
-                            <i class="fas fa-calendar-alt input-icon"></i>
-                            <asp:TextBox ID="txtCheckIn" runat="server" TextMode="Date" 
-                                CssClass="form-input with-icon" AutoPostBack="True" OnTextChanged="CalculateTotal"></asp:TextBox>
-                        </div>
-                        <asp:RequiredFieldValidator ID="rfvCheckIn" runat="server" 
-                            ControlToValidate="txtCheckIn" Display="Dynamic"
-                            ErrorMessage="チェックイン日は必須です" CssClass="validator" 
-                            ValidationGroup="NewGuestGroup"></asp:RequiredFieldValidator>
-                        <asp:RequiredFieldValidator ID="rfvCheckIn2" runat="server" 
-                            ControlToValidate="txtCheckIn" Display="Dynamic"
-                            ErrorMessage="チェックイン日は必須です" CssClass="validator" 
-                            ValidationGroup="ExistingGuestGroup"></asp:RequiredFieldValidator>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">チェックアウト日 <span class="required">*</span></label>
-                        <div class="input-wrapper">
-                            <i class="fas fa-calendar-check input-icon"></i>
-                            <asp:TextBox ID="txtCheckOut" runat="server" TextMode="Date" 
-                                CssClass="form-input with-icon" AutoPostBack="True" OnTextChanged="CalculateTotal"></asp:TextBox>
-                        </div>
-                        <asp:RequiredFieldValidator ID="rfvCheckOut" runat="server" 
-                            ControlToValidate="txtCheckOut" Display="Dynamic"
-                            ErrorMessage="チェックアウト日は必須です" CssClass="validator" 
-                            ValidationGroup="NewGuestGroup"></asp:RequiredFieldValidator>
-                        <asp:RequiredFieldValidator ID="rfvCheckOut2" runat="server" 
-                            ControlToValidate="txtCheckOut" Display="Dynamic"
-                            ErrorMessage="チェックアウト日は必須です" CssClass="validator" 
-                            ValidationGroup="ExistingGuestGroup"></asp:RequiredFieldValidator>
-                    </div>
-                </div>
-
                 <div class="form-row full">
                     <div class="form-group">
                         <label class="form-label">特別なリクエスト</label>
@@ -580,12 +583,12 @@
                     </div>
                 </div>
 
-             <div class="info-box">
-    <div class="info-box-title">合計金額</div>
-    <div class="info-box-value">
-        ¥<asp:Label ID="lblTotalAmount" runat="server" Text="0"></asp:Label>
-    </div>
-</div>
+                <div class="info-box">
+                    <div class="info-box-title">合計金額</div>
+                    <div class="info-box-value">
+                        ¥<asp:Label ID="lblTotalAmount" runat="server" Text="0"></asp:Label>
+                    </div>
+                </div>
 
                 <div class="form-actions">
                     <asp:Button ID="btnCancel" runat="server" Text="キャンセル" CssClass="btn btn-secondary" 

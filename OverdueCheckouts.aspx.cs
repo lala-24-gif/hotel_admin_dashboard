@@ -14,7 +14,7 @@ namespace HotelManagement
         {
             if (!IsPostBack)
             {
-                lblCurrentTime.Text = DateTime.Now.ToString("MMM dd, yyyy hh:mm tt");
+                lblCurrentTime.Text = DateTime.Now.ToString("yyyy年MM月dd日 HH:mm");
                 LoadOverdueCheckouts();
             }
         }
@@ -62,29 +62,29 @@ namespace HotelManagement
             }
             catch (Exception ex)
             {
-                ShowError("Error loading overdue checkouts: " + ex.Message);
+                ShowError("チェックアウト遅延の読み込みエラー: " + ex.Message);
             }
         }
 
         protected string GetHoursOverdue(object checkOutDate)
         {
             if (checkOutDate == null || checkOutDate == DBNull.Value)
-                return "N/A";
+                return "不明";
 
             DateTime checkout = Convert.ToDateTime(checkOutDate);
             TimeSpan overdue = DateTime.Now - checkout;
 
             if (overdue.TotalHours < 1)
             {
-                return $"{(int)overdue.TotalMinutes} min";
+                return $"{(int)overdue.TotalMinutes}分";
             }
             else if (overdue.TotalHours < 24)
             {
-                return $"{(int)overdue.TotalHours}h {overdue.Minutes}m";
+                return $"{(int)overdue.TotalHours}時間{overdue.Minutes}分";
             }
             else
             {
-                return $"{(int)overdue.TotalDays} day(s)";
+                return $"{(int)overdue.TotalDays}日";
             }
         }
 
@@ -139,13 +139,13 @@ namespace HotelManagement
 
                     con.Close();
 
-                    ShowSuccess($"Guest checked out successfully! Room is now available.");
+                    ShowSuccess($"ゲストのチェックアウトが完了しました！部屋は利用可能になりました。");
                     LoadOverdueCheckouts();
                 }
             }
             catch (Exception ex)
             {
-                ShowError("Error processing checkout: " + ex.Message);
+                ShowError("チェックアウト処理エラー: " + ex.Message);
             }
         }
 
