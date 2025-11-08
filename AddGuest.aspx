@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Add New Guest</title>
+    <title>新規ゲスト登録</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <style>
         * {
@@ -13,7 +13,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', 'Yu Gothic', 'Meiryo', sans-serif;
             background: #f5f7fa;
             color: #333;
         }
@@ -131,7 +131,7 @@
             border-radius: 10px;
             font-size: 14px;
             transition: all 0.3s;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', 'Yu Gothic', 'Meiryo', sans-serif;
         }
 
         .form-input:focus {
@@ -256,10 +256,10 @@
         <!-- Header -->
         <div class="header">
             <div class="header-content">
-                <h1><i class="fas fa-user-plus"></i> Add New Guest</h1>
+                <h1><i class="fas fa-user-plus"></i> 新規ゲスト登録</h1>
                 <a href="Default.aspx" class="back-btn">
                     <i class="fas fa-arrow-left"></i>
-                    <span>Back to Dashboard</span>
+                    <span>ダッシュボードに戻る</span>
                 </a>
             </div>
         </div>
@@ -267,8 +267,8 @@
         <!-- Main Container -->
         <div class="container">
             <div class="page-intro">
-                <h2>Register New Guest</h2>
-                <p>Fill in the guest information to create a new customer profile</p>
+                <h2>新規ゲスト登録</h2>
+                <p>ゲスト情報を入力して、新しいお客様プロフィールを作成します</p>
             </div>
 
             <!-- Success/Error Messages -->
@@ -286,40 +286,40 @@
             <div class="form-card">
                 <!-- Personal Information Section -->
                 <div class="section-title">
-                    <i class="fas fa-user"></i> Personal Information
+                    <i class="fas fa-user"></i> 個人情報
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label">First Name <span class="required">*</span></label>
+                        <label class="form-label">名前 <span class="required">*</span></label>
                         <div class="input-wrapper">
                             <i class="fas fa-user input-icon"></i>
                             <asp:TextBox ID="txtFirstName" runat="server" CssClass="form-input" 
-                                placeholder="Enter first name" MaxLength="50"></asp:TextBox>
+                                placeholder="名前を入力" MaxLength="50"></asp:TextBox>
                         </div>
                         <asp:RequiredFieldValidator ID="rfvFirstName" runat="server" 
                             ControlToValidate="txtFirstName" Display="Dynamic" 
-                            ErrorMessage="First name is required" CssClass="validator" 
+                            ErrorMessage="名前は必須です" CssClass="validator" 
                             ValidationGroup="GuestGroup"></asp:RequiredFieldValidator>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Last Name <span class="required">*</span></label>
+                        <label class="form-label">苗字 <span class="required">*</span></label>
                         <div class="input-wrapper">
                             <i class="fas fa-user input-icon"></i>
                             <asp:TextBox ID="txtLastName" runat="server" CssClass="form-input" 
-                                placeholder="Enter last name" MaxLength="50"></asp:TextBox>
+                                placeholder="苗字を入力" MaxLength="50"></asp:TextBox>
                         </div>
                         <asp:RequiredFieldValidator ID="rfvLastName" runat="server" 
                             ControlToValidate="txtLastName" Display="Dynamic" 
-                            ErrorMessage="Last name is required" CssClass="validator" 
+                            ErrorMessage="苗字は必須です" CssClass="validator" 
                             ValidationGroup="GuestGroup"></asp:RequiredFieldValidator>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label">Date of Birth</label>
+                        <label class="form-label">生年月日</label>
                         <div class="input-wrapper">
                             <i class="fas fa-calendar input-icon"></i>
                             <asp:TextBox ID="txtDateOfBirth" runat="server" TextMode="Date" 
@@ -328,23 +328,23 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">ID Number</label>
+                        <label class="form-label">ID番号</label>
                         <div class="input-wrapper">
                             <i class="fas fa-id-card input-icon"></i>
                             <asp:TextBox ID="txtIDNumber" runat="server" CssClass="form-input" 
-                                placeholder="Passport or ID number" MaxLength="50"></asp:TextBox>
+                                placeholder="パスポートまたはID番号" MaxLength="50"></asp:TextBox>
                         </div>
                     </div>
                 </div>
 
                 <!-- Contact Information Section -->
                 <div class="section-title" style="margin-top: 30px;">
-                    <i class="fas fa-address-book"></i> Contact Information
+                    <i class="fas fa-address-book"></i> 連絡先情報
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label">Email</label>
+                        <label class="form-label">メールアドレス</label>
                         <div class="input-wrapper">
                             <i class="fas fa-envelope input-icon"></i>
                             <asp:TextBox ID="txtEmail" runat="server" TextMode="Email" 
@@ -352,34 +352,34 @@
                         </div>
                         <asp:RegularExpressionValidator ID="revEmail" runat="server" 
                             ControlToValidate="txtEmail" Display="Dynamic" 
-                            ErrorMessage="Invalid email format" CssClass="validator"
+                            ErrorMessage="無効なメール形式です" CssClass="validator"
                             ValidationExpression="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"
                             ValidationGroup="GuestGroup"></asp:RegularExpressionValidator>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Phone</label>
+                        <label class="form-label">電話番号</label>
                         <div class="input-wrapper">
                             <i class="fas fa-phone input-icon"></i>
                             <asp:TextBox ID="txtPhone" runat="server" CssClass="form-input" 
-                                placeholder="+1234567890" MaxLength="20"></asp:TextBox>
+                                placeholder="+81-90-1234-5678" MaxLength="20"></asp:TextBox>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-row full">
                     <div class="form-group">
-                        <label class="form-label">Address</label>
+                        <label class="form-label">住所</label>
                         <textarea ID="txtAddress" runat="server" class="form-input no-icon" 
-                            placeholder="Enter full address" maxlength="255"></textarea>
+                            placeholder="住所を入力" maxlength="255"></textarea>
                     </div>
                 </div>
 
                 <!-- Form Actions -->
                 <div class="form-actions">
-                    <asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="btn btn-secondary" 
+                    <asp:Button ID="btnCancel" runat="server" Text="キャンセル" CssClass="btn btn-secondary" 
                         OnClick="btnCancel_Click" CausesValidation="false" />
-                    <asp:Button ID="btnSave" runat="server" Text="Add Guest" CssClass="btn btn-primary" 
+                    <asp:Button ID="btnSave" runat="server" Text="ゲストを登録" CssClass="btn btn-primary" 
                         OnClick="btnSave_Click" ValidationGroup="GuestGroup" />
                 </div>
             </div>

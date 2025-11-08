@@ -365,8 +365,8 @@
                 <div class="filter-group">
                     <label class="filter-label">ステータスでフィルター</label>
                     <asp:DropDownList ID="ddlStatusFilter" runat="server" CssClass="filter-select">
-                        <asp:ListItem Value="All" Selected="True">全ゲスト</asp:ListItem>
-                        <asp:ListItem Value="Confirmed">確認済み</asp:ListItem>
+                        <asp:ListItem Value="All">全ゲスト</asp:ListItem>
+                        <asp:ListItem Value="Confirmed" Selected="True">確認済み</asp:ListItem>
                         <asp:ListItem Value="CheckedIn">チェックイン済み</asp:ListItem>
                         <asp:ListItem Value="CheckedOut">チェックアウト済み</asp:ListItem>
                         <asp:ListItem Value="Cancelled">キャンセル済み</asp:ListItem>

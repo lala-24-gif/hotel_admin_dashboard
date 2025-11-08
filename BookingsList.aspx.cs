@@ -18,6 +18,9 @@ namespace HotelManagement
             // 初回ページ読み込み時に予約と統計を読み込む（ポストバックでない場合）
             if (!IsPostBack)
             {
+                // デフォルトで「確認済み」フィルターを設定
+                ddlStatusFilter.SelectedValue = "Confirmed";
+
                 LoadBookings();
                 LoadStatistics();
             }

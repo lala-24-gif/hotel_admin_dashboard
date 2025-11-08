@@ -58,12 +58,12 @@ namespace HotelManagement
 
                             if (rowsAffected > 0)
                             {
-                                ShowSuccess($"Guest {firstName} {lastName} has been successfully added!");
+                                ShowSuccess($"ゲスト {lastName} {firstName} 様が正常に登録されました！");
                                 ClearForm();
                             }
                             else
                             {
-                                ShowError("Failed to add guest. Please try again.");
+                                ShowError("ゲストの登録に失敗しました。もう一度お試しください。");
                             }
                         }
                     }
@@ -71,7 +71,7 @@ namespace HotelManagement
                 catch (Exception ex)
                 {
                     System.Diagnostics.Debug.WriteLine("Error adding guest: " + ex.Message);
-                    ShowError("An error occurred while adding the guest. Please try again.");
+                    ShowError("ゲストの登録中にエラーが発生しました。もう一度お試しください。");
                 }
             }
         }
