@@ -110,6 +110,9 @@ namespace HotelManagement
                 if (checkOut <= checkIn)
                 {
                     ShowError("チェックアウト日はチェックイン日より後でなければなりません。");
+                    ddlRoom.Items.Clear();
+                    ddlRoom.Items.Insert(0, new ListItem("-- 客室を選択 --", "0"));
+                    lblTotalAmount.Text = "0";
                     con.Close();
                     return;
                 }
@@ -197,7 +200,10 @@ namespace HotelManagement
             try
             {
                 if (ddlRoom.SelectedValue == "0" || string.IsNullOrEmpty(txtCheckIn.Text) || string.IsNullOrEmpty(txtCheckOut.Text))
+                {
+                    lblTotalAmount.Text = "0";
                     return;
+                }
 
                 DateTime checkIn = DateTime.Parse(txtCheckIn.Text);
                 DateTime checkOut = DateTime.Parse(txtCheckOut.Text);
@@ -229,7 +235,7 @@ namespace HotelManagement
                 con.Close();
 
                 decimal total = pricePerNight * nights;
-                lblTotalAmount.Text = total.ToString("0.00");
+                lblTotalAmount.Text = total.ToString("N0");
                 pnlError.Visible = false;
             }
             catch (Exception ex)
@@ -247,6 +253,46 @@ namespace HotelManagement
         {
             try
             {
+                // CRITICAL FIX: Validate dates BEFORE processing
+                if (string.IsNullOrEmpty(txtCheckIn.Text) || string.IsNullOrEmpty(txtCheckOut.Text))
+                {
+                    ShowError("チェックイン日とチェックアウト日を入力してください。");
+                    return;
+                }
+
+                DateTime checkIn = DateTime.Parse(txtCheckIn.Text);
+                DateTime checkOut = DateTime.Parse(txtCheckOut.Text);
+
+                // CRITICAL FIX: Validate checkout date is after check-in date
+                if (checkOut <= checkIn)
+                {
+                    ShowError("チェックアウト日はチェックイン日より後でなければなりません。");
+                    return;
+                }
+
+                // CRITICAL FIX: Validate at least 1 night
+                int nights = (checkOut - checkIn).Days;
+                if (nights <= 0)
+                {
+                    ShowError("無効な宿泊日数です。最低1泊以上必要です。");
+                    return;
+                }
+
+                // CRITICAL FIX: Validate room is selected
+                if (ddlRoom.SelectedValue == "0")
+                {
+                    ShowError("客室を選択してください。");
+                    return;
+                }
+
+                // CRITICAL FIX: Validate total amount is greater than 0
+                decimal totalAmount = 0;
+                if (!decimal.TryParse(lblTotalAmount.Text.Replace(",", ""), out totalAmount) || totalAmount <= 0)
+                {
+                    ShowError("合計金額が無効です。客室を選択し直してください。");
+                    return;
+                }
+
                 int guestId = 0;
 
                 // Determine if this is a new guest or existing guest
@@ -271,6 +317,12 @@ namespace HotelManagement
                         return;
 
                     guestId = int.Parse(ddlGuest.SelectedValue);
+
+                    if (guestId == 0)
+                    {
+                        ShowError("ゲストを選択してください。");
+                        return;
+                    }
                 }
                 else
                 {
@@ -281,16 +333,11 @@ namespace HotelManagement
                 // Now create the booking
                 int roomId = int.Parse(ddlRoom.SelectedValue);
 
-                // Parse dates and set checkout time to 12:00 PM
-                DateTime checkIn = DateTime.Parse(txtCheckIn.Text);
-                DateTime checkOut = DateTime.Parse(txtCheckOut.Text);
-
                 // Set checkout time to 12:00 PM (noon)
                 checkOut = checkOut.Date.AddHours(12);
 
                 int numberOfGuests = string.IsNullOrEmpty(txtNumberOfGuests.Text) ? 1 : int.Parse(txtNumberOfGuests.Text);
                 string specialRequests = txtSpecialRequests.Text.Trim();
-                decimal totalAmount = decimal.Parse(lblTotalAmount.Text);
 
                 con.Open();
 
@@ -310,7 +357,7 @@ namespace HotelManagement
                 cmd.ExecuteNonQuery();
                 con.Close();
 
-                ShowSuccess("予約が正常に完了しました！チェックアウト時間: " + checkOut.ToString("yyyy-MM-dd HH:mm") + "。合計金額: ¥" + totalAmount.ToString("0.00"));
+                ShowSuccess("予約が正常に完了しました！宿泊日数: " + nights + "泊、チェックアウト時間: " + checkOut.ToString("yyyy-MM-dd HH:mm") + "、合計金額: ¥" + totalAmount.ToString("N0"));
                 ClearForm();
                 LoadRooms();
                 LoadGuests();

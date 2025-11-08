@@ -445,11 +445,15 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">電話番号</label>
+                        <label class="form-label">電話番号 <span class="required">*</span></label>
                         <div class="input-wrapper">
                             <i class="fas fa-phone input-icon"></i>
                             <asp:TextBox ID="txtPhone" runat="server" CssClass="form-input with-icon" placeholder="+81 90 1234 5678"></asp:TextBox>
                         </div>
+                        <asp:RequiredFieldValidator ID="rfvPhone" runat="server" 
+                            ControlToValidate="txtPhone" Display="Dynamic"
+                            ErrorMessage="電話番号は必須です" CssClass="validator" 
+                            ValidationGroup="NewGuestGroup"></asp:RequiredFieldValidator>
                     </div>
                 </div>
 
@@ -542,6 +546,26 @@
                             ControlToValidate="txtCheckOut" Display="Dynamic"
                             ErrorMessage="チェックアウト日は必須です" CssClass="validator" 
                             ValidationGroup="ExistingGuestGroup"></asp:RequiredFieldValidator>
+                        <asp:CompareValidator ID="cvCheckOut" runat="server" 
+                            ControlToValidate="txtCheckOut" 
+                            ControlToCompare="txtCheckIn"
+                            Operator="GreaterThan" 
+                            Type="Date"
+                            Display="Dynamic"
+                            ErrorMessage="チェックアウト日はチェックイン日より後でなければなりません" 
+                            CssClass="validator"
+                            ValidationGroup="NewGuestGroup">
+                        </asp:CompareValidator>
+                        <asp:CompareValidator ID="cvCheckOut2" runat="server" 
+                            ControlToValidate="txtCheckOut" 
+                            ControlToCompare="txtCheckIn"
+                            Operator="GreaterThan" 
+                            Type="Date"
+                            Display="Dynamic"
+                            ErrorMessage="チェックアウト日はチェックイン日より後でなければなりません" 
+                            CssClass="validator"
+                            ValidationGroup="ExistingGuestGroup">
+                        </asp:CompareValidator>
                     </div>
                 </div>
 
