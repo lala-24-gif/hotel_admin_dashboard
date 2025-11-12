@@ -14,7 +14,7 @@ namespace HotelManagement
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            // 重要: ユーザーがログインしているかチェック
+           
             if (Session["AdminID"] == null)
             {
                 Response.Redirect("Login.aspx");
@@ -28,7 +28,7 @@ namespace HotelManagement
             }
         }
 
-        // 売上レポートを読み込む
+       
         private void LoadSalesReport()
         {
             try
@@ -37,10 +37,10 @@ namespace HotelManagement
                 {
                     con.Open();
 
-                    // 年次サマリーを取得
+                
                     LoadAnnualSummary(con);
 
-                    // 月次内訳を取得
+                   
                     LoadMonthlyBreakdown(con);
                 }
             }
@@ -50,7 +50,7 @@ namespace HotelManagement
             }
         }
 
-        // 年次サマリーを読み込む
+       
         private void LoadAnnualSummary(SqlConnection con)
         {
             string query = @"
@@ -80,14 +80,13 @@ namespace HotelManagement
                 }
             }
 
-            // 前年比成長率を計算
             CalculateGrowth(con);
 
-            // 最高月を見つける
+         
             FindBestMonth(con);
         }
 
-        // 前年比成長率を計算
+      
         private void CalculateGrowth(SqlConnection con)
         {
             string query = @"
@@ -138,7 +137,6 @@ namespace HotelManagement
             }
         }
 
-        // 最高収益月を見つける
         private void FindBestMonth(SqlConnection con)
         {
             string query = @"
@@ -159,7 +157,7 @@ namespace HotelManagement
                 {
                     if (reader.Read())
                     {
-                        // 英語の月名を日本語に変換
+                   
                         string monthName = reader["BestMonth"].ToString();
                         lblBestMonth.Text = ConvertMonthToJapanese(monthName);
                     }
@@ -171,7 +169,6 @@ namespace HotelManagement
             }
         }
 
-        // 月次内訳を読み込む
         private void LoadMonthlyBreakdown(SqlConnection con)
         {
             string query = @"
@@ -211,17 +208,16 @@ namespace HotelManagement
                     DataTable dt = new DataTable();
                     da.Fill(dt);
 
-                    // GridViewにバインド
+                   
                     gvMonthlyBreakdown.DataSource = dt;
                     gvMonthlyBreakdown.DataBind();
 
-                    // チャートデータを準備
+                   
                     PrepareChartData(dt);
                 }
             }
         }
 
-        // チャートデータを準備
         private void PrepareChartData(DataTable dt)
         {
             var labels = new System.Collections.Generic.List<string>();
@@ -242,7 +238,7 @@ namespace HotelManagement
             hfChartData.Value = JsonConvert.SerializeObject(chartData);
         }
 
-        // 英語の月名を日本語に変換するヘルパーメソッド
+        
         private string ConvertMonthToJapanese(string englishMonth)
         {
             switch (englishMonth.ToLower())

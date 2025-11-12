@@ -12,7 +12,7 @@ namespace HotelManagement
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            // 重要: ユーザーがログインしているか確認
+            
             if (Session["AdminID"] == null)
             {
                 Response.Redirect("Login.aspx");
@@ -21,14 +21,14 @@ namespace HotelManagement
 
             if (!IsPostBack)
             {
-                // セッションからユーザー名を設定
+               
                 if (Session["AdminName"] != null)
                 {
                     lblUsername.Text = Session["AdminName"].ToString();
                 }
 
                 LoadDashboardData();
-                CheckOverdueCheckouts(); // 遅延チェックアウトを確認
+                CheckOverdueCheckouts();
             }
         }
 
@@ -40,26 +40,26 @@ namespace HotelManagement
                 {
                     con.Open();
 
-                    // ダッシュボード統計を取得
+                
                     using (SqlCommand cmd = new SqlCommand("sp_GetDashboardStats", con))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
-                            // 結果セット1: 本日の予約
+                       
                             if (reader.Read())
                             {
                                 lblBookings.Text = reader["TodayBookings"].ToString();
                             }
 
-                            // 結果セット2: 本日のチェックイン
+                          
                             if (reader.NextResult() && reader.Read())
                             {
                                 lblCheckIns.Text = reader["TodayCheckIns"].ToString();
                             }
 
-                            // 結果セット3: 客室統計
+                            
                             if (reader.NextResult() && reader.Read())
                             {
                                 lblAvailableRooms.Text = reader["AvailableRooms"].ToString();
@@ -67,7 +67,6 @@ namespace HotelManagement
                                 lblReservedRooms.Text = reader["ReservedRooms"].ToString();
                             }
 
-                            // 結果セット4: 月間売上
                             if (reader.NextResult() && reader.Read())
                             {
                                 decimal revenue = Convert.ToDecimal(reader["MonthlyRevenue"]);
@@ -77,15 +76,15 @@ namespace HotelManagement
                         }
                     }
 
-                    // 現在のゲストリストを取得
+                    
                     LoadCurrentGuests(con);
                 }
             }
             catch (Exception ex)
             {
-                // エラーをログに記録
+              
                 System.Diagnostics.Debug.WriteLine("ダッシュボードの読み込みエラー: " + ex.Message);
-                // オプション: ユーザーフレンドリーなエラーメッセージを表示
+              
             }
         }
 
@@ -112,7 +111,7 @@ namespace HotelManagement
             }
         }
 
-        // 遅延チェックアウトを確認（本日午後12時を過ぎた場合）
+     
         private void CheckOverdueCheckouts()
         {
             try
@@ -121,10 +120,7 @@ namespace HotelManagement
                 {
                     con.Open();
 
-                    // 以下の条件に該当する予約の数を取得:
-                    // 1. ステータスが 'CheckedIn'（現在客室を使用中）
-                    // 2. チェックアウト日が本日以前
-                    // 3. 現在時刻がチェックアウト時刻を過ぎている
+               
                     string query = @"
                         SELECT COUNT(*) 
                         FROM Bookings 
@@ -161,13 +157,12 @@ namespace HotelManagement
             Response.Redirect("SalesReport.aspx");
         }
 
-        // 客室ページへのナビゲーションハンドラー
+     
         protected void btnViewRooms_Click(object sender, EventArgs e)
         {
             Response.Redirect("Rooms.aspx");
         }
 
-        // ステータスフィルター付きで客室ページへナビゲートするハンドラー
         protected void btnViewAvailableRooms_Click(object sender, EventArgs e)
         {
             Response.Redirect("Rooms.aspx?status=available");

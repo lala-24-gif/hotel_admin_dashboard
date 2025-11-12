@@ -18,25 +18,25 @@ namespace HotelManagement
                 LoadRoomStatistics();
                 LoadRoomsByFloor();
 
-                // URLにステータスフィルターがあるかチェック
+             
                 string statusFilter = Request.QueryString["status"];
                 if (!string.IsNullOrEmpty(statusFilter))
                 {
-                    // アクティブなフィルターの視覚的インジケーターを追加
+                 
                     System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "HighlightStatus",
                         $"setTimeout(function(){{ highlightStatus('{statusFilter}'); }}, 100);", true);
                 }
             }
         }
 
-        // 客室統計を読み込む
+   
         private void LoadRoomStatistics()
         {
             try
             {
                 con.Open();
 
-                // ステータス別の客室数を取得
+            
                 string query = @"
                     SELECT 
                         Status,
@@ -80,12 +80,12 @@ namespace HotelManagement
             }
             catch (Exception ex)
             {
-                // エラー処理
+             
                 con.Close();
             }
         }
 
-        // フロア別に客室を読み込む
+  
         private void LoadRoomsByFloor()
         {
             try
@@ -113,7 +113,6 @@ namespace HotelManagement
 
                 con.Close();
 
-                // フロア別に客室をグループ化
                 StringBuilder html = new StringBuilder();
 
                 for (int floor = 1; floor <= 5; floor++)
@@ -124,7 +123,7 @@ namespace HotelManagement
                     html.Append($"<div class='floor-header'>");
                     html.Append($"<div class='floor-title'>{floor}階</div>");
 
-                    // フロア統計を計算（メンテナンスを除く）
+                   
                     int floorAvailable = floorRooms.Count(r => (r["Status"]?.ToString() ?? "Available").Equals("Available", StringComparison.OrdinalIgnoreCase));
                     int floorOccupied = floorRooms.Count(r => (r["Status"]?.ToString() ?? "").Equals("Occupied", StringComparison.OrdinalIgnoreCase));
                     int floorReserved = floorRooms.Count(r => (r["Status"]?.ToString() ?? "").Equals("Reserved", StringComparison.OrdinalIgnoreCase));
@@ -152,7 +151,7 @@ namespace HotelManagement
                             string price = Convert.ToDecimal(room["BasePrice"]).ToString("N0");
                             string capacity = room["Capacity"].ToString();
 
-                            // ステータスを日本語に変換
+                           
                             string statusJp = status;
                             if (status.Equals("Available", StringComparison.OrdinalIgnoreCase))
                                 statusJp = "利用可能";
@@ -193,7 +192,6 @@ namespace HotelManagement
             }
         }
 
-        // ダッシュボードに戻る
         protected void btnBack_Click(object sender, EventArgs e)
         {
             Response.Redirect("Default.aspx");

@@ -221,7 +221,6 @@
             color: #a0aec0;
         }
 
-        /* Room Cards */
         .room-card {
             background: white;
             border-radius: 12px;

@@ -12,7 +12,8 @@ namespace HotelManagement
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            // ユーザーがログインしているかチェック
+          
+
             if (Session["AdminID"] == null)
             {
                 Response.Redirect("Login.aspx");
@@ -25,7 +26,7 @@ namespace HotelManagement
             }
         }
 
-        // ユーザープロフィールを読み込む
+
         private void LoadUserProfile()
         {
             try
@@ -52,7 +53,7 @@ namespace HotelManagement
                                 lblUsername.Text = reader["Username"].ToString();
                                 lblEmail.Text = reader["Email"].ToString();
 
-                                // ロールを日本語に変換
+                               
                                 string role = reader["Role"].ToString();
                                 lblRole.Text = ConvertRoleToJapanese(role);
 
@@ -80,18 +81,17 @@ namespace HotelManagement
             }
         }
 
-        // ログアウトボタンクリック
+      
         protected void btnLogout_Click(object sender, EventArgs e)
         {
-            // すべてのセッションデータをクリア
+           
             Session.Clear();
             Session.Abandon();
 
-            // ログインページにリダイレクト
+          
             Response.Redirect("Login.aspx");
         }
 
-        // アカウント削除ボタンクリック
         protected void btnDeleteAccount_Click(object sender, EventArgs e)
         {
             try
@@ -102,12 +102,12 @@ namespace HotelManagement
                 {
                     con.Open();
 
-                    // すべての削除が一緒に行われるようにトランザクションを開始
+                  
                     using (SqlTransaction transaction = con.BeginTransaction())
                     {
                         try
                         {
-                            // ユーザーの売上記録を削除（ある場合）
+                          
                             string deleteSalesQuery = "DELETE FROM Sales WHERE CreatedBy = @AdminID";
                             using (SqlCommand cmd = new SqlCommand(deleteSalesQuery, con, transaction))
                             {
@@ -115,7 +115,7 @@ namespace HotelManagement
                                 cmd.ExecuteNonQuery();
                             }
 
-                            // ユーザーの予約記録を削除（ある場合）
+                          
                             string deleteBookingsQuery = "DELETE FROM Bookings WHERE CreatedBy = @AdminID";
                             using (SqlCommand cmd = new SqlCommand(deleteBookingsQuery, con, transaction))
                             {
@@ -123,7 +123,7 @@ namespace HotelManagement
                                 cmd.ExecuteNonQuery();
                             }
 
-                            // ユーザーアカウントを削除
+                        
                             string deleteUserQuery = "DELETE FROM AdminUser WHERE AdminID = @AdminID";
                             using (SqlCommand cmd = new SqlCommand(deleteUserQuery, con, transaction))
                             {
@@ -132,14 +132,13 @@ namespace HotelManagement
 
                                 if (rowsAffected > 0)
                                 {
-                                    // トランザクションをコミット
+                                   
                                     transaction.Commit();
 
-                                    // セッションをクリア
+                                  
                                     Session.Clear();
                                     Session.Abandon();
 
-                                    // 成功メッセージと共にログインにリダイレクト
                                     Response.Redirect("Login.aspx?deleted=1");
                                 }
                                 else
@@ -164,7 +163,7 @@ namespace HotelManagement
             }
         }
 
-        // ロールを日本語に変換するヘルパーメソッド
+      
         private string ConvertRoleToJapanese(string role)
         {
             switch (role?.ToLower())
@@ -183,7 +182,6 @@ namespace HotelManagement
             }
         }
 
-        // エラーメッセージを表示
         private void ShowError(string message)
         {
             pnlError.Visible = true;
@@ -191,7 +189,7 @@ namespace HotelManagement
             lblError.Text = message;
         }
 
-        // 成功メッセージを表示
+     
         private void ShowSuccess(string message)
         {
             pnlSuccess.Visible = true;

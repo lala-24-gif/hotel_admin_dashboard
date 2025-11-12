@@ -13,14 +13,8 @@ namespace HotelManagement
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Remove session check if you don't have authentication yet
-            // if (Session["AdminID"] == null)
-            // {
-            //     Response.Redirect("Login.aspx");
-            //     return;
-            // }
-
-            if (!IsPostBack)
+       
+           if (!IsPostBack)
             {
                 LoadAvailableRooms();
                 LoadGuests();

@@ -255,7 +255,7 @@
             border-left: 4px solid #f56565;
         }
 
-        /* Modal Styles */
+
         .modal {
             display: none;
             position: fixed;

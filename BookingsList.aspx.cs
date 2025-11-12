@@ -6,19 +6,19 @@ using System.Web.UI.WebControls;
 
 namespace HotelManagement
 {
-    // BookingsList.aspx のコードビハインド（ホテル予約を管理）
+   
     public partial class BookingsList : System.Web.UI.Page
     {
-        // データベース接続文字列
+      
         SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["HotelDB"].ConnectionString);
 
-        // ページ読み込み時の処理
+  
         protected void Page_Load(object sender, EventArgs e)
         {
-            // 初回ページ読み込み時に予約と統計を読み込む（ポストバックでない場合）
+         
             if (!IsPostBack)
             {
-                // デフォルトで「確認済み」フィルターを設定
+               
                 ddlStatusFilter.SelectedValue = "Confirmed";
 
                 LoadBookings();
@@ -26,23 +26,22 @@ namespace HotelManagement
             }
         }
 
-        // フィルターを適用してデータを再読み込み
+       
         protected void btnApplyFilter_Click(object sender, EventArgs e)
         {
-            LoadBookings(); // 選択されたフィルターに基づいて予約を再読み込み
-            LoadStatistics(); // 選択されたフィルターに基づいて統計を再読み込み
+            LoadBookings();
+            LoadStatistics();
         }
 
-        // 適用されたフィルターでGridViewに予約を読み込む
         private void LoadBookings()
         {
             try
             {
-                // データベース接続を開く
+               
                 con.Open();
 
-                string statusFilter = ddlStatusFilter.SelectedValue; // 選択されたステータスフィルターを取得
-                string dateFilter = ddlDateFilter.SelectedValue; // 選択された日付フィルターを取得
+                string statusFilter = ddlStatusFilter.SelectedValue; 
+                string dateFilter = ddlDateFilter.SelectedValue;
 
                 string query = @"
                     SELECT 
@@ -57,22 +56,22 @@ namespace HotelManagement
                     FROM Bookings b
                     INNER JOIN Guests g ON b.GuestID = g.GuestID
                     INNER JOIN Rooms r ON b.RoomID = r.RoomID
-                    WHERE 1=1"; // フィルターしないが、動的に条件を追加しやすくする
+                    WHERE 1=1"; // can make changes dynamically
 
-                // ステータスフィルターを適用
+              
                 if (statusFilter != "All")
                 {
-                    query += " AND b.Status = @Status"; // @Status はパラメータプレースホルダー（SQLインジェクションを防ぐ）
+                    query += " AND b.Status = @Status"; 
                 }
 
-                // 日付フィルターを適用
+             
                 switch (dateFilter)
                 {
                     case "Today":
                         query += " AND CAST(b.CheckInDate AS DATE) = CAST(GETDATE() AS DATE)";
                         break;
                     case "Week":
-                        // 現在の週（月曜日から日曜日）の予約を取得
+                        // from this week monday
                         query += @" AND b.CheckInDate >= DATEADD(DAY, 1 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS DATE))
                                  AND b.CheckInDate < DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS DATE))";
                         break;
@@ -113,7 +112,7 @@ namespace HotelManagement
             }
         }
 
-        // 統計情報を読み込む
+   
         private void LoadStatistics()
         {
             try
@@ -131,9 +130,9 @@ namespace HotelManagement
                         SUM(CASE WHEN Status = 'CheckedOut' THEN 1 ELSE 0 END) AS CheckedOut
                        
                     FROM Bookings
-                    WHERE 1=1"; // 条件を簡単に追加できる
+                    WHERE 1=1";
 
-                // メイングリッドと同じフィルターを適用
+                
                 if (statusFilter != "All")
                 {
                     query += " AND Status = @Status";
@@ -183,7 +182,6 @@ namespace HotelManagement
             }
         }
 
-        // GridViewの行コマンドを処理
         protected void gvBookings_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             int bookingId = Convert.ToInt32(e.CommandArgument);
@@ -198,19 +196,18 @@ namespace HotelManagement
             }
         }
 
-        // ゲストをチェックアウト
+    
         private void CheckOutGuest(int bookingId)
         {
             try
             {
                 con.Open();
 
-                // 客室IDを取得
+               
                 SqlCommand getRoomCmd = new SqlCommand("SELECT RoomID FROM Bookings WHERE BookingID = @BookingID", con);
                 getRoomCmd.Parameters.AddWithValue("@BookingID", bookingId);
                 int roomId = Convert.ToInt32(getRoomCmd.ExecuteScalar());
 
-                // 予約と客室を更新
                 SqlCommand cmd = new SqlCommand(@"
                     UPDATE Bookings 
                     SET Status = 'CheckedOut'
@@ -241,19 +238,18 @@ namespace HotelManagement
             }
         }
 
-        // 予約をキャンセル
+   
         private void CancelBooking(int bookingId)
         {
             try
             {
                 con.Open();
 
-                // 客室IDを取得
                 SqlCommand getRoomCmd = new SqlCommand("SELECT RoomID FROM Bookings WHERE BookingID = @BookingID", con);
                 getRoomCmd.Parameters.AddWithValue("@BookingID", bookingId);
                 int roomId = Convert.ToInt32(getRoomCmd.ExecuteScalar());
 
-                // 予約をキャンセルして客室を解放
+             
                 SqlCommand cmd = new SqlCommand(@"
                     UPDATE Bookings 
                     SET Status = 'Cancelled'
@@ -284,7 +280,7 @@ namespace HotelManagement
             }
         }
 
-        // ステータスを日本語に変換するヘルパーメソッド
+       
         protected string GetStatusText(string status)
         {
             switch (status)
@@ -302,7 +298,7 @@ namespace HotelManagement
             }
         }
 
-        // エラーメッセージを表示
+     
         private void ShowError(string message)
         {
             pnlError.Visible = true;
@@ -310,7 +306,7 @@ namespace HotelManagement
             lblError.Text = message;
         }
 
-        // 成功メッセージを表示
+        
         private void ShowSuccess(string message)
         {
             pnlSuccess.Visible = true;

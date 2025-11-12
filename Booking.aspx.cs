@@ -47,7 +47,7 @@ namespace HotelManagement
             btnCreateBooking.ValidationGroup = "NewGuestGroup";
         }
 
-        // FIXED: Changed method name to match ASPX button event
+    
         protected void btnExistingGuest_Click(object sender, EventArgs e)
         {
             // Show existing guest form and booking details
@@ -253,7 +253,7 @@ namespace HotelManagement
         {
             try
             {
-                // CRITICAL FIX: Validate dates BEFORE processing
+                // Validate dates BEFORE processing
                 if (string.IsNullOrEmpty(txtCheckIn.Text) || string.IsNullOrEmpty(txtCheckOut.Text))
                 {
                     ShowError("チェックイン日とチェックアウト日を入力してください。");
@@ -263,14 +263,14 @@ namespace HotelManagement
                 DateTime checkIn = DateTime.Parse(txtCheckIn.Text);
                 DateTime checkOut = DateTime.Parse(txtCheckOut.Text);
 
-                // CRITICAL FIX: Validate checkout date is after check-in date
+               //Validate checkout date is after check-in date
                 if (checkOut <= checkIn)
                 {
                     ShowError("チェックアウト日はチェックイン日より後でなければなりません。");
                     return;
                 }
 
-                // CRITICAL FIX: Validate at least 1 night
+                //  Validate at least 1 night
                 int nights = (checkOut - checkIn).Days;
                 if (nights <= 0)
                 {
@@ -285,7 +285,7 @@ namespace HotelManagement
                     return;
                 }
 
-                // CRITICAL FIX: Validate total amount is greater than 0
+                //  Validate total amount is greater than 0
                 decimal totalAmount = 0;
                 if (!decimal.TryParse(lblTotalAmount.Text.Replace(",", ""), out totalAmount) || totalAmount <= 0)
                 {

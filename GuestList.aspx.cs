@@ -25,7 +25,7 @@ namespace HotelManagement
             }
         }
 
-        // ゲストを読み込む
+ 
         private void LoadGuests()
         {
             try
@@ -46,7 +46,7 @@ namespace HotelManagement
                 COUNT(b.BookingID) AS TotalBookings
             FROM Guests g
             LEFT JOIN Bookings b ON g.GuestID = b.GuestID
-            WHERE g.IsActive = 1"; // アクティブなゲストのみを表示
+            WHERE g.IsActive = 1"; 
 
                 if (!string.IsNullOrEmpty(searchTerm))
                 {
@@ -86,7 +86,7 @@ namespace HotelManagement
             }
         }
 
-        // ゲスト総数を読み込む
+     
         private void LoadTotalGuests()
         {
             try
@@ -110,13 +110,13 @@ namespace HotelManagement
             }
         }
 
-        // 検索テキストが変更されたときの処理
+       
         protected void txtSearch_TextChanged(object sender, EventArgs e)
         {
             LoadGuests();
         }
 
-        // GridViewの行コマンドを処理
+  
         protected void gvGuests_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             int guestId = Convert.ToInt32(e.CommandArgument);
@@ -131,7 +131,7 @@ namespace HotelManagement
             }
         }
 
-        // 編集用にゲスト情報を読み込む
+      
         private void LoadGuestForEdit(int guestId)
         {
             try
@@ -154,7 +154,7 @@ namespace HotelManagement
                     txtEditPhone.Text = reader["Phone"].ToString();
                     txtEditIDNumber.Text = reader["IDNumber"].ToString();
 
-                    // 編集モーダルを表示
+                 
                     System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "ShowEditModal",
                         "showEditModal();", true);
                 }
@@ -172,7 +172,6 @@ namespace HotelManagement
             }
         }
 
-        // 編集を保存
         protected void btnSaveEdit_Click(object sender, EventArgs e)
         {
             try
@@ -203,7 +202,7 @@ namespace HotelManagement
                 ShowSuccess("ゲスト情報が正常に更新されました！");
                 LoadGuests();
 
-                // モーダルを非表示
+               
                 System.Web.UI.ScriptManager.RegisterStartupScript(this, GetType(), "HideEditModal",
                     "hideEditModal();", true);
             }
@@ -218,14 +217,14 @@ namespace HotelManagement
             }
         }
 
-        // ゲストを削除
+       
         private void DeleteGuest(int guestId)
         {
             try
             {
                 con.Open();
 
-                // アクティブな予約（チェックアウトまたはキャンセルされていない）があるかチェック
+               
                 SqlCommand checkCmd = new SqlCommand(@"
             SELECT COUNT(*) 
             FROM Bookings 
@@ -242,7 +241,7 @@ namespace HotelManagement
                     return;
                 }
 
-                // 確認メッセージ用に予約数を取得
+              
                 SqlCommand countCmd = new SqlCommand(@"
             SELECT COUNT(*) 
             FROM Bookings 
@@ -250,7 +249,7 @@ namespace HotelManagement
                 countCmd.Parameters.AddWithValue("@GuestID", guestId);
                 int totalBookings = Convert.ToInt32(countCmd.ExecuteScalar());
 
-                // オプション1: ゲストデータを匿名化してソフト削除（推奨）
+              
                 SqlCommand anonymizeCmd = new SqlCommand(@"
             UPDATE Guests 
             SET FirstName = 'Deleted',
@@ -288,7 +287,7 @@ namespace HotelManagement
             }
         }
 
-        // エラーメッセージを表示
+  
         private void ShowError(string message)
         {
             pnlError.Visible = true;
@@ -296,7 +295,7 @@ namespace HotelManagement
             lblError.Text = message;
         }
 
-        // 成功メッセージを表示
+   
         private void ShowSuccess(string message)
         {
             pnlSuccess.Visible = true;
