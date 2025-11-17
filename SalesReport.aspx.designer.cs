@@ -87,6 +87,24 @@ namespace HotelManagement
         protected global::System.Web.UI.WebControls.Label lblBestMonth;
 
         /// <summary>
+        /// lblTotalGuests コントロール。
+        /// </summary>
+        /// <remarks>
+        /// 自動生成されたフィールド。
+        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblTotalGuests;
+
+        /// <summary>
+        /// lblAvgGuests コントロール。
+        /// </summary>
+        /// <remarks>
+        /// 自動生成されたフィールド。
+        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAvgGuests;
+
+        /// <summary>
         /// gvMonthlyBreakdown コントロール。
         /// </summary>
         /// <remarks>
@@ -103,5 +121,14 @@ namespace HotelManagement
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfChartData;
+
+        /// <summary>
+        /// hfGuestData コントロール。
+        /// </summary>
+        /// <remarks>
+        /// 自動生成されたフィールド。
+        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfGuestData;
     }
 }

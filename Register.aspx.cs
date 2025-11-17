@@ -4,7 +4,6 @@ using System.Data.SqlClient;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web.UI;
-using WebGrease.Activities;
 
 namespace HotelManagement
 {
@@ -36,21 +35,24 @@ namespace HotelManagement
                 // Check if username or email already exists
                 if (UserExists(username, email))
                 {
-                    ShowError("Username or email already exists. Please choose different credentials.");
+                    // CHANGED: Username or email already exists
+                    ShowError("ユーザー名またはメールアドレスは既に使用されています。別の情報を入力してください。");
                     return;
                 }
 
                 // Register the user
                 if (RegisterUser(fullName, username, email, password))
                 {
-                    ShowSuccess("Account created successfully! Redirecting to login...");
+                    // CHANGED: Account created successfully
+                    ShowSuccess("アカウントが正常に作成されました！ログインページにリダイレクトしています...");
 
                     // Redirect to login page after 2 seconds
                     Response.AddHeader("REFRESH", "2;URL=Login.aspx");
                 }
                 else
                 {
-                    ShowError("Registration failed. Please try again.");
+                    // CHANGED: Registration failed
+                    ShowError("登録に失敗しました。もう一度お試しください。");
                 }
             }
         }
@@ -76,7 +78,7 @@ namespace HotelManagement
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine("Error checking user existence: " + ex.Message);
+                System.Diagnostics.Debug.WriteLine("ユーザー存在確認エラー: " + ex.Message);
                 return true; // Return true to prevent registration on error
             }
         }
@@ -105,7 +107,7 @@ namespace HotelManagement
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine("Registration error: " + ex.Message);
+                System.Diagnostics.Debug.WriteLine("登録エラー: " + ex.Message);
                 return false;
             }
         }

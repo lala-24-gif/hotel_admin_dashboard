@@ -4,6 +4,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>売上・収益レポート</title>
+    
+    <!-- Viewport for responsive design -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" /> 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script> 
     <style>
@@ -75,11 +79,14 @@
         }
 
         .summary-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
-        }
+           display: grid;
+           grid-template-columns: repeat(2, 1fr);
+           gap: 25px;
+           margin-bottom: 40px;
+           max-width: 900px;
+           margin-left: auto;  /* NEW: Center horizontally */
+           margin-right: auto; /* NEW: Center horizontally */
+}
 
         .summary-card {
             background: white;
@@ -87,12 +94,24 @@
             padding: 25px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             border-left: 4px solid;
+            transition: transform 0.3s;
+            min-height: 140px; /* Consistent card height */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .summary-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
         }
 
         .summary-card.revenue { border-color: #48bb78; }
         .summary-card.transactions { border-color: #667eea; }
         .summary-card.average { border-color: #ed8936; }
         .summary-card.growth { border-color: #4299e1; }
+        .summary-card.guests { border-color: #f093fb; }
+        .summary-card.avg-guests { border-color: #4facfe; }
 
         .summary-label {
             font-size: 14px;
@@ -100,17 +119,20 @@
             margin-bottom: 10px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            font-weight: 600;
         }
 
         .summary-value {
             font-size: 36px;
             font-weight: 700;
             color: #2d3748;
+            line-height: 1.2;
         }
 
         .summary-change {
             font-size: 13px;
             margin-top: 8px;
+            color: #718096;
         }
 
         .summary-change.positive {
@@ -186,6 +208,15 @@
             color: #48bb78;
         }
 
+        /* Tablet: Keep 2 columns */
+        @media (max-width: 1024px) {
+            .summary-cards {
+                grid-template-columns: repeat(2, 1fr);
+                max-width: 100%;
+            }
+        }
+
+        /* Mobile: 1 column */
         @media (max-width: 768px) {
             .container {
                 padding: 0 20px;
@@ -193,10 +224,19 @@
 
             .summary-cards {
                 grid-template-columns: 1fr;
+                max-width: 100%;
+            }
+            
+            .summary-card {
+                min-height: auto;
             }
 
             .chart-wrapper {
                 height: 300px;
+            }
+            
+            .page-title {
+                font-size: 24px;
             }
         }
     </style>
@@ -219,8 +259,9 @@
             <div class="page-title">年間収益レポート</div>
             <div class="page-subtitle"><asp:Label ID="lblCurrentYear" runat="server"></asp:Label>年の財務概要</div>
 
-            <!-- Summary Cards -->
+            <!-- Summary Cards - 2-2-2 BALANCED LAYOUT -->
             <div class="summary-cards">
+                <!-- Row 1: Revenue & Transactions -->
                 <div class="summary-card revenue">
                     <div class="summary-label">総収益</div>
                     <div class="summary-value">¥<asp:Label ID="lblTotalRevenue" runat="server" Text="0"></asp:Label></div>
@@ -237,6 +278,7 @@
                     </div>
                 </div>
 
+                <!-- Row 2: Average Transaction & Best Month -->
                 <div class="summary-card average">
                     <div class="summary-label">平均取引額</div>
                     <div class="summary-value">¥<asp:Label ID="lblAverageTransaction" runat="server" Text="0"></asp:Label></div>
@@ -244,9 +286,22 @@
                 </div>
 
                 <div class="summary-card growth">
-                    <div class="summary-label">最高月</div>
+                    <div class="summary-label">最高収益月</div>
                     <div class="summary-value"><asp:Label ID="lblBestMonth" runat="server" Text="-"></asp:Label></div>
                     <div class="summary-change">最高収益月</div>
+                </div>
+
+                <!-- Row 3: Guest Statistics -->
+                <div class="summary-card guests">
+                    <div class="summary-label">年間ゲスト数</div>
+                    <div class="summary-value"><asp:Label ID="lblTotalGuests" runat="server" Text="0"></asp:Label></div>
+                    <div class="summary-change">総ゲスト数</div>
+                </div>
+
+                <div class="summary-card avg-guests">
+                    <div class="summary-label">平均ゲスト数</div>
+                    <div class="summary-value"><asp:Label ID="lblAvgGuests" runat="server" Text="0"></asp:Label></div>
+                    <div class="summary-change">予約あたり</div>
                 </div>
             </div>
 
@@ -257,6 +312,16 @@
                 </div>
                 <div class="chart-wrapper">
                     <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Guest Count Chart -->
+            <div class="chart-container">
+                <div class="chart-title">
+                    <i class="fas fa-users"></i> 月次ゲスト数推移
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="guestChart"></canvas>
                 </div>
             </div>
 
@@ -273,15 +338,19 @@
                         <asp:BoundField DataField="Transactions" HeaderText="取引数" />
                         <asp:BoundField DataField="AverageTransaction" HeaderText="平均取引額" DataFormatString="¥{0:N0}" />
                         <asp:BoundField DataField="Bookings" HeaderText="予約数" />
+                        <asp:BoundField DataField="Guests" HeaderText="ゲスト数" />
                     </Columns>
                 </asp:GridView>
             </div>
         </div>
 
-        <!-- Chart Script -->
+        <!-- Chart Scripts -->
         <asp:HiddenField ID="hfChartData" runat="server" />
+        <asp:HiddenField ID="hfGuestData" runat="server" />
+        
         <script type="text/javascript">
             window.onload = function () {
+                // Revenue Chart
                 var chartData = JSON.parse(document.getElementById('<%= hfChartData.ClientID %>').value);
 
                 var ctx = document.getElementById('revenueChart').getContext('2d');
@@ -326,6 +395,72 @@
                                 ticks: {
                                     callback: function (value) {
                                         return '¥' + value.toLocaleString();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // Guest Count Chart
+                var guestData = JSON.parse(document.getElementById('<%= hfGuestData.ClientID %>').value);
+
+                var guestCtx = document.getElementById('guestChart').getContext('2d');
+                var guestChart = new Chart(guestCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: guestData.labels,
+                        datasets: [{
+                            label: 'ゲスト数 (人)',
+                            data: guestData.data,
+                            backgroundColor: 'rgba(240, 147, 251, 0.7)',
+                            borderColor: 'rgba(240, 147, 251, 1)',
+                            borderWidth: 2,
+                            borderRadius: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                labels: {
+                                    font: {
+                                        size: 13,
+                                        weight: '600'
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                padding: 12,
+                                titleFont: {
+                                    size: 14,
+                                    weight: 'bold'
+                                },
+                                bodyFont: {
+                                    size: 13
+                                },
+                                callbacks: {
+                                    label: function (context) {
+                                        return 'ゲスト数: ' + context.parsed.y + ' 人';
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    display: false
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function (value) {
+                                        return value + ' 人';
                                     }
                                 }
                             }

@@ -14,7 +14,6 @@ namespace HotelManagement
 
         protected void Page_Load(object sender, EventArgs e)
         {
-           
             if (Session["AdminID"] == null)
             {
                 Response.Redirect("Login.aspx");
@@ -28,7 +27,6 @@ namespace HotelManagement
             }
         }
 
-       
         private void LoadSalesReport()
         {
             try
@@ -37,10 +35,7 @@ namespace HotelManagement
                 {
                     con.Open();
 
-                
                     LoadAnnualSummary(con);
-
-                   
                     LoadMonthlyBreakdown(con);
                 }
             }
@@ -50,14 +45,18 @@ namespace HotelManagement
             }
         }
 
-       
         private void LoadAnnualSummary(SqlConnection con)
         {
             string query = @"
                 SELECT 
                     ISNULL(SUM(TotalAmount), 0) AS TotalRevenue,
                     COUNT(*) AS TotalTransactions,
-                    ISNULL(AVG(TotalAmount), 0) AS AvgTransaction
+                    ISNULL(AVG(TotalAmount), 0) AS AvgTransaction,
+                    ISNULL(SUM(NumberOfGuests), 0) AS TotalGuests,
+                    CASE 
+                        WHEN COUNT(*) > 0 THEN CAST(SUM(NumberOfGuests) AS FLOAT) / COUNT(*)
+                        ELSE 0
+                    END AS AvgGuests
                 FROM Bookings
                 WHERE YEAR(CheckOutDate) = @Year
                     AND Status = 'CheckedOut'";
@@ -76,17 +75,18 @@ namespace HotelManagement
 
                         decimal avgTransaction = Convert.ToDecimal(reader["AvgTransaction"]);
                         lblAverageTransaction.Text = avgTransaction.ToString("N0");
+
+                        // NEW: Guest statistics
+                        lblTotalGuests.Text = reader["TotalGuests"].ToString();
+                        lblAvgGuests.Text = Math.Round(Convert.ToDouble(reader["AvgGuests"])).ToString(); ;
                     }
                 }
             }
 
             CalculateGrowth(con);
-
-         
             FindBestMonth(con);
         }
 
-      
         private void CalculateGrowth(SqlConnection con)
         {
             string query = @"
@@ -113,7 +113,7 @@ namespace HotelManagement
                         if (lastRevenue > 0)
                         {
                             decimal revenueGrowth = ((currentRevenue - lastRevenue) / lastRevenue) * 100;
-                            lblRevenueChange.Text = Math.Abs(revenueGrowth).ToString("N1");
+                            lblRevenueChange.Text = Math.Abs(revenueGrowth).ToString("F1");
                         }
                         else
                         {
@@ -126,7 +126,7 @@ namespace HotelManagement
                         if (lastTransactions > 0)
                         {
                             decimal transactionGrowth = ((decimal)(currentTransactions - lastTransactions) / lastTransactions) * 100;
-                            lblTransactionChange.Text = Math.Abs(transactionGrowth).ToString("N1");
+                            lblTransactionChange.Text = Math.Abs(transactionGrowth).ToString("F1");
                         }
                         else
                         {
@@ -141,12 +141,12 @@ namespace HotelManagement
         {
             string query = @"
                 SELECT TOP 1 
-                    DATENAME(MONTH, CheckOutDate) AS BestMonth,
+                    MONTH(CheckOutDate) AS MonthNum,
                     SUM(TotalAmount) AS MonthRevenue
                 FROM Bookings
                 WHERE YEAR(CheckOutDate) = @Year
                     AND Status = 'CheckedOut'
-                GROUP BY MONTH(CheckOutDate), DATENAME(MONTH, CheckOutDate)
+                GROUP BY MONTH(CheckOutDate)
                 ORDER BY MonthRevenue DESC";
 
             using (SqlCommand cmd = new SqlCommand(query, con))
@@ -157,9 +157,8 @@ namespace HotelManagement
                 {
                     if (reader.Read())
                     {
-                   
-                        string monthName = reader["BestMonth"].ToString();
-                        lblBestMonth.Text = ConvertMonthToJapanese(monthName);
+                        int monthNum = Convert.ToInt32(reader["MonthNum"]);
+                        lblBestMonth.Text = monthNum + "月";
                     }
                     else
                     {
@@ -191,7 +190,8 @@ namespace HotelManagement
                     ISNULL(SUM(b.TotalAmount), 0) AS Revenue,
                     ISNULL(COUNT(b.BookingID), 0) AS Transactions,
                     ISNULL(AVG(b.TotalAmount), 0) AS AverageTransaction,
-                    ISNULL(COUNT(DISTINCT b.BookingID), 0) AS Bookings
+                    ISNULL(COUNT(DISTINCT b.BookingID), 0) AS Bookings,
+                    ISNULL(SUM(b.NumberOfGuests), 0) AS Guests
                 FROM Months m
                 LEFT JOIN Bookings b ON MONTH(b.CheckOutDate) = m.MonthNum 
                     AND YEAR(b.CheckOutDate) = @Year
@@ -208,11 +208,9 @@ namespace HotelManagement
                     DataTable dt = new DataTable();
                     da.Fill(dt);
 
-                   
                     gvMonthlyBreakdown.DataSource = dt;
                     gvMonthlyBreakdown.DataBind();
 
-                   
                     PrepareChartData(dt);
                 }
             }
@@ -221,42 +219,31 @@ namespace HotelManagement
         private void PrepareChartData(DataTable dt)
         {
             var labels = new System.Collections.Generic.List<string>();
-            var data = new System.Collections.Generic.List<decimal>();
+            var revenueData = new System.Collections.Generic.List<decimal>();
+            var guestData = new System.Collections.Generic.List<int>();
 
             foreach (DataRow row in dt.Rows)
             {
                 labels.Add(row["Month"].ToString());
-                data.Add(Convert.ToDecimal(row["Revenue"]));
+                revenueData.Add(Convert.ToDecimal(row["Revenue"]));
+                guestData.Add(Convert.ToInt32(row["Guests"]));
             }
 
-            var chartData = new
+            // Revenue chart data
+            var revenueChartData = new
             {
                 labels = labels,
-                data = data
+                data = revenueData
             };
+            hfChartData.Value = JsonConvert.SerializeObject(revenueChartData);
 
-            hfChartData.Value = JsonConvert.SerializeObject(chartData);
-        }
-
-        
-        private string ConvertMonthToJapanese(string englishMonth)
-        {
-            switch (englishMonth.ToLower())
+            // NEW: Guest chart data
+            var guestChartData = new
             {
-                case "january": return "1月";
-                case "february": return "2月";
-                case "march": return "3月";
-                case "april": return "4月";
-                case "may": return "5月";
-                case "june": return "6月";
-                case "july": return "7月";
-                case "august": return "8月";
-                case "september": return "9月";
-                case "october": return "10月";
-                case "november": return "11月";
-                case "december": return "12月";
-                default: return englishMonth;
-            }
+                labels = labels,
+                data = guestData
+            };
+            hfGuestData.Value = JsonConvert.SerializeObject(guestChartData);
         }
     }
 }

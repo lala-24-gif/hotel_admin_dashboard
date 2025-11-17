@@ -4,6 +4,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>ホテル管理ダッシュボード</title>
+    
+    <!-- CRITICAL: Add viewport meta tag for safe area -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <style>
         * {
@@ -16,6 +20,12 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #f5f7fa;
             color: #333;
+            
+            /* NEW: Safe area padding for mobile devices */
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+            padding-left: env(safe-area-inset-left);
+            padding-right: env(safe-area-inset-right);
         }
 
         .header {
@@ -23,6 +33,9 @@
             color: white;
             padding: 20px 40px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            
+            /* NEW: Additional safe area padding at top for notch */
+            padding-top: calc(20px + env(safe-area-inset-top));
         }
 
         .header-content {
@@ -63,19 +76,23 @@
             font-size: 24px;
         }
 
-        /*  Date Banner Styles */
+        /* Date Banner Styles */
         .date-banner {
             background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
             padding: 15px 40px;
             border-bottom: 1px solid #e2e8f0;
             box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            
+            /* NEW: Safe area padding for sides */
+            padding-left: max(40px, env(safe-area-inset-left));
+            padding-right: max(40px, env(safe-area-inset-right));
         }
 
         .date-banner-content {
             max-width: 1400px;
             margin: 0 auto;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
         }
 
@@ -114,23 +131,17 @@
             margin-top: 2px;
         }
 
-        .time-info {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #718096;
-            font-size: 15px;
-            font-weight: 500;
-        }
-
-        .time-info i {
-            color: #667eea;
-        }
-
         .dashboard-container {
             max-width: 1400px;
             margin: 30px auto;
             padding: 0 40px;
+            
+            /* NEW: Safe area padding for sides */
+            padding-left: max(40px, env(safe-area-inset-left));
+            padding-right: max(40px, env(safe-area-inset-right));
+            
+            /* NEW: Safe area padding for bottom (home indicator) */
+            padding-bottom: calc(40px + env(safe-area-inset-bottom));
         }
 
         .section-title {
@@ -476,8 +487,28 @@
         }
 
         @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+                /* Maintain safe area on mobile */
+                padding-top: calc(15px + env(safe-area-inset-top));
+            }
+
             .dashboard-container {
                 padding: 0 20px;
+                /* Safe area for mobile */
+                padding-left: max(20px, env(safe-area-inset-left));
+                padding-right: max(20px, env(safe-area-inset-right));
+                padding-bottom: calc(20px + env(safe-area-inset-bottom));
+            }
+            
+            .date-banner {
+                padding: 12px 20px;
+                padding-left: max(20px, env(safe-area-inset-left));
+                padding-right: max(20px, env(safe-area-inset-right));
+            }
+
+            .date-banner-content {
+                justify-content: center;
             }
             
             .dashboard-row {
@@ -497,21 +528,15 @@
                 flex-direction: column;
             }
 
+            .action-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
             .overdue-alert {
                 flex-direction: column;
                 text-align: center;
                 gap: 15px;
-            }
-
-            /* Mobile responsive for date banner */
-            .date-banner {
-                padding: 12px 20px;
-            }
-
-            .date-banner-content {
-                flex-direction: column;
-                gap: 10px;
-                text-align: center;
             }
         }
     </style>
@@ -531,24 +556,24 @@
             </div>
         </div>
 
-        <!--Date/Time Banner -->
-  <div class="date-banner">
-    <div class="date-banner-content">
-        <div class="date-info">
-            <div class="date-icon">
-                <i class="fas fa-calendar-day"></i>
-            </div>
-            <div class="date-text">
-                <div class="date-main">
-                    <asp:Label ID="lblCurrentDate" runat="server" Text=""></asp:Label>
-                </div>
-                <div class="date-day">
-                    <asp:Label ID="lblCurrentDay" runat="server" Text=""></asp:Label>
+        <!-- Date Banner -->
+        <div class="date-banner">
+            <div class="date-banner-content">
+                <div class="date-info">
+                    <div class="date-icon">
+                        <i class="fas fa-calendar-day"></i>
+                    </div>
+                    <div class="date-text">
+                        <div class="date-main">
+                            <asp:Label ID="lblCurrentDate" runat="server" Text=""></asp:Label>
+                        </div>
+                        <div class="date-day">
+                            <asp:Label ID="lblCurrentDay" runat="server" Text=""></asp:Label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
         <!-- Dashboard Container -->
         <div class="dashboard-container">

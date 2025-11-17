@@ -39,7 +39,7 @@ namespace HotelManagement
                 else
                 {
                     // Failed login
-                    ShowError("Invalid username or password. Please try again.");
+                    ShowError("ユーザー名またはパスワードが間違っています。再度入力してください。");
                 }
             }
         }
