@@ -33,6 +33,24 @@ namespace HotelManagement
         protected global::System.Web.UI.WebControls.Label lblUsername;
 
         /// <summary>
+        /// lblCurrentDate コントロール。
+        /// </summary>
+        /// <remarks>
+        /// 自動生成されたフィールド。
+        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCurrentDate;
+
+        /// <summary>
+        /// lblCurrentDay コントロール。
+        /// </summary>
+        /// <remarks>
+        /// 自動生成されたフィールド。
+        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCurrentDay;
+
+        /// <summary>
         /// pnlOverdueWarning コントロール。
         /// </summary>
         /// <remarks>

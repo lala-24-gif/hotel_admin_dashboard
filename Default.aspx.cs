@@ -12,7 +12,6 @@ namespace HotelManagement
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            
             if (Session["AdminID"] == null)
             {
                 Response.Redirect("Login.aspx");
@@ -21,14 +20,46 @@ namespace HotelManagement
 
             if (!IsPostBack)
             {
-               
                 if (Session["AdminName"] != null)
                 {
                     lblUsername.Text = Session["AdminName"].ToString();
                 }
 
+               
+                SetCurrentDateTime();
+
                 LoadDashboardData();
                 CheckOverdueCheckouts();
+            }
+        }
+
+    
+        private void SetCurrentDateTime()
+        {
+            DateTime now = DateTime.Now;
+
+        
+            lblCurrentDate.Text = now.ToString("yyyy年MM月dd日");
+
+         
+            lblCurrentDay.Text = GetJapaneseDayOfWeek(now.DayOfWeek);
+
+        
+        }
+
+      
+        private string GetJapaneseDayOfWeek(DayOfWeek day)
+        {
+            switch (day)
+            {
+                case DayOfWeek.Sunday: return "日曜日";
+                case DayOfWeek.Monday: return "月曜日";
+                case DayOfWeek.Tuesday: return "火曜日";
+                case DayOfWeek.Wednesday: return "水曜日";
+                case DayOfWeek.Thursday: return "木曜日";
+                case DayOfWeek.Friday: return "金曜日";
+                case DayOfWeek.Saturday: return "土曜日";
+                default: return "";
             }
         }
 
@@ -40,26 +71,22 @@ namespace HotelManagement
                 {
                     con.Open();
 
-                
                     using (SqlCommand cmd = new SqlCommand("sp_GetDashboardStats", con))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
-                       
                             if (reader.Read())
                             {
                                 lblBookings.Text = reader["TodayBookings"].ToString();
                             }
 
-                          
                             if (reader.NextResult() && reader.Read())
                             {
                                 lblCheckIns.Text = reader["TodayCheckIns"].ToString();
                             }
 
-                            
                             if (reader.NextResult() && reader.Read())
                             {
                                 lblAvailableRooms.Text = reader["AvailableRooms"].ToString();
@@ -76,15 +103,12 @@ namespace HotelManagement
                         }
                     }
 
-                    
                     LoadCurrentGuests(con);
                 }
             }
             catch (Exception ex)
             {
-              
                 System.Diagnostics.Debug.WriteLine("ダッシュボードの読み込みエラー: " + ex.Message);
-              
             }
         }
 
@@ -111,7 +135,6 @@ namespace HotelManagement
             }
         }
 
-     
         private void CheckOverdueCheckouts()
         {
             try
@@ -120,7 +143,6 @@ namespace HotelManagement
                 {
                     con.Open();
 
-               
                     string query = @"
                         SELECT COUNT(*) 
                         FROM Bookings 
@@ -157,7 +179,6 @@ namespace HotelManagement
             Response.Redirect("SalesReport.aspx");
         }
 
-     
         protected void btnViewRooms_Click(object sender, EventArgs e)
         {
             Response.Redirect("Rooms.aspx");

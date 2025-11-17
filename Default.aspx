@@ -63,6 +63,70 @@
             font-size: 24px;
         }
 
+        /*  Date Banner Styles */
+        .date-banner {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+            padding: 15px 40px;
+            border-bottom: 1px solid #e2e8f0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+        }
+
+        .date-banner-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .date-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .date-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+
+        .date-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .date-main {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .date-day {
+            font-size: 13px;
+            color: #718096;
+            margin-top: 2px;
+        }
+
+        .time-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #718096;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .time-info i {
+            color: #667eea;
+        }
+
         .dashboard-container {
             max-width: 1400px;
             margin: 30px auto;
@@ -438,6 +502,17 @@
                 text-align: center;
                 gap: 15px;
             }
+
+            /* Mobile responsive for date banner */
+            .date-banner {
+                padding: 12px 20px;
+            }
+
+            .date-banner-content {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -455,6 +530,25 @@
                 </div>
             </div>
         </div>
+
+        <!--Date/Time Banner -->
+  <div class="date-banner">
+    <div class="date-banner-content">
+        <div class="date-info">
+            <div class="date-icon">
+                <i class="fas fa-calendar-day"></i>
+            </div>
+            <div class="date-text">
+                <div class="date-main">
+                    <asp:Label ID="lblCurrentDate" runat="server" Text=""></asp:Label>
+                </div>
+                <div class="date-day">
+                    <asp:Label ID="lblCurrentDay" runat="server" Text=""></asp:Label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
         <!-- Dashboard Container -->
         <div class="dashboard-container">
@@ -533,38 +627,39 @@
             </div>
 
             <!-- Second Row: Room Status -->
-    <div class="section-title">
-        <i class="fas fa-door-open"></i> 客室
-    </div>
-    <div class="dashboard-row" style="cursor: pointer;" onclick="window.location.href='Rooms.aspx'">
-        <div class="room-card available">
-            <div class="room-icon">
-                <i class="fas fa-bed"></i>
+            <div class="section-title">
+                <i class="fas fa-door-open"></i> 客室
             </div>
-            <div class="room-value">
-                <asp:Label ID="lblAvailableRooms" runat="server" Text="0"></asp:Label>
+            <div class="dashboard-row" style="cursor: pointer;" onclick="window.location.href='Rooms.aspx'">
+                <div class="room-card available">
+                    <div class="room-icon">
+                        <i class="fas fa-bed"></i>
+                    </div>
+                    <div class="room-value">
+                        <asp:Label ID="lblAvailableRooms" runat="server" Text="0"></asp:Label>
+                    </div>
+                    <div class="room-label">空室</div>
+                </div>
+                <div class="room-card occupied">
+                    <div class="room-icon">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <div class="room-value">
+                        <asp:Label ID="lblOccupiedRooms" runat="server" Text="0"></asp:Label>
+                    </div>
+                    <div class="room-label">使用中</div>
+                </div>
+                <div class="room-card reserved">
+                    <div class="room-icon">
+                        <i class="fas fa-bookmark"></i>
+                    </div>
+                    <div class="room-value">
+                        <asp:Label ID="lblReservedRooms" runat="server" Text="0"></asp:Label>
+                    </div>
+                    <div class="room-label">予約済み</div>
+                </div>
             </div>
-            <div class="room-label">空室</div>
-        </div>
-        <div class="room-card occupied">
-            <div class="room-icon">
-                <i class="fas fa-user-check"></i>
-            </div>
-            <div class="room-value">
-                <asp:Label ID="lblOccupiedRooms" runat="server" Text="0"></asp:Label>
-            </div>
-            <div class="room-label">使用中</div>
-        </div>
-        <div class="room-card reserved">
-            <div class="room-icon">
-                <i class="fas fa-bookmark"></i>
-            </div>
-            <div class="room-value">
-                <asp:Label ID="lblReservedRooms" runat="server" Text="0"></asp:Label>
-            </div>
-            <div class="room-label">予約済み</div>
-        </div>
-    </div>
+
             <!-- Third Row: Sales & Revenue -->
             <div class="section-title">
                 <i class="fas fa-chart-bar"></i> 財務概要
