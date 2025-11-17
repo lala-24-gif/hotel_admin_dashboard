@@ -119,6 +119,7 @@ namespace HotelManagement
             }
         }
 
+        //gridview for current guest 
         protected void gvCurrentGuests_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             if (e.CommandName == "CheckOut")
@@ -127,6 +128,7 @@ namespace HotelManagement
                 CheckOutGuest(bookingId);
             }
         }
+
 
         private void CheckOutGuest(int bookingId)
         {

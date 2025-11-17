@@ -297,6 +297,7 @@ namespace HotelManagement
             Response.Redirect("Default.aspx");
         }
 
+
         private void ClearForm()
         {
             // Clear new guest fields
