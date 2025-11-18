@@ -199,72 +199,60 @@
         }
 
         .btn-checkin {
-            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            background: #48bb78;
             color: white;
-            padding: 6px 12px;
+            padding: 6px 14px;
             border: none;
-            border-radius: 6px;
+            border-radius: 4px;
             cursor: pointer;
             font-size: 13px;
-            font-weight: 600;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            margin-right: 5px;
+            font-weight: 500;
+            transition: background 0.2s;
+            margin-right: 4px;
         }
 
         .btn-checkin:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.4);
+            background: #38a169;
         }
 
         .btn-checkout {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #48bb78;
             color: white;
-            padding: 6px 12px;
+            padding: 6px 14px;
             border: none;
-            border-radius: 6px;
+            border-radius: 4px;
             cursor: pointer;
             font-size: 13px;
-            font-weight: 600;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            margin-right: 5px;
+            font-weight: 500;
+            transition: background 0.2s;
+            margin-right: 4px;
         }
 
         .btn-checkout:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            background: #38a169;
         }
 
         .btn-cancel {
-            background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+            background: #f56565;
             color: white;
-            padding: 6px 12px;
+            padding: 6px 14px;
             border: none;
-            border-radius: 6px;
+            border-radius: 4px;
             cursor: pointer;
             font-size: 13px;
-            font-weight: 600;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
+            font-weight: 500;
+            transition: background 0.2s;
         }
 
         .btn-cancel:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(245, 101, 101, 0.4);
+            background: #e53e3e;
         }
 
         .action-buttons {
             display: flex;
-            flex-direction: column;
-            gap: 5px;
-            min-width: 120px;
+            flex-wrap: wrap;
+            gap: 4px;
+            align-items: center;
         }
 
         .empty-state {
@@ -381,7 +369,7 @@
                         <Columns>
                             <asp:BoundField DataField="RoomNumber" HeaderText="客室番号" />
                             <asp:BoundField DataField="GuestName" HeaderText="ゲスト名" />
-                            <asp:BoundField DataField="Phone" HeaderText="電話番号" />
+                           
                             <asp:BoundField DataField="ExpectedTime" HeaderText="予定時刻" />
                             <asp:BoundField DataField="CheckOutDate" HeaderText="チェックアウト" DataFormatString="{0:yyyy-MM-dd}" />
                             <asp:BoundField DataField="NumberOfGuests" HeaderText="人数" />

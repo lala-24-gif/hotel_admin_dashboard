@@ -171,33 +171,33 @@ namespace HotelManagement
         private void LoadMonthlyBreakdown(SqlConnection con)
         {
             string query = @"
-                WITH Months AS (
-                    SELECT 1 AS MonthNum, '1月' AS MonthName UNION ALL
-                    SELECT 2, '2月' UNION ALL
-                    SELECT 3, '3月' UNION ALL
-                    SELECT 4, '4月' UNION ALL
-                    SELECT 5, '5月' UNION ALL
-                    SELECT 6, '6月' UNION ALL
-                    SELECT 7, '7月' UNION ALL
-                    SELECT 8, '8月' UNION ALL
-                    SELECT 9, '9月' UNION ALL
-                    SELECT 10, '10月' UNION ALL
-                    SELECT 11, '11月' UNION ALL
-                    SELECT 12, '12月'
-                )
-                SELECT 
-                    m.MonthName AS Month,
-                    ISNULL(SUM(b.TotalAmount), 0) AS Revenue,
-                    ISNULL(COUNT(b.BookingID), 0) AS Transactions,
-                    ISNULL(AVG(b.TotalAmount), 0) AS AverageTransaction,
-                    ISNULL(COUNT(DISTINCT b.BookingID), 0) AS Bookings,
-                    ISNULL(SUM(b.NumberOfGuests), 0) AS Guests
-                FROM Months m
-                LEFT JOIN Bookings b ON MONTH(b.CheckOutDate) = m.MonthNum 
-                    AND YEAR(b.CheckOutDate) = @Year
-                    AND b.Status = 'CheckedOut'
-                GROUP BY m.MonthNum, m.MonthName
-                ORDER BY m.MonthNum";
+        WITH Months AS (
+            SELECT 1 AS MonthNum, '1月' AS MonthName UNION ALL
+            SELECT 2, '2月' UNION ALL
+            SELECT 3, '3月' UNION ALL
+            SELECT 4, '4月' UNION ALL
+            SELECT 5, '5月' UNION ALL
+            SELECT 6, '6月' UNION ALL
+            SELECT 7, '7月' UNION ALL
+            SELECT 8, '8月' UNION ALL
+            SELECT 9, '9月' UNION ALL
+            SELECT 10, '10月' UNION ALL
+            SELECT 11, '11月' UNION ALL
+            SELECT 12, '12月'
+        )
+        SELECT 
+            m.MonthName AS Month,
+            ISNULL(SUM(b.TotalAmount), 0) AS Revenue,
+            ISNULL(COUNT(b.BookingID), 0) AS Transactions,
+            ISNULL(AVG(b.TotalAmount), 0) AS AverageTransaction,
+            ISNULL(COUNT(DISTINCT b.BookingID), 0) AS Bookings,
+            ISNULL(SUM(b.NumberOfGuests), 0) AS Guests
+        FROM Months m
+        LEFT JOIN Bookings b ON MONTH(b.CheckInDate) = m.MonthNum 
+            AND YEAR(b.CheckInDate) = @Year
+            AND b.Status = 'CheckedOut'
+        GROUP BY m.MonthNum, m.MonthName
+        ORDER BY m.MonthNum";
 
             using (SqlCommand cmd = new SqlCommand(query, con))
             {
