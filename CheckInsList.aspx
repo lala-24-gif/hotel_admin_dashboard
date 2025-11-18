@@ -201,16 +201,16 @@
         .btn-checkin {
             background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
             color: white;
-            padding: 8px 16px;
+            padding: 6px 12px;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             transition: all 0.3s;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
             margin-right: 5px;
         }
 
@@ -222,16 +222,16 @@
         .btn-checkout {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 8px 16px;
+            padding: 6px 12px;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             transition: all 0.3s;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
             margin-right: 5px;
         }
 
@@ -243,21 +243,28 @@
         .btn-cancel {
             background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
             color: white;
-            padding: 8px 16px;
+            padding: 6px 12px;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             transition: all 0.3s;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
 
         .btn-cancel:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(245, 101, 101, 0.4);
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            min-width: 120px;
         }
 
         .empty-state {
@@ -281,6 +288,19 @@
         .empty-desc {
             font-size: 16px;
             color: #718096;
+        }
+
+        /* Special Request styling */
+        .request-cell {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .request-cell:hover {
+            white-space: normal;
+            overflow: visible;
         }
 
         @media (max-width: 768px) {
@@ -366,6 +386,13 @@
                             <asp:BoundField DataField="CheckOutDate" HeaderText="チェックアウト" DataFormatString="{0:yyyy-MM-dd}" />
                             <asp:BoundField DataField="NumberOfGuests" HeaderText="人数" />
                             <asp:BoundField DataField="TotalAmount" HeaderText="金額" DataFormatString="¥{0:N0}" />
+                            <asp:TemplateField HeaderText="特別なリクエスト">
+                                <ItemTemplate>
+                                    <div class="request-cell" title='<%# Eval("SpecialRequest") %>'>
+                                        <%# Eval("SpecialRequest") %>
+                                    </div>
+                                </ItemTemplate>
+                            </asp:TemplateField>
                             <asp:TemplateField HeaderText="ステータス">
                                 <ItemTemplate>
                                     <span class='status-badge status-<%# Eval("Status").ToString().ToLower() %>'>
@@ -375,25 +402,27 @@
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="操作">
                                 <ItemTemplate>
-                                    <asp:Button ID="btnCheckIn" runat="server" 
-                                        Text="チェックイン" 
-                                        CommandName="CheckInGuest" 
-                                        CommandArgument='<%# Eval("BookingID") %>'
-                                        CssClass="btn-checkin"
-                                        Visible='<%# Eval("Status").ToString() != "CheckedIn" %>' />
-                                    <asp:Button ID="btnCheckOut" runat="server" 
-                                        Text="チェックアウト" 
-                                        CommandName="CheckOutGuest" 
-                                        CommandArgument='<%# Eval("BookingID") %>'
-                                        CssClass="btn-checkout"
-                                        Visible='<%# Eval("Status").ToString() == "CheckedIn" %>'
-                                        OnClientClick="return confirm('このゲストをチェックアウトしますか？');" />
-                                    <asp:Button ID="btnCancel" runat="server" 
-                                        Text="キャンセル" 
-                                        CommandName="CancelBooking" 
-                                        CommandArgument='<%# Eval("BookingID") %>'
-                                        CssClass="btn-cancel"
-                                        OnClientClick="return confirm('この予約をキャンセルしますか？');" />
+                                    <div class="action-buttons">
+                                        <asp:Button ID="btnCheckIn" runat="server" 
+                                            Text="チェックイン" 
+                                            CommandName="CheckInGuest" 
+                                            CommandArgument='<%# Eval("BookingID") %>'
+                                            CssClass="btn-checkin"
+                                            Visible='<%# Eval("Status").ToString() != "CheckedIn" %>' />
+                                        <asp:Button ID="btnCheckOut" runat="server" 
+                                            Text="チェックアウト" 
+                                            CommandName="CheckOutGuest" 
+                                            CommandArgument='<%# Eval("BookingID") %>'
+                                            CssClass="btn-checkout"
+                                            Visible='<%# Eval("Status").ToString() == "CheckedIn" %>'
+                                            OnClientClick="return confirm('このゲストをチェックアウトしますか？');" />
+                                        <asp:Button ID="btnCancel" runat="server" 
+                                            Text="キャンセル" 
+                                            CommandName="CancelBooking" 
+                                            CommandArgument='<%# Eval("BookingID") %>'
+                                            CssClass="btn-cancel"
+                                            OnClientClick="return confirm('この予約をキャンセルしますか？');" />
+                                    </div>
                                 </ItemTemplate>
                             </asp:TemplateField>
                         </Columns>

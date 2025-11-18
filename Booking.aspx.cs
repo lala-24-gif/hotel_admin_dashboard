@@ -47,7 +47,7 @@ namespace HotelManagement
             btnCreateBooking.ValidationGroup = "NewGuestGroup";
         }
 
-    
+
         protected void btnExistingGuest_Click(object sender, EventArgs e)
         {
             // Show existing guest form and booking details
@@ -263,7 +263,7 @@ namespace HotelManagement
                 DateTime checkIn = DateTime.Parse(txtCheckIn.Text);
                 DateTime checkOut = DateTime.Parse(txtCheckOut.Text);
 
-               //Validate checkout date is after check-in date
+                //Validate checkout date is after check-in date
                 if (checkOut <= checkIn)
                 {
                     ShowError("チェックアウト日はチェックイン日より後でなければなりません。");
@@ -341,10 +341,10 @@ namespace HotelManagement
 
                 con.Open();
 
-                // REMOVED: Don't update Rooms.Status to 'Reserved' - we now check bookings directly
+                // FIXED: Changed SpecialRequests to SpecialRequest (singular) to match database column
                 SqlCommand cmd = new SqlCommand(@"
-                    INSERT INTO Bookings (GuestID, RoomID, CheckInDate, CheckOutDate, BookingDate, Status, TotalAmount, AmountPaid, NumberOfGuests, SpecialRequests)
-                    VALUES (@GuestID, @RoomID, @CheckInDate, @CheckOutDate, GETDATE(), 'Confirmed', @TotalAmount, 0, @NumberOfGuests, @SpecialRequests);", con);
+                    INSERT INTO Bookings (GuestID, RoomID, CheckInDate, CheckOutDate, BookingDate, Status, TotalAmount, AmountPaid, NumberOfGuests, SpecialRequest)
+                    VALUES (@GuestID, @RoomID, @CheckInDate, @CheckOutDate, GETDATE(), 'Confirmed', @TotalAmount, 0, @NumberOfGuests, @SpecialRequest);", con);
 
                 cmd.Parameters.AddWithValue("@GuestID", guestId);
                 cmd.Parameters.AddWithValue("@RoomID", roomId);
@@ -352,7 +352,7 @@ namespace HotelManagement
                 cmd.Parameters.AddWithValue("@CheckOutDate", checkOut);
                 cmd.Parameters.AddWithValue("@TotalAmount", totalAmount);
                 cmd.Parameters.AddWithValue("@NumberOfGuests", numberOfGuests);
-                cmd.Parameters.AddWithValue("@SpecialRequests", string.IsNullOrEmpty(specialRequests) ? (object)DBNull.Value : specialRequests);
+                cmd.Parameters.AddWithValue("@SpecialRequest", string.IsNullOrEmpty(specialRequests) ? (object)DBNull.Value : specialRequests);
 
                 cmd.ExecuteNonQuery();
                 con.Close();

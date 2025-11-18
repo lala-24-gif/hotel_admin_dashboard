@@ -19,14 +19,14 @@ namespace HotelManagement
             }
         }
 
-     
+
         private void LoadCheckIns()
         {
             try
             {
                 con.Open();
 
-                //show all the checkins for today
+                //show all the checkins for today including SpecialRequest
                 SqlCommand cmd = new SqlCommand(@"
                     SELECT 
                         b.BookingID,
@@ -39,7 +39,8 @@ namespace HotelManagement
                         b.CheckOutDate,
                         b.NumberOfGuests,
                         b.TotalAmount,
-                        b.Status
+                        b.Status,
+                        ISNULL(b.SpecialRequest, 'なし') AS SpecialRequest
                     FROM Bookings b
                     INNER JOIN Guests g ON b.GuestID = g.GuestID
                     INNER JOIN Rooms r ON b.RoomID = r.RoomID
@@ -68,7 +69,7 @@ namespace HotelManagement
             }
         }
 
-  
+
         private void LoadStatistics()
         {
             try
@@ -105,7 +106,7 @@ namespace HotelManagement
             }
         }
 
-   
+
         protected void gvCheckIns_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             int bookingId = Convert.ToInt32(e.CommandArgument);
@@ -124,19 +125,19 @@ namespace HotelManagement
             }
         }
 
-   
+
         private void CheckInGuest(int bookingId)
         {
             try
             {
                 con.Open();
 
-              
+
                 SqlCommand getRoomCmd = new SqlCommand("SELECT RoomID FROM Bookings WHERE BookingID = @BookingID", con);
                 getRoomCmd.Parameters.AddWithValue("@BookingID", bookingId);
                 int roomId = Convert.ToInt32(getRoomCmd.ExecuteScalar());
 
-                
+
                 SqlCommand cmd = new SqlCommand(@"
                     UPDATE Bookings 
                     SET Status = 'CheckedIn'
@@ -177,7 +178,7 @@ namespace HotelManagement
                 getRoomCmd.Parameters.AddWithValue("@BookingID", bookingId);
                 int roomId = Convert.ToInt32(getRoomCmd.ExecuteScalar());
 
-           
+
                 SqlCommand cmd = new SqlCommand(@"
                     UPDATE Bookings 
                     SET Status = 'CheckedOut'
@@ -214,7 +215,7 @@ namespace HotelManagement
             {
                 con.Open();
 
-             
+
                 SqlCommand getRoomCmd = new SqlCommand("SELECT RoomID FROM Bookings WHERE BookingID = @BookingID", con);
                 getRoomCmd.Parameters.AddWithValue("@BookingID", bookingId);
                 int roomId = Convert.ToInt32(getRoomCmd.ExecuteScalar());
@@ -269,7 +270,7 @@ namespace HotelManagement
             }
         }
 
-     
+
         private void ShowError(string message)
         {
             pnlError.Visible = true;
