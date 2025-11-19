@@ -448,7 +448,7 @@
                         <label class="form-label">電話番号 <span class="required">*</span></label>
                         <div class="input-wrapper">
                             <i class="fas fa-phone input-icon"></i>
-                            <asp:TextBox ID="txtPhone" runat="server" CssClass="form-input with-icon" placeholder="+81 90 1234 5678"></asp:TextBox>
+                            <asp:TextBox ID="txtPhone" runat="server" CssClass="form-input with-icon" placeholder="09012345678"></asp:TextBox>
                         </div>
                         <asp:RequiredFieldValidator ID="rfvPhone" runat="server" 
                             ControlToValidate="txtPhone" Display="Dynamic"

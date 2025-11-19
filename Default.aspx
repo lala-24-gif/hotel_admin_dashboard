@@ -599,10 +599,7 @@
 
             <!-- Quick Actions -->
             <div class="quick-actions">
-                <a href="Booking.aspx" class="action-btn" style="background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);">
-                    <i class="fas fa-walking"></i>
-                    <span>ウォークインチェックイン</span>
-                </a>
+
                 <a href="Booking.aspx" class="action-btn">
                     <i class="fas fa-calendar-check"></i>
                     <span>予約作成</span>
